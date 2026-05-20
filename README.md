@@ -199,7 +199,7 @@ Latest pre-compiled binaries for Windows, macOS, and Linux:
 git clone https://github.com/Tecush/ZScope.git
 cd ZScope
 
-📚 Citation
+## 📚 Citation
 If you use ZScope in your research, please cite:
 
 @software{zscope2026,
@@ -209,7 +209,7 @@ If you use ZScope in your research, please cite:
   url     = {https://github.com/Tecush/ZScope}
 }
 
-📬 Contact
+## 📬 Contact
 Role
 	
 Details
