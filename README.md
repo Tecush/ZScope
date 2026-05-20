@@ -1,244 +1,211 @@
 ![ZScope Banner](https://raw.githubusercontent.com/Tecush/ZScope/main/images/splash.png)
 
-<img width="40" height="40" alt="Icon" src="https://github.com/user-attachments/assets/c23f0756-3dc3-46ac-a2b2-4c69e630ff50" />
-# ZScope
-Advanced electrochemical impedance spectroscopy (EIS) simulation, fitting, and equivalent circuit analysis platform.
+<div align="center">
+  <img width="50" height="50" alt="ZScope Icon" src="https://github.com/user-attachments/assets/c23f0756-3dc3-46ac-a2b2-4c69e630ff50" />
+  <h1>ZScope</h1>
+  <p><strong>Publication-Grade Electrochemical Impedance Spectroscopy (EIS) Analysis Platform</strong></p>
+  
+  <p>
+    <a href="#-features">Features</a> •
+    <a href="#-applications">Applications</a> •
+    <a href="#-installation">Installation</a> •
+    <a href="#-citation">Citation</a> •
+    <a href="#-contact">Contact</a>
+  </p>
 
-### Publication-Grade Electrochemical Impedance Spectroscopy (EIS) Analysis Platform
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/c23f0756-3dc3-46ac-a2b2-4c69e630ff50"/>
-</p>
-
-<p align="center">
-
-Modern scientific software for rigorous Electrochemical Impedance Spectroscopy analysis,  
-interactive circuit modeling, Bayesian uncertainty quantification, and physically consistent fitting.
-
-</p>
-
----
-
-## Overview
-
-ZScope is a modern scientific platform designed for advanced Electrochemical Impedance Spectroscopy (EIS) analysis in both academic and industrial research environments.
-
-The software combines physically rigorous impedance modeling, advanced optimization algorithms, Bayesian uncertainty quantification, Kramers–Kronig validation, and interactive circuit simulation within a unified high-performance interface.
-
-ZScope was developed to address a common limitation of many traditional EIS software packages: lack of transparency in fitting methodology and uncertainty interpretation. Instead of functioning as a black-box fitting tool, ZScope emphasizes reproducibility, statistical rigor, and physically meaningful interpretation of electrochemical systems.
-
-The platform is suitable for researchers working in:
-
-- battery science,
-- corrosion engineering,
-- perovskite solar cells,
-- fuel cells,
-- supercapacitors,
-- electrolysis,
-- biosensors,
-- and general electrochemical materials research.
+  <p>
+    <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Release&color=blue" alt="Release"/></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"/></a>
+    <a href="https://github.com/Tecush/ZScope/issues"><img src="https://img.shields.io/github/issues/Tecush/ZScope" alt="Issues"/></a>
+  </p>
+</div>
 
 ---
 
-# Core Capabilities
-
-## Interactive Circuit Modeling
-
-ZScope provides a visual drag-and-drop circuit editor designed specifically for electrochemical impedance workflows.
-
-Equivalent circuits can be constructed interactively while the impedance response is updated in real time. Nyquist and Bode plots remain synchronized with the circuit model, enabling rapid exploratory analysis and intuitive interpretation of electrochemical behavior.
-
-The circuit framework supports both standard and advanced EIS elements, including:
-
-- Resistors (R)
-- Capacitors (C)
-- Inductors (L)
-- Constant Phase Elements (CPE)
-- Warburg diffusion (W)
-- Gerischer impedance
-- Transmission line models
-- Bisquert-type structures
-
-The internal notation engine automatically converts graphical topologies into equivalent netlists and mathematical representations.
+## 📋 Table of Contents
+- [✨ Overview](#-overview)
+- [🚀 Core Capabilities](#-core-capabilities)
+- [🔬 Scientific Applications](#-scientific-applications)
+- [💡 Why ZScope?](#-why-zscope)
+- [🧪 Example: Impedance Modeling](#-example-impedance-modeling)
+- [📦 Installation](#-installation)
+- [📚 Citation](#-citation)
+- [📬 Contact](#-contact)
 
 ---
 
-## Advanced Fitting Engine
+## ✨ Overview
 
-The fitting framework in ZScope was designed for reliable parameter extraction from noisy, highly correlated, or physically complex impedance spectra.
+**ZScope** is a modern scientific platform designed for advanced Electrochemical Impedance Spectroscopy (EIS) analysis in both academic and industrial research environments.
 
-The optimization backend includes:
+The software combines:
+- 🔬 Physically rigorous impedance modeling
+- ⚙️ Advanced optimization algorithms  
+- 📊 Bayesian uncertainty quantification
+- ✅ Kramers–Kronig validation
+- 🎨 Interactive circuit simulation
 
-- Trust-Region Reflective optimization (TRF)
-- Latin Hypercube multi-start initialization
-- robust `soft_l1` loss functions
-- adaptive parameter bounds
-- residual diagnostics
-- frequency sub-band fitting
+—all within a unified, high-performance interface.
+
+> 💡 **Philosophy**: Instead of functioning as a black-box fitting tool, ZScope emphasizes **reproducibility**, **statistical rigor**, and **physically meaningful interpretation** of electrochemical systems.
+
+### 🔍 Ideal For Researchers Working In:
+| Domain | Examples |
+|--------|----------|
+| 🔋 Energy Storage | Li-ion, Na-ion, solid-state batteries |
+| ☀️ Photovoltaics | Perovskite solar cells, DSSCs |
+| ⚡ Electrochemistry | Fuel cells, electrolyzers, supercapacitors |
+| 🛡️ Materials Science | Corrosion, coatings, biosensors |
+| 🧪 Fundamental Research | Charge transfer, diffusion, interfacial kinetics |
+
+---
+
+## 🚀 Core Capabilities
+
+### 🧩 Interactive Circuit Modeling
+Visual drag-and-drop circuit editor designed specifically for EIS workflows:
+- ✅ Real-time Nyquist & Bode plot updates
+- ✅ Support for standard & advanced elements:  R, C, L, CPE, Warburg (W), Gerischer, 
+  Transmission-line, Bisquert structures, custom composites
+- ✅ Support for user custom component design
+- ✅ Automatic conversion: graphical topology → netlist → mathematical model
+
+### ⚙️ Advanced Fitting Engine
+Reliable parameter extraction from noisy or complex spectra:
+- Trust-Region Reflective (TRF) algorithm
+- Latin Hypercube multi-start initialization  
+- Robust soft_l1 loss functions
+- Adaptive parameter bounds & frequency sub-band fitting
 - AIC/BIC model comparison
+- Residual diagnostics & sensitivity analysis
 
-The objective is not only numerical convergence, but physically meaningful and statistically defensible parameter estimation.
+### 📊 Bayesian Uncertainty Quantification
+Go beyond point estimates with full probabilistic inference:
+- 📈 Posterior distributions & 95% credible intervals
+- 🔮 Predictive uncertainty bands
+- 🔍 Convergence diagnostics & autocorrelation analysis
+- 🔗 Parameter correlation matrices
 
-Residual structure, convergence quality, and parameter sensitivity can be inspected directly within the interface.
+### ✅ Kramers–Kronig Validation
+Ensure physical consistency *before* fitting:
+- ✓ Detect non-stationary systems
+- ✓ Identify unstable measurements  
+- ✓ Flag non-linear responses
+- ✓ Validate frequency-range consistency
 
----
+### ⚡ High-Performance Backend
+Fully vectorized numerical core for responsive interaction:
+- 🔄 Real-time simulation updates during circuit editing
+- 📉 Rapid iterative fitting with large frequency sweeps
+- 🎯 Near-instant Nyquist/Bode rendering
 
-## Bayesian Uncertainty Quantification
-
-ZScope includes a Bayesian MCMC framework for uncertainty-aware electrochemical analysis.
-
-Rather than relying exclusively on point estimates, Bayesian analysis enables exploration of full posterior parameter distributions and model uncertainty.
-
-Outputs include:
-
-- posterior distributions,
-- 95% credible intervals,
-- predictive uncertainty bands,
-- convergence diagnostics,
-- autocorrelation analysis,
-- parameter correlation analysis.
-
-This provides significantly deeper insight into model identifiability and parameter confidence compared with classical least-squares fitting alone.
-
----
-
-## Kramers–Kronig Validation
-
-Experimental impedance data may contain drift, instability, or non-linear behavior that invalidates classical equivalent-circuit interpretation.
-
-ZScope includes lightweight lin-KK validation tools to assess physical consistency prior to fitting.
-
-This allows rapid identification of:
-
-- non-stationary systems,
-- unstable measurements,
-- non-linear responses,
-- and frequency inconsistencies.
-
-Validation-aware workflows help prevent extraction of non-physical parameters from invalid datasets.
+### 📈 Scientific Visualization & Reporting
+Publication-ready outputs:
+- Nyquist, Bode magnitude & phase plots
+- Residual diagnostics & parameter sensitivity charts
+- Posterior distributions & uncertainty bands
+- Exportable tables & reproducible fit reports (PNG, PDF, SVG)
 
 ---
 
-## High-Performance Numerical Backend
+## 🔬 Scientific Applications
 
-The computational core of ZScope is fully vectorized for rapid impedance evaluation and responsive user interaction.
+<details>
+<summary>🔋 Battery Research</summary>
+Analyze charge-transfer resistance, SEI formation, diffusion behavior, degradation mechanisms, and transport limitations in Li-ion, Na-ion, and solid-state systems.
+</details>
 
-This enables:
+<details>
+<summary>☀️ Perovskite Solar Cells</summary>
+Investigate recombination dynamics, ionic transport, interfacial charge accumulation, capacitance behavior, and frequency-dependent interfacial processes.
+</details>
 
-- real-time simulation updates,
-- rapid iterative fitting,
-- large frequency sweeps,
-- and responsive visualization.
+<details>
+<summary>🛡️ Corrosion Science</summary>
+Characterize polarization resistance, coating integrity, diffusion-controlled kinetics, and electrochemical degradation mechanisms.
+</details>
 
-Typical workflows achieve near real-time Nyquist and Bode updates even during complex fitting operations.
+<details>
+<summary>⚡ Fuel Cells & Electrolyzers</summary>
+Study catalytic activity, electrode interfaces, charge-transfer processes, and mass transport limitations.
+</details>
 
----
-
-## Scientific Visualization & Reporting
-
-ZScope includes integrated publication-oriented visualization tools for scientific reporting.
-
-Researchers can generate:
-
-- Nyquist plots,
-- Bode magnitude and phase plots,
-- residual diagnostics,
-- posterior parameter distributions,
-- uncertainty bands,
-- parameter tables,
-- and reproducible fit reports.
-
-Figures can be exported for:
-
-- publications,
-- conference presentations,
-- theses,
-- supplementary information,
-- and laboratory documentation.
+<details>
+<summary>🔌 Supercapacitors & Energy Storage</summary>
+Evaluate porous electrode behavior, double-layer capacitance, diffusion impedance, and frequency-dependent energy-storage mechanisms.
+</details>
 
 ---
 
-# Scientific Applications
-
-ZScope is suitable for a broad range of electrochemical and materials-science applications.
-
-## Battery Research
-
-Analyze:
-
-- charge-transfer resistance,
-- solid-electrolyte interfaces (SEI),
-- diffusion behavior,
-- degradation mechanisms,
-- and transport limitations.
-
-Applications include lithium-ion, sodium-ion, and solid-state battery systems.
-
----
-
-## Perovskite Solar Cells
-
-Investigate:
-
-- recombination dynamics,
-- ionic transport,
-- interfacial charge accumulation,
-- capacitance behavior,
-- and transport phenomena.
-
-The platform is particularly useful for studying frequency-dependent interfacial processes in hybrid perovskite devices.
-
----
-
-## Corrosion Science
-
-Characterize:
-
-- polarization resistance,
-- coating integrity,
-- diffusion-controlled kinetics,
-- and electrochemical degradation mechanisms.
-
----
-
-## Fuel Cells & Electrolyzers
-
-Study:
-
-- catalytic activity,
-- electrode interfaces,
-- charge-transfer processes,
-- and mass transport limitations.
-
----
-
-## Supercapacitors & Energy Storage
-
-Evaluate:
-
-- porous electrode behavior,
-- double-layer capacitance,
-- diffusion impedance,
-- and frequency-dependent energy-storage mechanisms.
-
----
-
-# Why ZScope?
+## 💡 Why ZScope?
 
 | Traditional EIS Software | ZScope |
-|---|---|
-| Black-box fitting procedures | Transparent methodology |
-| Limited uncertainty interpretation | Bayesian uncertainty quantification |
-| Static workflows | Interactive real-time modeling |
-| Minimal diagnostics | Comprehensive residual analysis |
-| Physically ambiguous fitting | Validation-aware workflows |
-| Enterprise-focused licensing | Academic-friendly accessibility |
+|--------------------------|--------|
+| ⚫ Black-box fitting procedures | 🔍 Transparent, documented methodology |
+| ❓ Limited uncertainty interpretation | 📊 Full Bayesian uncertainty quantification |
+| 🧱 Static, linear workflows | 🎮 Interactive real-time modeling |
+| 📉 Minimal diagnostics | 🩺 Comprehensive residual & sensitivity analysis |
+| 🎲 Physically ambiguous results | ✅ Validation-aware, physically constrained fitting |
+| 💰 Enterprise licensing | 🎓 Academic-friendly, open accessibility |
 
 ---
 
-# Example Impedance Relation
+## 🧪 Example: Impedance Modeling
 
-The impedance response of a simple Randles-type electrochemical interface may be expressed as:
+Electrochemical systems rarely behave as ideal electrical circuits. Real interfaces often exhibit distributed capacitance, surface heterogeneity, ionic diffusion, adsorption processes, and non-ideal charge-transfer behavior.
 
-```math id="93l09y"
-Z(\omega)=R_s+\frac{1}{\frac{1}{R_{ct}}+j\omega C_{dl}}
+### Modified Randles Circuit
+A foundational model for EIS analysis:
+
+| Component | Symbol | Physical Meaning |
+|-----------|--------|-----------------|
+| Solution resistance | `Rₛ` | Uncompensated electrolyte resistance |
+| Charge-transfer resistance | `Rₜₕ` | Interfacial charge-transfer kinetics |
+| Constant Phase Element | `CPE: Q(jω)ⁿ` | Non-ideal double-layer capacitance |
+| Warburg element | `Z_W(ω)` | Diffusion-controlled impedance |
+
+#### Impedance Equation
+$$Z(\omega) = R_s + \left[ \frac{1}{R_{ct}} + Q(j\omega)^n + \frac{1}{Z_W(\omega)} \right]^{-1}$$
+
+> 💡 **Why CPE instead of ideal capacitance?**  
+> Surface roughness, porosity, grain boundaries, non-uniform current distribution, and interfacial heterogeneity often produce *depressed semicircles* in Nyquist plots. The CPE formalism (`Q(jω)ⁿ`) captures this non-ideal behavior more realistically than a pure capacitor.
+
+### Advanced Model Support
+ZScope extends beyond classical circuits:
+- Transmission-line models
+- Gerischer impedance
+- Porous electrode models
+- Bisquert diffusion structures  
+- Distributed RC networks
+- Custom composite circuits
+
+### Visualization Workflow
+Build circuits interactively while viewing synchronized outputs:
+- ✓ Nyquist response
+- ✓ Bode magnitude & phase
+- ✓ Residual structure
+- ✓ Parameter sensitivity
+- ✓ Uncertainty propagation
+
+---
+
+## 📦 Installation
+
+### 📥 Download Release
+Latest pre-compiled binaries for Windows, macOS, and Linux:
+🔗 [github.com/Tecush/ZScope/releases/latest](https://github.com/Tecush/ZScope/releases/latest)
+
+### 🛠️ Build from Source (Advanced)
+```bash
+git clone https://github.com/Tecush/ZScope.git
+cd ZScope
+
+📚 Citation
+If you use ZScope in your research, please cite:
+
+@software{zscope2026,
+  author  = {Mohammadi, Tecush},
+  title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Platform},
+  year    = {2026},
+  url     = {https://github.com/Tecush/ZScope}
+}
