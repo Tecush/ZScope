@@ -202,11 +202,11 @@ cd ZScope
 ## 📚 Citation
 If you use ZScope in your research, please cite:
 
-@software{zscope2026,
-  author  = {Mohammadi, Tecush},
-  title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Platform},
-  year    = {2026},
-  url     = {https://github.com/Tecush/ZScope}
+### software{zscope2026,
+  - author  = {Mohammadi, Tecush},
+  - title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Platform},
+  - year    = {2026},
+  - url     = {https://github.com/Tecush/ZScope}
 }
 
 ## 📬 Contact
