@@ -210,21 +210,13 @@ If you use ZScope in your research, please cite:
 }
 
 ## 📬 Contact
-Role
-	
-Details
-👨‍💻 Developer
-	
-Tecush Mohammadi
-🐙 GitHub
-	
-@Tecush
-📁 Repository
-	
-ZScope
-✉️ Email
-	
-tecush@gmail.com
+| Role | Details |
+|--------|----------|
+| 👨‍💻 Developer | Tecush Mohammadi |
+| 🐙 GitHub | @Tecush |
+| 📁 Repository | ZScope |
+| ✉️ Email | tecush@gmail.com |
+
 <div align="center">
   <sub>Built for the electrochemical research community</sub>
 </div>
