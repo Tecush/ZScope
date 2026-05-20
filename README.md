@@ -196,7 +196,6 @@ Latest pre-compiled binaries for Windows, macOS, and Linux:
 🔗 [github.com/Tecush/ZScope/releases/latest](https://github.com/Tecush/ZScope/releases/latest)
 
 ### 🛠️ Build from Source (Advanced)
-```bash
 git clone https://github.com/Tecush/ZScope.git
 cd ZScope
 
@@ -209,3 +208,23 @@ If you use ZScope in your research, please cite:
   year    = {2026},
   url     = {https://github.com/Tecush/ZScope}
 }
+
+📬 Contact
+Role
+	
+Details
+👨‍💻 Developer
+	
+Tecush Mohammadi
+🐙 GitHub
+	
+@Tecush
+📁 Repository
+	
+ZScope
+✉️ Email
+	
+tecush@gmail.com
+<div align="center">
+  <sub>Built for the electrochemical research community</sub>
+</div>
