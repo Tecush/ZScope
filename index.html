@@ -1,1769 +1,1269 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>
-ZScope — Publication-Grade Electrochemical Impedance Spectroscopy Platform
-</title>
-
-<meta
-name="description"
-content="ZScope is a modern scientific platform for Electrochemical Impedance Spectroscopy (EIS), featuring rigorous fitting, Bayesian uncertainty analysis, Kramers–Kronig validation, and interactive circuit modeling."
-/>
-
+<title>ZScope — Electrochemical Impedance Spectroscopy Platform</title>
+<meta name="description" content="ZScope is a scientific platform for Electrochemical Impedance Spectroscopy featuring Bayesian MCMC uncertainty quantification, Kramers–Kronig validation, Trust-Region fitting, and interactive equivalent circuit modeling."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link
-href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet"
-/>
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-/>
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<!-- MathJax for equations -->
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 <style>
 
-/* =========================================================
-ROOT
-========================================================= */
-
-:root{
-
---bg:#070b14;
---panel:#0f1726;
---panel2:#131d30;
-
---text:#eaf2ff;
---muted:#8fa5c7;
-
---accent:#58a6ff;
---accent2:#00d4ff;
-
---border:rgba(255,255,255,.08);
-
---shadow:
-0 20px 60px rgba(0,0,0,.45);
-
-}
-
-/* =========================================================
-GLOBAL
-========================================================= */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-
-font-family:'Inter',sans-serif;
-
-background:var(--bg);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-line-height:1.7;
-
-}
-
-/* =========================================================
-BACKGROUND
-========================================================= */
-
-body::before{
-
-content:"";
-
-position:fixed;
-
-inset:0;
-
-background:
-
-radial-gradient(
-circle at top right,
-rgba(0,212,255,.12),
-transparent 30%
-),
-
-radial-gradient(
-circle at bottom left,
-rgba(88,166,255,.10),
-transparent 35%
-);
-
-z-index:-2;
-}
-
-.grid{
-
-position:fixed;
-
-inset:0;
-
-background-image:
-
-linear-gradient(
-rgba(255,255,255,.03) 1px,
-transparent 1px
-),
-
-linear-gradient(
-90deg,
-rgba(255,255,255,.03) 1px,
-transparent 1px
-);
-
-background-size:40px 40px;
-
-z-index:-1;
-}
-
-/* =========================================================
-NAVBAR
-========================================================= */
-
-nav{
-
-position:fixed;
-
-top:0;
-
-width:100%;
-
-z-index:999;
-
-backdrop-filter:blur(14px);
-
-background:rgba(7,11,20,.72);
-
-border-bottom:1px solid rgba(255,255,255,.05);
-
-}
-
-.nav-container{
-
-max-width:1450px;
-
-margin:auto;
-
-padding:20px 40px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-}
-
-.logo{
-
-font-size:1.7rem;
-
-font-weight:800;
-
-letter-spacing:.5px;
-
-}
-
-.logo span{
-color:var(--accent2);
-}
-
-.nav-links{
-
-display:flex;
-
-gap:30px;
-
-}
-
-.nav-links a{
-
-text-decoration:none;
-
-color:var(--muted);
-
-font-weight:500;
-
-transition:.25s;
-
-}
-
-.nav-links a:hover{
-color:white;
-}
-
-/* =========================================================
-HERO
-========================================================= */
-
-.hero{
-
-min-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-padding:160px 40px 100px;
-
-}
-
-.hero-container{
-
-max-width:1450px;
-
-margin:auto;
-
-display:grid;
-
-grid-template-columns:1.1fr .9fr;
-
-gap:80px;
-
-align-items:center;
-
-}
-
-.hero-text h1{
-
-font-size:5rem;
-
-line-height:1.02;
-
-font-weight:800;
-
-margin-bottom:30px;
-
-}
-
-.gradient{
-
-background:linear-gradient(
-90deg,
-var(--accent),
-var(--accent2)
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-}
-
-.hero-text p{
-
-font-size:1.2rem;
-
-color:var(--muted);
-
-max-width:760px;
-
-line-height:1.9;
-
-}
-
-.hero-buttons{
-
-display:flex;
-
-gap:20px;
-
-margin-top:45px;
-
-flex-wrap:wrap;
-
-}
-
-/* =========================================================
-BUTTONS
-========================================================= */
-
-.btn{
-
-padding:16px 32px;
-
-border-radius:14px;
-
-font-weight:700;
-
-text-decoration:none;
-
-transition:.25s;
-
-display:inline-flex;
-
-align-items:center;
-
-gap:12px;
-
-}
-
-.btn-primary{
-
-background:
-linear-gradient(
-135deg,
-var(--accent),
-var(--accent2)
-);
-
-color:white;
-
-box-shadow:
-0 10px 40px rgba(0,212,255,.22);
-
-}
-
-.btn-primary:hover{
-
-transform:translateY(-4px);
-
-}
-
-.btn-secondary{
-
-border:1px solid rgba(255,255,255,.12);
-
-color:white;
-
-}
-
-.btn-secondary:hover{
-
-background:rgba(255,255,255,.05);
-
-}
-
-/* =========================================================
-DASHBOARD
-========================================================= */
-
-.dashboard{
-
-background:
-linear-gradient(
-180deg,
-var(--panel),
-var(--panel2)
-);
-
-border:1px solid var(--border);
-
-border-radius:28px;
-
-padding:24px;
-
-box-shadow:var(--shadow);
-
-}
-
-.dashboard img{
-
-width:100%;
-
-display:block;
-
-border-radius:20px;
-
-}
-
-/* =========================================================
-SECTION
-========================================================= */
-
-.section{
-
-max-width:1450px;
-
-margin:auto;
-
-padding:120px 40px;
-
-}
-
-.section-title{
-
-text-align:center;
-
-margin-bottom:80px;
-
-}
-
-.section-title h2{
-
-font-size:3rem;
-
-margin-bottom:20px;
-
-}
-
-.section-title p{
-
-max-width:850px;
-
-margin:auto;
-
-color:var(--muted);
-
-line-height:1.9;
-
-}
-
-/* =========================================================
-FEATURES
-========================================================= */
-
-.features{
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(320px,1fr));
-
-gap:30px;
-
-}
-
-.feature-card{
-
-background:
-linear-gradient(
-180deg,
-rgba(255,255,255,.04),
-rgba(255,255,255,.02)
-);
-
-border:1px solid var(--border);
-
-padding:40px;
-
-border-radius:28px;
-
-transition:.3s;
-
-}
-
-.feature-card:hover{
-
-transform:translateY(-7px);
-
-border-color:rgba(88,166,255,.35);
-
-}
-
-.feature-icon{
-
-width:72px;
-
-height:72px;
-
-border-radius:20px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:rgba(88,166,255,.12);
-
-font-size:1.6rem;
-
-margin-bottom:25px;
-
-color:var(--accent2);
-
-}
-
-.feature-card h3{
-
-font-size:1.35rem;
-
-margin-bottom:16px;
-
-}
-
-.feature-card p{
-
-color:var(--muted);
-
-line-height:1.9;
-
-}
-
-/* =========================================================
-STATS
-========================================================= */
-
-.stats{
-
-max-width:1300px;
-
-margin:auto;
-
-padding:0 40px 120px;
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:25px;
-
-}
-
-.stat{
-
-background:rgba(255,255,255,.03);
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:24px;
-
-padding:35px;
-
-text-align:center;
-
-backdrop-filter:blur(10px);
-
-}
-
-.stat h2{
-
-font-size:2.7rem;
-
-margin-bottom:12px;
-
-}
-
-.stat p{
-
-color:var(--muted);
-
-}
-
-/* =========================================================
-GALLERY
-========================================================= */
-
-.gallery{
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(360px,1fr));
-
-gap:30px;
-
-}
-
-.gallery-item{
-
-background:rgba(255,255,255,.03);
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:26px;
-
-padding:18px;
-
-}
-
-.gallery-item img{
-
-width:100%;
-
-border-radius:18px;
-
-margin-bottom:18px;
-
-transition:.3s;
-
-}
-
-.gallery-item img:hover{
-transform:scale(1.02);
-}
-
-.gallery-item h3{
-
-font-size:1.1rem;
-
-margin-bottom:10px;
-
-}
-
-.gallery-item p{
-
-color:var(--muted);
-
-font-size:.95rem;
-
-}
-
-/* =========================================================
-COMPARISON TABLE
-========================================================= */
-
-.compare{
-
-overflow-x:auto;
-
-margin-top:60px;
-
-}
-
-.compare table{
-
-width:100%;
-
-border-collapse:collapse;
-
-background:rgba(255,255,255,.03);
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:20px;
-
-overflow:hidden;
-
-}
-
-.compare th,
-.compare td{
-
-padding:22px;
-
-text-align:left;
-
-border-bottom:1px solid rgba(255,255,255,.05);
-
-}
-
-.compare th{
-
-background:rgba(255,255,255,.04);
-
-}
-
-.compare td{
-
-color:var(--muted);
-
-}
-
-/* =========================================================
-EQUATION BOX
-========================================================= */
-
-.equation{
-
-max-width:900px;
-
-margin:60px auto 0;
-
-background:rgba(255,255,255,.03);
-
-border:1px solid rgba(255,255,255,.06);
-
-padding:40px;
-
-border-radius:28px;
-
-text-align:center;
-
-}
-
-.equation h3{
-
-margin-bottom:25px;
-
-font-size:1.5rem;
-
-}
-
-/* =========================================================
-DOWNLOAD
-========================================================= */
-
-.download{
-
-padding:120px 40px;
-
-text-align:center;
-
-}
-
-.download-box{
-
-max-width:980px;
-
-margin:auto;
-
-padding:70px;
-
-border-radius:32px;
-
-background:
-linear-gradient(
-180deg,
-rgba(88,166,255,.12),
-rgba(0,212,255,.06)
-);
-
-border:1px solid rgba(255,255,255,.08);
-
-}
-
-.download-box h2{
-
-font-size:3rem;
-
-margin-bottom:20px;
-
-}
-
-.download-box p{
-
-color:var(--muted);
-
-max-width:720px;
-
-margin:auto;
-
-line-height:1.9;
-
-margin-bottom:45px;
-
-}
-
-/* =========================================================
-FOOTER
-========================================================= */
-
-footer{
-
-border-top:1px solid rgba(255,255,255,.06);
-
-padding:50px 40px;
-
-}
-
-.footer-container{
-
-max-width:1450px;
-
-margin:auto;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-flex-wrap:wrap;
-
-gap:20px;
-
-}
-
-.footer-container p{
-
-color:var(--muted);
-
-}
-
-.socials{
-
-display:flex;
-
-gap:18px;
-
-}
-
-.socials a{
-
-color:var(--muted);
-
-font-size:1.2rem;
-
-transition:.25s;
-
-}
-
-.socials a:hover{
-color:white;
-}
-
-/* =========================================================
-RESPONSIVE
-========================================================= */
-
-@media(max-width:1000px){
-
-.hero-container{
-grid-template-columns:1fr;
-}
-
-.hero-text{
-text-align:center;
-}
-
-.hero-text p{
-margin:auto;
-}
-
-.hero-buttons{
-justify-content:center;
-}
-
-.stats{
-grid-template-columns:repeat(2,1fr);
-}
-
-.hero-text h1{
-font-size:3.7rem;
-}
-
-}
-
-@media(max-width:700px){
-
-.nav-links{
-display:none;
-}
-
-.hero-text h1{
-font-size:2.7rem;
-}
-
-.stats{
-grid-template-columns:1fr;
-}
-
-.section-title h2{
-font-size:2.2rem;
-}
-
-.download-box{
-padding:40px;
-}
-
+:root {
+  --bg:       #04080f;
+  --surface:  #080e1a;
+  --surface2: #0c1422;
+  --border:   rgba(120,180,255,.10);
+  --border2:  rgba(120,180,255,.20);
+  --text:     #dce9f8;
+  --muted:    #6e8eb0;
+  --dim:      #3a5270;
+  --accent:   #4fa3e8;
+  --accent2:  #00c8d4;
+  --gold:     #c8a96e;
+  --green:    #3ecf8e;
+  --red:      #e86060;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ── BACKGROUND ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(0,180,220,.07), transparent),
+    radial-gradient(ellipse 50% 60% at 10% 80%, rgba(79,163,232,.06), transparent);
+}
+.grid-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(79,163,232,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,163,232,.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  backdrop-filter: blur(20px);
+  background: rgba(4,8,15,.75);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1380px;
+  margin: auto;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.9rem;
+  letter-spacing: .5px;
+  color: var(--text);
+}
+.logo em {
+  font-style: normal;
+  color: var(--accent2);
+}
+.nav-links { display: flex; gap: 36px; }
+.nav-links a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .9rem;
+  font-weight: 500;
+  letter-spacing: .03em;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-dl {
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white !important;
+  font-weight: 600 !important;
+  transition: opacity .2s !important;
+}
+.nav-dl:hover { opacity: .85; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 48px 80px;
+}
+.hero-inner {
+  max-width: 1380px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  font-size: .82rem;
+  color: var(--accent2);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  font-family: 'DM Mono', monospace;
+}
+.hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); display:inline-block; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 4.2rem;
+  line-height: 1.08;
+  font-weight: 400;
+  margin-bottom: 28px;
+  letter-spacing: -.02em;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.08rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 540px;
+  margin-bottom: 44px;
+}
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: .25s;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 8px 32px rgba(79,163,232,.25);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(79,163,232,.35); }
+.btn-ghost {
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.04); }
+
+/* Hero mockup */
+.hero-visual {
+  position: relative;
+}
+.app-frame {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(79,163,232,.08);
+}
+.app-titlebar {
+  background: var(--surface2);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #febc2e; }
+.dot-g { background: #28c840; }
+.app-title-text {
+  margin-left: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  color: var(--dim);
+  letter-spacing: .05em;
+}
+.app-body {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-height: 280px;
+}
+.plot-panel {
+  background: rgba(255,255,255,.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.plot-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem;
+  color: var(--dim);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+svg.plot { width: 100%; height: 110px; overflow: visible; }
+
+/* Animated Nyquist arc */
+.nyquist-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: draw-arc 2.2s ease forwards .4s;
+}
+.nyquist-data circle {
+  fill: var(--accent2);
+  opacity: 0;
+  animation: pop-in .15s ease forwards;
+}
+@keyframes draw-arc {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pop-in {
+  to { opacity: .9; }
+}
+.bode-line1 {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-dasharray: 250;
+  stroke-dashoffset: 250;
+  animation: draw-arc 2s ease forwards .8s;
+}
+.bode-line2 {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.8;
+  stroke-dasharray: 250;
+  stroke-dashoffset: 250;
+  animation: draw-arc 2s ease forwards 1.1s;
+}
+.param-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: .8rem;
+}
+.param-row:last-child { border-bottom: none; }
+.param-name { color: var(--muted); font-family: 'DM Mono', monospace; }
+.param-val { color: var(--accent2); font-family: 'DM Mono', monospace; }
+.param-ci { color: var(--dim); font-size: .7rem; }
+.status-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: .72rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .04em;
+}
+.badge-green { background: rgba(62,207,142,.12); color: var(--green); border: 1px solid rgba(62,207,142,.2); }
+.badge-blue  { background: rgba(79,163,232,.12); color: var(--accent); border: 1px solid rgba(79,163,232,.2); }
+.badge-gold  { background: rgba(200,169,110,.12); color: var(--gold);  border: 1px solid rgba(200,169,110,.2); }
+
+/* ── SECTION ── */
+.section {
+  max-width: 1380px;
+  margin: auto;
+  padding: 110px 48px;
+}
+.section-head {
+  margin-bottom: 72px;
+}
+.section-head.center { text-align: center; }
+.section-head.center p { max-width: 720px; margin: 16px auto 0; }
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  color: var(--accent2);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-head h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+.section-head h2 em {
+  font-style: italic;
+  color: var(--accent2);
+}
+.section-head p {
+  color: var(--muted);
+  margin-top: 16px;
+  line-height: 1.85;
+}
+
+/* ── CAPABILITIES GRID ── */
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.cap-cell {
+  background: var(--surface);
+  padding: 40px 36px;
+  transition: background .25s;
+}
+.cap-cell:hover { background: var(--surface2); }
+.cap-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+  margin-bottom: 20px;
+}
+.cap-icon {
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+  color: var(--accent2);
+}
+.cap-cell h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -.01em;
+}
+.cap-cell p {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.75;
+}
+.cap-cell .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: rgba(79,163,232,.08);
+  color: var(--accent);
+  border: 1px solid rgba(79,163,232,.15);
+}
+
+/* ── SCIENCE / EQUATIONS ── */
+.eq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.eq-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+}
+.eq-card h4 {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-family: 'DM Mono', monospace;
+}
+.eq-display {
+  font-size: 1.05rem;
+  color: var(--text);
+  padding: 20px;
+  background: rgba(0,0,0,.25);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,.04);
+}
+.eq-desc {
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.75;
+}
+.eq-card ul {
+  margin-top: 12px;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.9;
+}
+
+/* ── WORKFLOW ── */
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.workflow::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), var(--border2), transparent);
+}
+.wf-step {
+  padding: 20px 24px;
+  text-align: center;
+}
+.wf-num {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: .85rem;
+  color: var(--accent2);
+  margin: 0 auto 20px;
+  position: relative;
+  z-index: 1;
+}
+.wf-step h4 {
+  font-size: .95rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.wf-step p {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-wrap { overflow-x: auto; margin-top: 8px; }
+table.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+table.compare thead tr {
+  background: var(--surface2);
+}
+table.compare th {
+  padding: 18px 24px;
+  text-align: left;
+  font-weight: 600;
+  font-size: .85rem;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--border2);
+}
+table.compare th.zscope-col { color: var(--accent2); }
+table.compare td {
+  padding: 16px 24px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+table.compare td.zscope-col { color: var(--text); }
+table.compare tr:hover td { background: rgba(255,255,255,.015); }
+.check { color: var(--green); }
+.cross { color: var(--red); }
+.partial { color: var(--gold); }
+
+/* ── APPLICATIONS ── */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.app-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  background: var(--surface);
+  transition: border-color .25s, transform .25s;
+}
+.app-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+}
+.app-card .app-icon {
+  font-size: 1.6rem;
+  margin-bottom: 18px;
+  color: var(--accent2);
+}
+.app-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.app-card p {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+.app-card .circuit-tag {
+  margin-top: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  color: var(--dim);
+}
+
+/* ── SCREENSHOTS ── */
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.screen-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: border-color .25s, transform .25s;
+}
+.screen-item:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+}
+.screen-item img {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid var(--border);
+}
+.screen-caption {
+  padding: 16px 18px;
+}
+.screen-caption h4 {
+  font-size: .9rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.screen-caption p {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── DOWNLOAD ── */
+.dl-section {
+  padding: 100px 48px;
+}
+.dl-box {
+  max-width: 860px;
+  margin: auto;
+  text-align: center;
+  padding: 72px 60px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(79,163,232,.1), rgba(0,200,212,.05));
+  border: 1px solid var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+.dl-box::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,200,212,.12), transparent 70%);
+  pointer-events: none;
+}
+.dl-box h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  margin-bottom: 18px;
+  letter-spacing: -.02em;
+}
+.dl-box p {
+  color: var(--muted);
+  margin-bottom: 40px;
+  line-height: 1.8;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.dl-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.dl-note {
+  margin-top: 24px;
+  font-size: .82rem;
+  color: var(--dim);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 44px 48px;
+}
+.footer-inner {
+  max-width: 1380px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-left p { color: var(--muted); font-size: .88rem; }
+.footer-left p a { color: var(--muted); text-decoration: none; }
+.footer-left p a:hover { color: var(--text); }
+.footer-right { display: flex; gap: 20px; align-items: center; }
+.footer-right a {
+  color: var(--dim);
+  font-size: 1.1rem;
+  transition: color .2s;
+  text-decoration: none;
+}
+.footer-right a:hover { color: var(--text); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .cap-grid { grid-template-columns: repeat(2, 1fr); }
+  .app-grid { grid-template-columns: repeat(2, 1fr); }
+  .screens-grid { grid-template-columns: repeat(2, 1fr); }
+  .workflow { grid-template-columns: repeat(2, 1fr); }
+  .workflow::before { display: none; }
+  .eq-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 860px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 3rem; }
+  .cap-grid { grid-template-columns: 1fr; }
+  .app-grid { grid-template-columns: 1fr; }
+  .screens-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .section { padding: 72px 24px; }
+  .dl-box { padding: 48px 28px; }
+}
+
+/* ── SCROLL ANIMATION ── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
 }
 
 </style>
 </head>
-
 <body>
 
-<div class="grid"></div>
+<div class="bg-layer"></div>
+<div class="grid-layer"></div>
 
-<!-- =====================================================
-NAVBAR
-===================================================== -->
-
+<!-- NAV -->
 <nav>
-
-<div class="nav-container">
-
-<div class="logo">
-Z<span>Scope</span>
-</div>
-
-<div class="nav-links">
-
-<a href="#features">Capabilities</a>
-
-<a href="#workflow">Workflow</a>
-
-<a href="#applications">Applications</a>
-
-<a href="#screenshots">Interface</a>
-
-<a href="#download">Download</a>
-
-<a href="#contact">Contact</a>
-
-</div>
-
-</div>
-
+  <div class="nav-inner">
+    <div class="logo">Z<em>Scope</em></div>
+    <div class="nav-links">
+      <a href="#capabilities">Capabilities</a>
+      <a href="#science">Methodology</a>
+      <a href="#applications">Applications</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#screenshots">Interface</a>
+      <a href="#download" class="nav-dl">Download</a>
+    </div>
+  </div>
 </nav>
 
-<!-- =====================================================
-HERO
-===================================================== -->
-
+<!-- HERO -->
 <section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag"><span></span>Electrochemical Impedance Spectroscopy</div>
+      <h1>Rigorous <em>EIS Analysis</em> for Serious Research</h1>
+      <p class="hero-sub">
+        ZScope provides physically consistent impedance modeling, Trust-Region fitting with Latin Hypercube initialization, Bayesian MCMC uncertainty quantification, and Kramers–Kronig validation — all within a single scientific workflow.
+      </p>
+      <div class="hero-btns">
+        <a href="https://github.com/Tecush/ZScope/releases/latest" target="_blank" class="btn btn-primary">
+          <i class="fa-solid fa-download"></i> Download for Windows
+        </a>
+        <a href="#capabilities" class="btn btn-ghost">Explore Capabilities</a>
+      </div>
+    </div>
 
-<div class="hero-container">
+    <!-- Interactive mockup -->
+    <div class="hero-visual">
+      <div class="app-frame">
+        <div class="app-titlebar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="app-title-text">ZScope — Nyquist + Fit Results</span>
+        </div>
+        <div class="app-body">
+          <!-- Nyquist plot -->
+          <div class="plot-panel">
+            <div class="plot-label">Nyquist Plot — Z″ vs Z′</div>
+            <svg class="plot" viewBox="0 0 160 110">
+              <!-- Axes -->
+              <line x1="10" y1="100" x2="155" y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <line x1="10" y1="10"  x2="10"  y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <!-- Axis labels -->
+              <text x="80" y="109" fill="#3a5270" font-size="7" text-anchor="middle" font-family="monospace">Z′ (Ω)</text>
+              <text x="4" y="55" fill="#3a5270" font-size="7" text-anchor="middle" font-family="monospace" transform="rotate(-90,4,55)">−Z″</text>
+              <!-- Fit arc -->
+              <path class="nyquist-arc" d="M15,98 Q30,40 80,30 Q120,22 148,60 Q155,75 148,90"/>
+              <!-- Data points -->
+              <g class="nyquist-data">
+                <circle cx="15"  cy="97" r="2.5" style="animation-delay:.5s"/>
+                <circle cx="25"  cy="80" r="2.5" style="animation-delay:.6s"/>
+                <circle cx="38"  cy="60" r="2.5" style="animation-delay:.7s"/>
+                <circle cx="55"  cy="41" r="2.5" style="animation-delay:.8s"/>
+                <circle cx="78"  cy="31" r="2.5" style="animation-delay:.9s"/>
+                <circle cx="100" cy="27" r="2.5" style="animation-delay:1.0s"/>
+                <circle cx="120" cy="30" r="2.5" style="animation-delay:1.1s"/>
+                <circle cx="136" cy="44" r="2.5" style="animation-delay:1.2s"/>
+                <circle cx="145" cy="62" r="2.5" style="animation-delay:1.3s"/>
+                <circle cx="148" cy="81" r="2.5" style="animation-delay:1.4s"/>
+              </g>
+            </svg>
+          </div>
+          <!-- Fit results -->
+          <div class="plot-panel">
+            <div class="plot-label">Fit Parameters (95% CI)</div>
+            <div class="param-row">
+              <span class="param-name">R<sub>s</sub></span>
+              <span>
+                <span class="param-val">12.4 Ω</span>
+                <span class="param-ci"> ±0.3</span>
+              </span>
+            </div>
+            <div class="param-row">
+              <span class="param-name">R<sub>ct</sub></span>
+              <span>
+                <span class="param-val">186 Ω</span>
+                <span class="param-ci"> ±4.1</span>
+              </span>
+            </div>
+            <div class="param-row">
+              <span class="param-name">Q (CPE)</span>
+              <span>
+                <span class="param-val">3.2×10⁻⁵</span>
+                <span class="param-ci"> ±0.08</span>
+              </span>
+            </div>
+            <div class="param-row">
+              <span class="param-name">n</span>
+              <span>
+                <span class="param-val">0.87</span>
+                <span class="param-ci"> ±0.01</span>
+              </span>
+            </div>
+            <div class="param-row">
+              <span class="param-name">χ²/N</span>
+              <span>
+                <span class="param-val">2.1×10⁻⁴</span>
+              </span>
+            </div>
+            <div class="status-row">
+              <span class="badge badge-green"><i class="fa-solid fa-check"></i> KK Valid</span>
+              <span class="badge badge-blue">TRF Converged</span>
+              <span class="badge badge-gold">MCMC Ready</span>
+            </div>
+          </div>
+          <!-- Bode plot -->
+          <div class="plot-panel">
+            <div class="plot-label">Bode Plot — |Z| &amp; Phase</div>
+            <svg class="plot" viewBox="0 0 160 110">
+              <line x1="10" y1="100" x2="155" y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <line x1="10" y1="10"  x2="10"  y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <path class="bode-line1" d="M10,90 Q30,85 55,70 Q80,52 105,35 Q130,22 150,18"/>
+              <path class="bode-line2" d="M10,30 Q30,25 55,18 Q80,28 105,52 Q125,68 150,80"/>
+              <text x="130" y="14" fill="#4fa3e8" font-size="7" font-family="monospace">|Z|</text>
+              <text x="130" y="76" fill="#c8a96e" font-size="7" font-family="monospace">θ</text>
+            </svg>
+          </div>
+          <!-- Residuals -->
+          <div class="plot-panel">
+            <div class="plot-label">Residuals — Rel. Error %</div>
+            <svg class="plot" viewBox="0 0 160 110">
+              <line x1="10" y1="55" x2="155" y2="55" stroke="#2a3f5a" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="10" y1="10" x2="10"  y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <line x1="10" y1="100" x2="155" y2="100" stroke="#2a3f5a" stroke-width="1"/>
+              <!-- Random residual dots near zero line -->
+              <circle cx="20"  cy="52" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="34"  cy="58" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="50"  cy="51" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="65"  cy="54" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="80"  cy="57" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="95"  cy="50" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="110" cy="53" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="125" cy="56" r="2" fill="#4fa3e8" opacity=".8"/>
+              <circle cx="140" cy="52" r="2" fill="#4fa3e8" opacity=".8"/>
+              <text x="80" y="109" fill="#3a5270" font-size="7" text-anchor="middle" font-family="monospace">log(f / Hz)</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div class="hero-text">
-
-<h1>
-
-Publication-Grade
-
-<span class="gradient">
-EIS Analysis
-</span>
-
-for Modern Electrochemistry
-
-</h1>
-
-<p>
-
-ZScope is a high-performance scientific platform for
-Electrochemical Impedance Spectroscopy (EIS),
-combining physically rigorous impedance modeling,
-advanced optimization,
-Bayesian uncertainty quantification,
-and interactive circuit simulation
-within a unified research environment.
-
-</p>
-
-<div class="hero-buttons">
-
-<a
-href="https://github.com/Tecush/ZScope/releases/latest"
-target="_blank"
-class="btn btn-primary"
->
-
-<i class="fa-solid fa-download"></i>
-
-Download ZScope
-
-</a>
-
-<a
-href="#features"
-class="btn btn-secondary"
->
-
-Explore Features
-
-</a>
-
-</div>
-
-</div>
-
-<div class="dashboard">
-
-<img
-src="https://raw.githubusercontent.com/Tecush/ZScope/main/images/splash.png"
-alt="ZScope scientific interface"
-/>
-
-</div>
-
-</div>
-
+  </div>
 </section>
 
-<!-- =====================================================
-WHY ZSCOPE
-===================================================== -->
+<!-- CAPABILITIES -->
+<section class="section" id="capabilities">
+  <div class="section-head center fade-in">
+    <div class="eyebrow">Scientific Capabilities</div>
+    <h2>Everything Your EIS Analysis Needs</h2>
+    <p>ZScope integrates the numerical rigor of research-grade impedance analysis with an interface designed for daily laboratory use.</p>
+  </div>
 
-<section class="section">
+  <div class="cap-grid fade-in">
 
-<div class="section-title">
+    <div class="cap-cell">
+      <div class="cap-num">01</div>
+      <div class="cap-icon"><i class="fa-solid fa-wave-square"></i></div>
+      <h3>Trust-Region Reflective Fitting</h3>
+      <p>Parameter extraction using Trust-Region Reflective (TRF) optimization with Latin Hypercube Sampling for multi-start initialization, improving convergence on ill-conditioned or correlated impedance spectra.</p>
+      <div class="tag-row">
+        <span class="tag">TRF</span>
+        <span class="tag">LHS Init</span>
+        <span class="tag">Robust Loss</span>
+        <span class="tag">Bounds Support</span>
+      </div>
+    </div>
 
-<h2>
-Why Researchers Choose ZScope
-</h2>
+    <div class="cap-cell">
+      <div class="cap-num">02</div>
+      <div class="cap-icon"><i class="fa-solid fa-chart-scatter"></i></div>
+      <h3>Bayesian MCMC Uncertainty Analysis</h3>
+      <p>Markov Chain Monte Carlo posterior sampling using emcee provides credible parameter intervals, covariance structure visualization, chain convergence diagnostics, and predictive uncertainty bands on impedance spectra.</p>
+      <div class="tag-row">
+        <span class="tag">emcee MCMC</span>
+        <span class="tag">Posterior PDF</span>
+        <span class="tag">95% CI</span>
+        <span class="tag">Autocorrelation</span>
+      </div>
+    </div>
 
-<p>
+    <div class="cap-cell">
+      <div class="cap-num">03</div>
+      <div class="cap-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h3>Kramers–Kronig Validation</h3>
+      <p>Linear Kramers–Kronig (lin-KK) compliance testing evaluates causality, linearity, and stationarity of experimental spectra before equivalent circuit fitting, flagging non-ideal behavior with residual diagnostics.</p>
+      <div class="tag-row">
+        <span class="tag">lin-KK</span>
+        <span class="tag">Causality Check</span>
+        <span class="tag">Residual Map</span>
+      </div>
+    </div>
 
-Modern electrochemical research demands
-more than black-box fitting.
-ZScope was designed to provide transparent,
-statistically rigorous,
-and physically meaningful impedance analysis
-for researchers who require trustworthy results.
+    <div class="cap-cell">
+      <div class="cap-num">04</div>
+      <div class="cap-icon"><i class="fa-solid fa-diagram-project"></i></div>
+      <h3>Interactive Circuit Topology Editor</h3>
+      <p>Drag-and-drop equivalent circuit construction with series/parallel connections, custom element support, and synchronized real-time Nyquist and Bode simulation as you build the model.</p>
+      <div class="tag-row">
+        <span class="tag">Visual Editor</span>
+        <span class="tag">Real-Time Sim</span>
+        <span class="tag">Custom Elements</span>
+      </div>
+    </div>
 
-</p>
+    <div class="cap-cell">
+      <div class="cap-num">05</div>
+      <div class="cap-icon"><i class="fa-solid fa-bolt"></i></div>
+      <h3>Vectorized High-Performance Solver</h3>
+      <p>A fully vectorized NumPy/SciPy backend evaluates impedance across all frequencies simultaneously, enabling real-time simulation during circuit editing and fast iterative fitting of large multi-frequency datasets.</p>
+      <div class="tag-row">
+        <span class="tag">NumPy Vectorized</span>
+        <span class="tag">Real-Time</span>
+        <span class="tag">Multi-Frequency</span>
+      </div>
+    </div>
 
-</div>
+    <div class="cap-cell">
+      <div class="cap-num">06</div>
+      <div class="cap-icon"><i class="fa-solid fa-file-waveform"></i></div>
+      <h3>Publication-Grade Reporting</h3>
+      <p>Generate reproducible fit reports with parameter tables, confidence intervals, residual diagnostics, goodness-of-fit metrics, and export-ready Nyquist, Bode, and posterior distribution figures.</p>
+      <div class="tag-row">
+        <span class="tag">PDF Report</span>
+        <span class="tag">Figure Export</span>
+        <span class="tag">χ² / AIC</span>
+      </div>
+    </div>
 
-<div class="features">
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-magnifying-glass-chart"></i>
-</div>
-
-<h3>
-Transparent Scientific Methodology
-</h3>
-
-<p>
-
-Unlike traditional commercial EIS software,
-ZScope exposes fitting methodology,
-residual diagnostics,
-parameter confidence intervals,
-and model validation clearly and rigorously.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-flask"></i>
-</div>
-
-<h3>
-Designed for Real Electrochemistry
-</h3>
-
-<p>
-
-Built specifically for battery research,
-corrosion science,
-fuel cells,
-electrocatalysis,
-supercapacitors,
-biosensors,
-and perovskite solar cells.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-file-circle-check"></i>
-</div>
-
-<h3>
-Publication-Ready Analysis
-</h3>
-
-<p>
-
-Generate reproducible fits,
-credible uncertainty intervals,
-diagnostic residual analysis,
-and publication-quality figures
-suitable for peer-reviewed research.
-
-</p>
-
-</div>
-
-</div>
-
+  </div>
 </section>
 
-<!-- =====================================================
-STATS
-===================================================== -->
+<!-- SCIENTIFIC METHODOLOGY -->
+<section class="section" id="science">
+  <div class="section-head fade-in">
+    <div class="eyebrow">Scientific Methodology</div>
+    <h2>The Mathematics Behind <em>ZScope</em></h2>
+    <p>ZScope implements well-established electrochemical impedance theory. The key equations governing the modeling and fitting engine are shown below.</p>
+  </div>
 
-<section class="stats">
+  <div class="eq-grid fade-in">
 
-<div class="stat">
-<h2>30×</h2>
-<p>Faster Vectorized Solver</p>
-</div>
+    <div class="eq-card">
+      <h4>Impedance Response</h4>
+      <div class="eq-display">
+        $$Z(\omega) = Z'(\omega) - j Z''(\omega)$$
+      </div>
+      <p class="eq-desc">The complex impedance $Z$ at angular frequency $\omega = 2\pi f$ is decomposed into its real (resistive) and imaginary (reactive) components, giving the Nyquist representation when plotted as $-Z''$ vs $Z'$.</p>
+    </div>
 
-<div class="stat">
-<h2>MCMC</h2>
-<p>Bayesian Uncertainty Quantification</p>
-</div>
+    <div class="eq-card">
+      <h4>Constant Phase Element (CPE)</h4>
+      <div class="eq-display">
+        $$Z_\text{CPE}(\omega) = \frac{1}{Q(j\omega)^n}$$
+      </div>
+      <p class="eq-desc">The CPE generalizes the ideal capacitor ($n=1$) and resistor ($n=0$). For $n \approx 0.8$–$0.95$, it models distributed surface capacitance due to electrode roughness or heterogeneous reaction kinetics. ZScope fits both $Q$ and $n$ simultaneously.</p>
+    </div>
 
-<div class="stat">
-<h2>lin-KK</h2>
-<p>Kramers–Kronig Compliance Validation</p>
-</div>
+    <div class="eq-card">
+      <h4>Warburg Diffusion Impedance</h4>
+      <div class="eq-display">
+        $$Z_W(\omega) = \frac{\sigma}{\sqrt{\omega}}\left(1 - j\right)$$
+      </div>
+      <p class="eq-desc">Semi-infinite Warburg diffusion introduces a 45° phase angle at low frequencies. ZScope also implements the finite-length Warburg (FLW) and finite-space Warburg (FSW) variants for bounded diffusion layers in batteries and fuel cells.</p>
+    </div>
 
-<div class="stat">
-<h2>6</h2>
-<p>Professional Scientific UI Themes</p>
-</div>
+    <div class="eq-card">
+      <h4>Weighted Complex Least-Squares</h4>
+      <div class="eq-display">
+        $$\chi^2 = \sum_{k=1}^{N} \left[ \frac{\left(Z'_k - \hat{Z}'_k\right)^2 + \left(Z''_k - \hat{Z''}_k\right)^2}{|Z_k|^2} \right]$$
+      </div>
+      <p class="eq-desc">ZScope minimizes the modulus-weighted sum of squared residuals, which normalizes contributions across the frequency range and is recommended by the EIS community for unbiased parameter extraction.</p>
+    </div>
 
+    <div class="eq-card">
+      <h4>Bayesian Posterior (MCMC)</h4>
+      <div class="eq-display">
+        $$p(\boldsymbol{\theta} \mid \mathbf{Z}) \propto p(\mathbf{Z} \mid \boldsymbol{\theta})\, p(\boldsymbol{\theta})$$
+      </div>
+      <p class="eq-desc">MCMC sampling explores the full posterior distribution of circuit parameters $\boldsymbol{\theta}$ given the measured impedance data $\mathbf{Z}$. This yields credible intervals, correlation structure, and uncertainty propagation that least-squares alone cannot provide.</p>
+    </div>
+
+    <div class="eq-card">
+      <h4>Kramers–Kronig Relations</h4>
+      <div class="eq-display">
+        $$Z'(\omega) = R_\infty + \frac{2}{\pi}\int_0^\infty \frac{\xi Z''(\xi)}{\xi^2 - \omega^2}\,d\xi$$
+      </div>
+      <p class="eq-desc">Causality and linearity require the real and imaginary parts of $Z$ to satisfy the Kramers–Kronig relations. The lin-KK method fits a superposition of RC elements to test compliance without assuming an equivalent circuit model.</p>
+    </div>
+
+  </div>
 </section>
 
-<!-- =====================================================
-FEATURES
-===================================================== -->
-
-<section class="section" id="features">
-
-<div class="section-title">
-
-<h2>
-Scientific Capabilities
-</h2>
-
-<p>
-
-ZScope combines physically consistent modeling,
-advanced optimization,
-and uncertainty-aware analysis
-within a modern scientific workflow
-optimized for electrochemical research laboratories.
-
-</p>
-
-</div>
-
-<div class="features">
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-wave-square"></i>
-</div>
-
-<h3>
-Reliable Parameter Extraction
-</h3>
-
-<p>
-
-Advanced Trust-Region Reflective optimization,
-Latin Hypercube multi-start initialization,
-and robust loss functions improve convergence stability
-for noisy or highly correlated impedance spectra.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-diagram-project"></i>
-</div>
-
-<h3>
-Interactive Circuit Modeling
-</h3>
-
-<p>
-
-Construct equivalent circuits visually
-using drag-and-drop components
-with synchronized Nyquist,
-Bode,
-and residual diagnostics in real time.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-brain"></i>
-</div>
-
-<h3>
-Bayesian MCMC Analysis
-</h3>
-
-<p>
-
-Quantify parameter uncertainty
-through posterior sampling,
-credible intervals,
-predictive uncertainty bands,
-and convergence diagnostics.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-chart-line"></i>
-</div>
-
-<h3>
-Kramers–Kronig Validation
-</h3>
-
-<p>
-
-Validate impedance spectra physically
-before fitting using lightweight lin-KK compliance testing
-to identify non-stationary or non-linear behavior.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-microchip"></i>
-</div>
-
-<h3>
-High-Performance Numerical Core
-</h3>
-
-<p>
-
-A fully vectorized backend enables
-real-time simulation,
-large frequency sweeps,
-and rapid iterative fitting workflows.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-<i class="fa-solid fa-file-waveform"></i>
-</div>
-
-<h3>
-Scientific Reporting & Export
-</h3>
-
-<p>
-
-Export publication-ready figures,
-parameter tables,
-diagnostic summaries,
-and reproducible fit reports
-for academic and industrial workflows.
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- =====================================================
-WORKFLOW
-===================================================== -->
-
+<!-- WORKFLOW -->
 <section class="section" id="workflow">
-
-<div class="section-title">
-
-<h2>
-Scientific Workflow
-</h2>
-
-<p>
-
-A streamlined workflow designed
-for rapid and reproducible electrochemical analysis.
-
-</p>
-
-</div>
-
-<div class="features">
-
-<div class="feature-card">
-
-<h3>1. Import Experimental Data</h3>
-
-<p>
-
-Load impedance spectra from
-Gamry,
-BioLogic,
-Autolab,
-Solartron,
-Ivium,
-CSV,
-TXT,
-or Excel files with automatic format detection.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>2. Construct Your Model</h3>
-
-<p>
-
-Build physically meaningful equivalent circuits
-using interactive drag-and-drop modeling
-with real-time impedance simulation.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>3. Fit & Validate</h3>
-
-<p>
-
-Perform robust fitting,
-Bayesian uncertainty analysis,
-and Kramers–Kronig validation
-to ensure physically consistent interpretation.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>4. Export & Publish</h3>
-
-<p>
-
-Generate publication-grade figures,
-fit reports,
-diagnostic residual plots,
-and parameter tables ready for scientific publication.
-
-</p>
-
-</div>
-
-</div>
-
+  <div class="section-head center fade-in">
+    <div class="eyebrow">Workflow</div>
+    <h2>From Raw Data to Publication</h2>
+    <p>A four-step workflow designed for reproducible electrochemical analysis.</p>
+  </div>
+  <div class="workflow fade-in">
+    <div class="wf-step">
+      <div class="wf-num">01</div>
+      <h4>Import Spectrum</h4>
+      <p>Load data from Gamry, BioLogic, Autolab, Solartron, Ivium, CSV, or Excel — automatic format detection with frequency range preview.</p>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">02</div>
+      <h4>Validate with KK</h4>
+      <p>Run lin-KK compliance test before fitting to confirm the spectrum is causal, linear, and stationary. Residual maps highlight problematic frequency ranges.</p>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">03</div>
+      <h4>Build &amp; Fit Model</h4>
+      <p>Construct the equivalent circuit visually. Run TRF fitting with multi-start initialization, then optionally quantify uncertainty with Bayesian MCMC.</p>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">04</div>
+      <h4>Export &amp; Publish</h4>
+      <p>Generate a reproducible fit report with parameter table, confidence intervals, residual diagnostics, and publication-ready figures.</p>
+    </div>
+  </div>
 </section>
 
-<!-- =====================================================
-APPLICATIONS
-===================================================== -->
+<!-- COMPARISON -->
+<section class="section" id="comparison">
+  <div class="section-head fade-in">
+    <div class="eyebrow">Comparison</div>
+    <h2>How ZScope Compares</h2>
+    <p>A feature-by-feature comparison against common EIS analysis tools used in academic and industrial research.</p>
+  </div>
+  <div class="compare-wrap fade-in">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>ZView / EC-Lab</th>
+          <th>Zfit (MATLAB)</th>
+          <th class="zscope-col">ZScope</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bayesian MCMC uncertainty</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span></td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> partial</span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Full posterior sampling</td>
+        </tr>
+        <tr>
+          <td>Kramers–Kronig validation</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> lin-KK with residual map</td>
+        </tr>
+        <tr>
+          <td>Interactive circuit editor</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Text-only</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Real-time visual editor</td>
+        </tr>
+        <tr>
+          <td>Multi-start initialization (LHS)</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Latin Hypercube Sampling</td>
+        </tr>
+        <tr>
+          <td>Custom circuit elements</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Full formula-based editor</td>
+        </tr>
+        <tr>
+          <td>Residual diagnostic plots</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> basic</span></td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> basic</span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Comprehensive diagnostics</td>
+        </tr>
+        <tr>
+          <td>Standalone desktop application</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Requires MATLAB</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> No dependencies required</td>
+        </tr>
+        <tr>
+          <td>Free academic access</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Commercial license</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Requires MATLAB license</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Free for researchers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
+<!-- APPLICATIONS -->
 <section class="section" id="applications">
+  <div class="section-head center fade-in">
+    <div class="eyebrow">Research Applications</div>
+    <h2>Built for Real Electrochemistry</h2>
+    <p>ZScope has been designed to handle the equivalent circuit models and data characteristics encountered across electrochemical research disciplines.</p>
+  </div>
+  <div class="app-grid fade-in">
 
-<div class="section-title">
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-battery-three-quarters"></i></div>
+      <h3>Battery Research</h3>
+      <p>Characterize charge-transfer resistance, solid-electrolyte interphase (SEI) formation, Warburg diffusion, and degradation mechanisms in Li-ion, Na-ion, and solid-state batteries.</p>
+      <div class="circuit-tag">Typical circuit: R(CR)(CW) · R(C(RW))</div>
+    </div>
 
-<h2>
-Applications
-</h2>
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-solar-panel"></i></div>
+      <h3>Perovskite Solar Cells</h3>
+      <p>Investigate recombination dynamics, ionic transport, capacitive behavior at transport layers, and charge-transfer kinetics at perovskite–contact interfaces.</p>
+      <div class="circuit-tag">Typical circuit: R(CR)(CR) · R(C(RC))</div>
+    </div>
 
-<p>
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h3>Corrosion Science</h3>
+      <p>Extract polarization resistance $R_p$, coating capacitance, pore resistance, and diffusion-controlled kinetics for corrosion inhibition and protective coating studies.</p>
+      <div class="circuit-tag">Typical circuit: R(Q(R(QR))) · Randles</div>
+    </div>
 
-ZScope supports a broad range
-of electrochemical,
-materials,
-and energy-related research applications.
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-atom"></i></div>
+      <h3>Fuel Cells &amp; Electrolyzers</h3>
+      <p>Separate ohmic losses, charge-transfer resistance, and mass transport limitations. Resolve anode and cathode contributions in PEM and alkaline systems.</p>
+      <div class="circuit-tag">Typical circuit: R(QR)(QR)W</div>
+    </div>
 
-</p>
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-bolt"></i></div>
+      <h3>Supercapacitors &amp; EDLCs</h3>
+      <p>Characterize the electric double layer, porous electrode transmission line behavior, and frequency-dependent capacitance in carbon-based and pseudocapacitive materials.</p>
+      <div class="circuit-tag">Typical circuit: R(QR) · Transmission line</div>
+    </div>
 
-</div>
+    <div class="app-card">
+      <div class="app-icon"><i class="fa-solid fa-microscope"></i></div>
+      <h3>Biosensors &amp; Bioelectrochemistry</h3>
+      <p>Analyze electron transfer at modified electrode surfaces, detect binding events through impedance changes, and model protein–electrode interfaces for biosensor development.</p>
+      <div class="circuit-tag">Typical circuit: R(C(RW)) · Modified Randles</div>
+    </div>
 
-<div class="features">
-
-<div class="feature-card">
-
-<h3>Battery Research</h3>
-
-<p>
-
-Analyze charge-transfer resistance,
-solid-electrolyte interphases,
-diffusion processes,
-and degradation mechanisms
-in lithium-ion,
-sodium-ion,
-and solid-state batteries.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>Perovskite Solar Cells</h3>
-
-<p>
-
-Investigate recombination dynamics,
-ionic transport,
-capacitance behavior,
-and interfacial charge-transfer processes.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>Corrosion Science</h3>
-
-<p>
-
-Extract polarization resistance,
-coating performance,
-and diffusion-controlled electrochemical kinetics.
-
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<h3>Fuel Cells & Electrolyzers</h3>
-
-<p>
-
-Characterize catalytic activity,
-mass transport limitations,
-and electrochemical interface behavior.
-
-</p>
-
-</div>
-
-</div>
-
+  </div>
 </section>
 
-<!-- =====================================================
-COMPARISON
-===================================================== -->
-
-<section class="section">
-
-<div class="section-title">
-
-<h2>
-Why ZScope Is Different
-</h2>
-
-</div>
-
-<div class="compare">
-
-<table>
-
-<tr>
-
-<th>Traditional EIS Software</th>
-
-<th>ZScope</th>
-
-</tr>
-
-<tr>
-
-<td>Black-box fitting procedures</td>
-
-<td>Transparent optimization & diagnostics</td>
-
-</tr>
-
-<tr>
-
-<td>Limited uncertainty analysis</td>
-
-<td>Bayesian posterior uncertainty quantification</td>
-
-</tr>
-
-<tr>
-
-<td>Static interfaces</td>
-
-<td>Interactive real-time modeling</td>
-
-</tr>
-
-<tr>
-
-<td>Limited residual diagnostics</td>
-
-<td>Comprehensive fit-quality analysis</td>
-
-</tr>
-
-<tr>
-
-<td>Expensive enterprise licensing</td>
-
-<td>Accessible academic workflow</td>
-
-</tr>
-
-</table>
-
-</div>
-
-</section>
-
-<!-- =====================================================
-EQUATION
-===================================================== -->
-
-<section class="section">
-
-<div class="equation">
-
-<h3>
-Electrochemical Impedance Formalism
-</h3>
-
-:contentReference[oaicite:0]{index=0}
-
-</div>
-
-</section>
-
-<!-- =====================================================
-SCREENSHOTS
-===================================================== -->
-
+<!-- SCREENSHOTS -->
 <section class="section" id="screenshots">
-
-<div class="section-title">
-
-<h2>
-Modern Scientific Interface
-</h2>
-
-<p>
-
-A clean,
-high-performance workspace
-designed for advanced impedance spectroscopy workflows.
-
-</p>
-
-</div>
-
-<div class="gallery">
-
-<div class="gallery-item">
-
-<img src="images/screen1.png" alt="Circuit Builder"/>
-
-<h3>Interactive Circuit Topology Editor</h3>
-
-<p>
-Construct equivalent circuits visually
-with real-time impedance simulation.
-</p>
-
-</div>
-
-<div class="gallery-item">
-
-<img src="images/screen2.png" alt="Nyquist Plot"/>
-
-<h3>Nyquist & Bode Visualization</h3>
-
-<p>
-Simultaneous frequency-domain analysis
-with synchronized residual diagnostics.
-</p>
-
-</div>
-
-<div class="gallery-item">
-
-<img src="images/screen3.png" alt="Bayesian Analysis"/>
-
-<h3>Bayesian Posterior Analysis</h3>
-
-<p>
-Posterior parameter distributions
-and credible interval visualization.
-</p>
-
-</div>
-
-<div class="gallery-item">
-
-<img src="images/screen4.png" alt="Fit Results"/>
-
-<h3>Advanced Fit Diagnostics</h3>
-
-<p>
-Residual structure,
-convergence quality,
-and statistical validation metrics.
-</p>
-
-</div>
-
-<div class="gallery-item">
-
-<img src="images/screen5.png" alt="linKK"/>
-
-<h3>Kramers–Kronig Validation</h3>
-
-<p>
-Physically validate experimental spectra
-before model fitting.
-</p>
-
-</div>
-
-<div class="gallery-item">
-
-<img src="images/screen6.png" alt="Export"/>
-
-<h3>Publication-Ready Reporting</h3>
-
-<p>
-Generate reproducible scientific reports
-and export-ready figures.
-</p>
-
-</div>
-
-</div>
-
+  <div class="section-head center fade-in">
+    <div class="eyebrow">Interface</div>
+    <h2>A Modern Scientific Workspace</h2>
+    <p>Designed for clarity and efficiency — every panel serves a specific analytical purpose.</p>
+  </div>
+  <div class="screens-grid fade-in">
+    <div class="screen-item">
+      <img src="images/screen1.png" alt="Circuit Builder"/>
+      <div class="screen-caption">
+        <h4>Circuit Topology Editor</h4>
+        <p>Visual drag-and-drop circuit construction with real-time impedance simulation and element library.</p>
+      </div>
+    </div>
+    <div class="screen-item">
+      <img src="images/screen2.png" alt="Nyquist & Bode"/>
+      <div class="screen-caption">
+        <h4>Nyquist &amp; Bode Plots</h4>
+        <p>Synchronized frequency-domain visualization with fit overlay, data markers, and zoom controls.</p>
+      </div>
+    </div>
+    <div class="screen-item">
+      <img src="images/screen3.png" alt="Bayesian Analysis"/>
+      <div class="screen-caption">
+        <h4>Bayesian Posterior Distributions</h4>
+        <p>MCMC chain visualization, parameter histograms, corner plots, and credible interval summary.</p>
+      </div>
+    </div>
+    <div class="screen-item">
+      <img src="images/screen4.png" alt="Fit Diagnostics"/>
+      <div class="screen-caption">
+        <h4>Fit Diagnostics</h4>
+        <p>Relative residuals, weighted error structure, convergence metrics, and goodness-of-fit statistics.</p>
+      </div>
+    </div>
+    <div class="screen-item">
+      <img src="images/screen5.png" alt="KK Validation"/>
+      <div class="screen-caption">
+        <h4>Kramers–Kronig Test</h4>
+        <p>lin-KK compliance map with residual overlay — validate spectrum quality before fitting.</p>
+      </div>
+    </div>
+    <div class="screen-item">
+      <img src="images/screen6.png" alt="Fit Report"/>
+      <div class="screen-caption">
+        <h4>Fit Report &amp; Export</h4>
+        <p>Reproducible parameter report with confidence intervals, circuit diagram, and publication figures.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- =====================================================
-DOWNLOAD
-===================================================== -->
-
-<section class="download" id="download">
-
-<div class="download-box">
-
-<h2>
-Start Using ZScope Today
-</h2>
-
-<p>
-
-Experience modern,
-scientifically rigorous impedance analysis
-through a free academic trial.
-
-</p>
-
-<div class="hero-buttons">
-
-<a
-href="https://github.com/Tecush/ZScope/releases/latest"
-target="_blank"
-class="btn btn-primary"
->
-
-<i class="fa-brands fa-windows"></i>
-
-Download for Windows
-
-</a>
-
-<a
-href="https://github.com/Tecush/ZScope"
-target="_blank"
-class="btn btn-secondary"
->
-
-<i class="fa-brands fa-github"></i>
-
-View GitHub Repository
-
-</a>
-
-</div>
-
-</div>
-
+<!-- DOWNLOAD -->
+<section class="dl-section" id="download">
+  <div class="dl-box fade-in">
+    <h2>Start Using ZScope</h2>
+    <p>Free for academic and research use. Runs on Windows 10/11 (64-bit) — no Python or additional dependencies required.</p>
+    <div class="dl-btns">
+      <a href="https://github.com/Tecush/ZScope/releases/latest" target="_blank" class="btn btn-primary">
+        <i class="fa-brands fa-windows"></i> Download for Windows
+      </a>
+      <a href="mailto:tecush@gmail.com" class="btn btn-ghost">
+        <i class="fa-solid fa-envelope"></i> Contact the Author
+      </a>
+    </div>
+    <p class="dl-note">Windows 10 / 11 · 64-bit · ~80 MB installer · Email registration required</p>
+  </div>
 </section>
 
-<!-- =====================================================
-PHILOSOPHY
-===================================================== -->
-
-<section class="section">
-
-<div class="section-title">
-
-<h2>
-Our Philosophy
-</h2>
-
-<p>
-
-Electrochemical impedance analysis should be transparent,
-reproducible,
-and scientifically rigorous.
-
-ZScope was developed to provide researchers
-with modern tools emphasizing
-physical interpretation,
-statistical validity,
-uncertainty-aware analysis,
-and methodological clarity.
-
-</p>
-
-</div>
-
-</section>
-
-<!-- =====================================================
-FOOTER
-===================================================== -->
-
-<footer id="contact">
-
-<div class="footer-container">
-
-<p>
-
-© 2026 Tecush Mohammadi — ZScope
-
-</p>
-
-<div class="socials">
-
-<a
-href="https://github.com/Tecush/ZScope"
-target="_blank"
->
-
-<i class="fab fa-github"></i>
-
-</a>
-
-<a
-href="mailto:tecush@gmail.com"
->
-
-<i class="fa-solid fa-envelope"></i>
-
-</a>
-
-</div>
-
-</div>
-
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <p>© 2026 <strong>Tecush Mohammadi</strong> — ZScope EIS Platform &nbsp;·&nbsp;
+        <a href="mailto:tecush@gmail.com">tecush@gmail.com</a>
+      </p>
+      <p style="margin-top:6px; font-size:.8rem;">
+        If you use ZScope in published research, please acknowledge the software in your methods section.
+      </p>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/Tecush/ZScope" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="mailto:tecush@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
 </footer>
+
+<script>
+// Scroll-triggered fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
