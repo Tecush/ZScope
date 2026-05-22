@@ -141,8 +141,3 @@
 - **Parameter error < 5%**: High confidence in fitted values
 - **Parameter error 5-10%**: Acceptable for most research applications
 - **Parameter error > 10%**: Investigate model adequacy or data quality
-
-## Next Steps
-1. Compare these results against ZView outputs using `parse_zview_results.py`
-2. Generate comparison tables with `create_comparison_table()`
-3. Create publication-ready figures with `plot_parameter_accuracy()`
