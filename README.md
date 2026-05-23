@@ -1,268 +1,232 @@
 ![ZScope Banner](https://raw.githubusercontent.com/Tecush/ZScope/main/images/splash.png)
 
 <div align="center">
-  <img width="72" height="72" alt="ZScope Icon" src="https://github.com/user-attachments/assets/c23f0756-3dc3-46ac-a2b2-4c69e630ff50" />
+  <img width="80" height="80" alt="ZScope Icon" src="https://github.com/user-attachments/assets/c23f0756-3dc3-46ac-a2b2-4c69e630ff50" />
 
   <h1>ZScope</h1>
 
-  <p><strong>Publication-Grade Electrochemical Impedance Spectroscopy Analysis Platform</strong></p>
+  <p><em>Publication-Grade Electrochemical Impedance Spectroscopy Platform</em></p>
 
   <p>
-    <a href="#the-story-behind-zscope">Story</a> •
-    <a href="#what-zscope-does">Features</a> •
-    <a href="#recommended-workflow">Workflow</a> •
-    <a href="#validation--benchmarks">Benchmarks</a> •
-    <a href="#scientific-applications">Applications</a> •
-    <a href="#installation">Installation</a> •
-    <a href="#citation">Citation</a> •
-    <a href="#contact">Contact</a>
+    <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Latest%20Release&style=flat-square&color=1d6fb5" alt="Latest Release"/></a>&nbsp;
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" alt="MIT License"/></a>&nbsp;
+    <a href="https://github.com/Tecush/ZScope/issues"><img src="https://img.shields.io/github/issues/Tecush/ZScope?style=flat-square&color=f59e0b" alt="Open Issues"/></a>&nbsp;
+    <img src="https://img.shields.io/badge/Platform-Windows-0ea5e9?style=flat-square" alt="Windows"/>&nbsp;
+    <img src="https://img.shields.io/badge/No%20Python%20Required-✓-22c55e?style=flat-square" alt="Standalone"/>
   </p>
 
   <p>
-    <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Release&color=blue" alt="Latest Release"/></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"/></a>
-    <a href="https://github.com/Tecush/ZScope/issues"><img src="https://img.shields.io/github/issues/Tecush/ZScope" alt="Issues"/></a>
+    <a href="#-the-story-behind-zscope">Story</a> ·
+    <a href="#-key-capabilities">Capabilities</a> ·
+    <a href="#-recommended-workflow">Workflow</a> ·
+    <a href="#-validation--benchmarks">Benchmarks</a> ·
+    <a href="#-scientific-applications">Applications</a> ·
+    <a href="#-installation">Installation</a> ·
+    <a href="#-citation">Citation</a>
   </p>
 </div>
 
 ---
 
-## The Story Behind ZScope
+## 🔬 The Story Behind ZScope
 
-ZScope was not designed in the abstract. It was born out of a real experimental frustration.
+ZScope was not designed in the abstract. It was born from a real experimental problem.
 
-During an electrochemical study of a reaction process, I needed to measure a baseline EIS spectrum at the start of the experiment, and then capture six additional spectra at different oxidation states as the reaction progressed. Each spectrum represented a distinct state of the system — different kinetics, different interfacial conditions, different time constants. Together, they told the story of a mechanism evolving in time.
+During an electrochemical study, I needed to capture a baseline EIS spectrum at the start of a reaction — then measure six more spectra at different oxidation states as the reaction progressed. Each spectrum represented a distinct state of the system, and together they told the story of a mechanism evolving in time.
 
-The problem came during analysis. Working through seven spectra individually with existing tools was slow and disjointed. Adjusting parameters in one fit gave no intuitive sense of how those same parameters changed across the series. There was no way to interactively explore the relationship between circuit component values and the shape of the impedance plot — to build the physical intuition that makes EIS more than just curve-fitting.
+The analysis became a frustration. Working through seven spectra with existing tools was slow, disjointed, and offered no intuitive sense of how parameters evolved across the series. There was no way to *interactively explore* the relationship between circuit components and spectrum shape — to build the physical intuition that makes EIS meaningful.
 
-I found myself thinking: *what if I could design my own equivalent circuit, adjust its parameters live, and watch the simulated spectrum respond in real time — overlaid directly on my experimental data?* Not as a fitting tool, but as a way to understand what I was looking at. A way to arrive at a physically motivated starting point before handing off to a numerical optimizer.
+I kept thinking: **what if I could draw a circuit, move a slider, and watch the simulated Nyquist plot respond in real time — overlaid on my experimental data?** Not as a fitter, but as a lens for understanding. A way to arrive at a physically motivated starting point before handing off to a numerical optimizer.
 
-That idea became the first version of ZScope: a real-time EIS simulator with an interactive circuit canvas. You draw your circuit, move a slider, and the Nyquist plot updates instantly. It proved to be an invaluable aid for mechanism understanding and for generating reliable initial parameter estimates.
+That idea became the first version of ZScope.
 
-But as the tool took shape, it became clear it could be more. The fitting engine followed — built with the same insistence on reliability and physical transparency. Then Bayesian uncertainty quantification, because a parameter value without an honest uncertainty estimate is of limited scientific value. Then data validation, custom components, structured reporting.
+As the tool took shape, it grew. The fitting engine followed — built with the same insistence on reliability and physical transparency. Then Bayesian uncertainty quantification, because a parameter without an honest uncertainty estimate has limited scientific value. Then data validation, custom components, automatic circuit suggestion, and structured reporting.
 
-ZScope is the tool I needed during that experiment. I am sharing it freely, in the hope that it saves other researchers the same frustration — and gives them something better in its place.
+ZScope is the tool I needed during that experiment. It is free, and I hope it gives other researchers something better than what was available to me.
 
-> **A note on distribution:** ZScope is released as a ready-to-install application. Source code is not publicly distributed. The scientific methods, validation benchmarks, and full help documentation are provided so you can trust what is happening inside.
+> **Distribution:** ZScope is released as a ready-to-install application for Windows. Source code is not publicly distributed. Full scientific documentation, validation benchmarks, and an in-app help manual are provided so you can trust what happens inside.
 
 ---
 
-## What ZScope Does
+## ⚡ Key Capabilities
 
-ZScope covers the complete EIS analytical workflow in a single desktop application — no programming required, no subscriptions, no external dependencies.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-### 1. Real-Time Interactive Circuit Simulation
+### 🖥️ Real-Time Interactive Simulation
 
-This is where ZScope started, and it remains its most distinctive feature.
+The feature that started it all. Draw an equivalent circuit on the visual canvas, set your parameters, and the **Nyquist, Bode, and Phase plots update instantly** — with your experimental data overlaid.
 
-Draw an equivalent circuit on the visual canvas, set your component parameters, and the Nyquist, Bode magnitude, and Bode phase plots update **instantaneously**. Load your experimental data alongside and you can overlay the simulation directly — adjusting R_ct, CPE exponent, or Warburg coefficient by hand and watching the model track your data in real time.
+Adjusting R_ct, CPE exponent, or Warburg coefficient by hand and watching the spectrum respond builds the kind of physical intuition no black-box fitter can provide.
 
-This is not just convenient. It builds physical intuition that no black-box fitter can provide. When you see a depressed semicircle flatten as you lower the CPE α, or a 45° Warburg tail emerge as you add a diffusion element, the connection between circuit topology and electrochemical mechanism becomes tangible.
+- Drag-and-drop canvas with grid snapping
+- Presets: Randles, Randles+Warburg, CPE variants, inductive loops, battery (FLW), Gerischer
+- Save your own circuits to a personal library
+- Circuit notation input/output (`Rs-[Rct/Cdl]-W`)
 
-- Drag-and-drop construction of arbitrary topologies on a live, grid-snapping canvas
-- Right-click or toolbar component placement; labels auto-increment and recycle on deletion
-- Nested sub-circuits and hierarchical models fully supported
-- Circuit notation input/output in standard series (`-`) and parallel (`[A/B]`) syntax, parsed via biconnected component decomposition (Tarjan's algorithm) for mathematically exact representation
-- Preset library: Randles, Randles + Warburg, CPE Randles, inductive loop, battery (FLW), Gerischer diffusion, and more
-- **Save your own circuits** to a personal library for reuse across experiments
+</td>
+<td width="50%" valign="top">
 
-### 2. Flexible & Powerful Experimental Data Import
+### 📥 Flexible Data Import
 
-Importing EIS data should not be a battle with file formats.
+Import EIS data without fighting file formats. ZScope auto-detects column assignments, cross-validates Re/Im vs Mag/Phase representations, and handles sign convention differences between instruments.
 
-ZScope reads tabular data files and automatically detects column assignments, cross-verifies Re/Im against Mag/Phase representations (flagging inconsistencies > 1%), and handles sign convention differences between potentiostat brands. You retain full control: filter individual rows, set start/end data windows, restrict the fitting frequency band, and see exactly which points will be included in the analysis before running a single calculation.
+- Auto-detection and consistency cross-check of column pairs
+- Sign convention toggle for different potentiostats
+- Row-level filtering: exclude drift, artefacts, or outliers while keeping them visible
+- Frequency sub-band restriction for fitting
 
-- Auto-detection and validation of Re/Im vs Mag/Phase column pairs
-- Sign convention toggle for potentiostats that export positive Z''
-- Row-level checkbox filtering: exclude low-frequency drift, high-frequency cable artefacts, or transient outliers while keeping them visible for reference
-- Frequency sub-band fitting (`f_lo` / `f_hi`) to focus optimization on reliable spectral regions
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
 
-### 3. Kramers–Kronig Data Validation
+### ✅ Kramers–Kronig Validation
 
-Before fitting any parameters, you should know whether your data is worth fitting.
+Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test with quantitative residual mapping.
 
-The Kramers–Kronig relations are a necessary condition for valid EIS: if your data violates them, fitted parameters may be mathematically plausible but physically meaningless. ZScope implements the linear KK test with quantitative residual mapping and a clear, actionable verdict.
-
-| Residual Level | Interpretation | Recommended Action |
+| Residual | Status | Action |
 |---|---|---|
-| < 0.5% | Data is linear, causal, and stationary | Proceed with fitting |
-| 0.5 – 2% | Minor drift or noise present | Consider narrowing the fitting frequency range |
-| > 2% | Non-stationarity or systematic artefacts | Improve measurement conditions; repeat |
+| < 0.5% | ✅ Valid | Proceed |
+| 0.5–2% | ⚠️ Minor drift | Narrow frequency range |
+| > 2% | ❌ Violation | Repeat measurement |
 
-- One-click validation (Ctrl+K) with < 2-second response
-- Frequency-resolved residual map to pinpoint exactly which spectral regions are problematic
-- KK-aware circuit proposal filtering: algorithmically suggested circuits are flagged when data quality is insufficient
+One keystroke (Ctrl+K), < 2 second result.
 
-### 4. Advanced Parameter Fitting Engine
+</td>
+<td width="50%" valign="top">
 
-When you are ready to move from visual exploration to quantitative fitting, ZScope applies a rigorous multi-stage optimization strategy designed to find the global minimum reliably — not just the nearest local one.
+### 🎯 Advanced Fitting Engine
 
-**Stage 1 — Latin Hypercube Sampling (LHS):** Parameter space is partitioned into non-overlapping strata and sampled exactly once per stratum. This guarantees broad, space-filling coverage with fewer starting points than random restarts, avoiding the clustering that plagues naive multi-start approaches.
+A three-stage hybrid optimizer designed to find the true global minimum, not just the nearest local one:
 
-**Stage 2 — Differential Evolution (DE):** For complex circuits with multimodal χ² landscapes (overlapping time constants, nested diffusion loops), a population-based global search evolves candidates via mutation and crossover before local refinement.
-
-**Stage 3 — Trust-Region Reflective (TRF):** Gradient-based local refinement polishes the best candidate to numerical precision within physical parameter bounds.
-
-The objective function uses **modulus weighting** (Boukamp, 1986) by default, equalizing the relative contribution of each frequency point across the full impedance range:
+1. **LHS** — Latin Hypercube Sampling for space-filling parameter coverage
+2. **DE** — Differential Evolution for multimodal landscapes
+3. **TRF** — Trust-Region Reflective for gradient-precise local refinement
 
 $$\chi^2 = \sum_{k} \frac{(Z'_k - \hat{Z}'_k)^2 + (Z''_k - \hat{Z}''_k)^2}{|Z_k|^2}$$
 
-Additional controls give you full command over the fitting process:
+Modulus weighting · Soft-L1 robust loss · AIC/BIC model selection · Warm-start for series measurements (60–80% speed gain)
 
-- **Weighting schemes:** modulus (default), proportional, or unit — with scientific rationale provided in the built-in help
-- **Robust loss (Soft-L1 / Pseudo-Huber):** transitions from L2 for small residuals to linear growth for large ones, downweighting artefacts without discarding them
-- **Warm-start for sequential measurements:** when running a series of EIS at different states (as ZScope was originally designed for), the previous accepted fit is carried forward automatically when topology and frequency overlap are sufficient — reducing computation time by 60–80%
-- **AIC and BIC model selection:** penalize unnecessary complexity; ΔAIC > 10 provides strong evidence for the simpler model
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
 
-### 5. Bayesian MCMC Uncertainty Quantification
+### 📊 Bayesian MCMC Uncertainty
 
-A single point estimate is not enough. Parameter correlations, non-identifiability, and non-linear response surfaces mean that the true uncertainty of EIS parameters is rarely captured by a Jacobian-based confidence interval.
+A single point estimate is not enough. ZScope uses the `emcee` affine-invariant ensemble sampler to map the full posterior distribution P(θ | Z_exp):
 
-ZScope's Bayesian engine samples the full posterior probability distribution P(θ | Z_exp) using the `emcee` affine-invariant ensemble sampler:
-
-1. **MAP initialization:** A fast TRF fit seeds walkers in a tight Gaussian ball around the maximum a posteriori estimate, dramatically reducing burn-in
-2. **Adaptive σ calibration:** Residuals at MAP set heteroscedastic noise floors per frequency: σᵢ = max(rms, 0.5% · |Z_exp,i|)
-3. **Stretch-move sampling:** Walkers explore parameter space by stretching against each other — no gradients required, invariant to parameter scaling
-
-The result is a complete picture of parameter uncertainty:
-
+- **95% credible intervals** — probability-direct, not frequentist approximations
 - Marginal and joint posterior distributions
-- **95% credible intervals** — direct probability statements ("there is a 95% probability the true parameter lies here"), not the frequentist approximations of classical confidence intervals
-- Parameter correlation matrix and covariance analysis
-- Convergence diagnostics: autocorrelation time ratio (N/50τ ≥ 1.0), Gelman–Rubin statistic (R̂ < 1.1), acceptance rate (target 0.20–0.50)
-- **Posterior predictive uncertainty bands:** shaded regions on Nyquist and Bode plots derived from 300 random posterior draws — wide bands reveal frequencies where the data cannot constrain the model
+- Parameter correlation and covariance analysis
+- Convergence diagnostics: R̂ (Gelman–Rubin) + autocorrelation time
+- Predictive uncertainty bands from 300 posterior draws
 
-### 6. Algorithmic Circuit Proposal
+</td>
+<td width="50%" valign="top">
 
-Not sure which circuit to use? ZScope can suggest one.
+### 🔧 Extensible Element Library
 
-The engine extracts a mathematical fingerprint from your raw Z(ω): arc count and depression angles (via Savitzky-Golay peak finding), low-frequency log-log slope (classifying Warburg, Gerischer, FLW, FSW, or blocking behavior), and inductive loop detection. It then scores candidate topologies against the fingerprint, penalized by parameter count to guard against over-fitting:
-
-$$\text{Score}_\text{adj} = \text{RawMatch} - \lambda \cdot \frac{N_\text{params}}{N_\text{features}}$$
-
-Top suggestions come with physically motivated initial parameter bounds derived directly from spectral features — R_s ≈ Z'_hf, σ ≈ R_ct / √(2π f_onset) — giving the optimizer the best possible starting point.
-
-### 7. Custom & Extensible Component Library
-
-ZScope ships with a comprehensive built-in element library. When your system requires something it does not cover, you can define it yourself — through a graphical interface, without touching source code.
-
-**Built-in elements:**
-
-| Element | Physical Process |
+| Element | Physical Meaning |
 |---|---|
-| R, C, L | Solution resistance, ideal capacitance, inductance |
-| CPE | Surface inhomogeneity, roughness, porosity (Z = 1 / Q(jω)^α) |
-| W — Warburg | Semi-infinite linear diffusion |
-| FLW — Finite-Length Warburg | Finite diffusion, permeable boundary (membranes, porous electrodes) |
-| FSW — Finite-Space Warburg | Finite diffusion, blocking boundary (thin films, dead-end pores) |
-| G — Gerischer | Diffusion coupled to homogeneous chemical reaction |
-| Transmission line | Porous electrode and Bisquert models |
+| R, C, L | Resistance, capacitance, inductance |
+| CPE | Surface roughness / inhomogeneity |
+| W (Warburg) | Semi-infinite diffusion |
+| FLW / FSW | Finite diffusion (permeable/blocking) |
+| Gerischer | Diffusion + chemical reaction |
+| Transmission line | Porous electrode models |
+| **Custom** | **Any Z(ω) or Y(ω) expression** |
 
-**Custom element designer:**
-- Define any Z(ω) or Y(ω) as a mathematical expression using standard functions and your own parameter keys
-- Sandbox testing at sample frequencies before registration
-- Built-in vector symbol editor: draw how your element looks on the canvas
-- Export to `.json` for sharing with colleagues; import from `.json` to load community-defined elements
-- Registered custom elements behave identically to built-ins: they appear in the toolbar, accept slider control, participate fully in fitting with proper bounds and log/linear scaling, and are included in AIC/BIC calculations
+Custom elements are defined through a GUI designer, exported as `.json`, and behave identically to built-ins in all fitting and simulation contexts — no coding required.
 
-### 8. Fit Results & Publication-Ready Reporting
-
-After fitting, ZScope presents a complete, structured account of the results:
-
-- Full parameter table with confidence or credible intervals and relative uncertainties
-- Fit quality metrics: χ², χ²_red, RMSE, R² (magnitude and phase separately), AIC, BIC
-- Frequency-resolved residual plot with systematic pattern diagnostics
-- Parameter correlation matrix with high-correlation warnings (|r| > 0.95)
-- Export in `.txt`, `.csv`, or `.json` for downstream analysis
-- High-resolution figure export: PNG at 1920×1080, SVG, and PDF
-- Full HTML/PDF analysis reports suitable for supplementary materials and archival
+</td>
+</tr>
+</table>
 
 ---
 
-## Recommended Workflow
+## 🗺️ Recommended Workflow
 
 ```
-Load Data  →  KK Validation  →  Build / Select Circuit  →  Fit  →  Bayesian MCMC  →  Export
+  Load Data  ──▶  KK Validate  ──▶  Build Circuit  ──▶  Fit  ──▶  MCMC  ──▶  Export
+      │                │                  │               │          │           │
+  auto-detect      < 2 seconds       real-time sim    DE+LHS+TRF  posterior  txt/csv/
+  column format    residual map      overlay data     warm-start   credible   json/PDF
 ```
 
-1. **Import your data** — ZScope detects column format, validates consistency, and lets you filter rows and set frequency bounds before touching a parameter
-2. **Validate with KK** (Ctrl+K) — Confirm linearity, causality, and stationarity; investigate any flagged frequency regions before proceeding
-3. **Construct your circuit** — Draw on the visual canvas, select a preset, type a notation string, or request an algorithmic suggestion; use real-time simulation to visually match the model to your data
-4. **Run the optimizer** — Configure weighting, loss function, restarts, and frequency band; the DE+LHS+TRF engine finds reliable parameter estimates with comprehensive diagnostics
-5. **Quantify uncertainty** — Run Bayesian MCMC to obtain full posterior distributions, credible intervals, and convergence verification
-6. **Export** — Generate publication-ready figures, parameter tables, and structured reports in your preferred format
+1. **Import** — ZScope detects column format, cross-validates consistency, and lets you filter rows before any calculation
+2. **Validate** (Ctrl+K) — Confirm linearity and stationarity; investigate flagged frequency regions
+3. **Build your circuit** — Draw on canvas, choose a preset, or request an algorithmic suggestion based on spectral fingerprinting
+4. **Fit** — Configure weighting, loss function, restarts, and frequency band; run the optimizer
+5. **Quantify uncertainty** — Run Bayesian MCMC for full posteriors, credible intervals, and convergence diagnostics
+6. **Export** — Publication-ready figures (PNG/SVG/PDF), parameter tables, and structured reports
 
 ---
 
-## Validation & Benchmarks
+## 📈 Validation & Benchmarks
 
-ZScope's fitting engine was rigorously validated on synthetic data with known ground-truth parameters. Four standard circuits were evaluated at three noise levels — 0%, 2%, and 5% Gaussian noise — to characterize both accuracy and robustness:
+Validated on synthetic data with known ground-truth parameters. Four circuits × three noise levels = 12 test cases. All 12 converged successfully.
 
-| Circuit | Noise | Result |
-|---|---|---|
-| Randles | 0% | Relative error < 10⁻¹² % — machine-precision recovery |
-| Randles + Warburg | 2% | Overall RMSE 1.68–1.74%; max individual parameter error 1.22% |
-| CPE Randles | 5% | Robust recovery within noise level; expected Q–α correlation flagged |
-| Two-Time-Constants | 5% | Robust recovery within noise level |
+| Circuit | Noise | Accuracy |
+|---|:---:|---|
+| Randles | 0% | Relative error **< 10⁻¹² %** — machine precision |
+| Randles + Warburg | 2% | RMSE 1.68–1.74% · max individual error **1.22%** |
+| CPE Randles | 5% | Recovery within noise level · Q–α correlation correctly identified |
+| Two-Time-Constants | 5% | Recovery within noise level |
 
-The expected Q–α correlation in the CPE case is not a deficiency — it reflects a genuine physical interdependence in CPE parameterization, and ZScope correctly identifies and reports it.
+> The Q–α correlation in the CPE case is not a software deficiency — it reflects a genuine physical interdependence in CPE parameterization. ZScope correctly detects and reports it.
 
-All benchmark circuits, raw synthetic data, ground-truth comparison tables, and analysis scripts are available in the [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) directory for independent verification.
-
----
-
-## Scientific Applications
-
-ZScope is applicable across the full breadth of EIS-based research:
-
-**Battery Science & Energy Storage** — SEI/CEI formation and growth, charge-transfer kinetics, lithium-ion and sodium-ion diffusion, degradation pathway identification, and state-of-health monitoring in Li-ion, Na-ion, and all-solid-state battery systems.
-
-**Photovoltaics & Perovskite Solar Cells** — Recombination dynamics, ion migration, hysteresis characterization, capacitance spectroscopy, and interfacial charge accumulation analysis.
-
-**Corrosion Science & Surface Protection** — Quantification of polarization resistance, coating delamination detection, pore resistance, and diffusion-controlled corrosion kinetics for inhibitor screening and coating lifetime prediction.
-
-**Fuel Cells & Electrolyzers** — Deconvolution of ohmic, charge-transfer, and mass-transport contributions in PEM, AEM, and solid-oxide electrochemical systems.
-
-**Supercapacitors & Pseudocapacitive Materials** — Double-layer behavior, faradaic pseudocapacitance contributions, and porous electrode transmission-line modeling.
-
-**Bioelectrochemistry & Sensors** — Redox probe kinetics at modified electrodes, biomolecular binding event detection, and biointerface impedance characterization.
-
-**Mechanistic Studies Across Oxidation States** — The sequential measurement scenario that motivated ZScope: characterizing a system at multiple states or time points, with real-time visual comparison to track how parameters evolve across conditions.
+All benchmark data, comparison tables, and analysis scripts are in [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) for independent verification.
 
 ---
 
-## Why ZScope?
+## 🔭 Scientific Applications
+
+| Domain | Typical Use |
+|---|---|
+| **Battery Science** | SEI/CEI characterization · charge-transfer kinetics · Li-ion diffusion · state-of-health monitoring |
+| **Photovoltaics** | Recombination dynamics · ion migration · hysteresis · capacitance spectroscopy |
+| **Corrosion Science** | Polarization resistance · coating integrity · inhibitor screening · lifetime prediction |
+| **Fuel Cells & Electrolyzers** | Ohmic · kinetic · mass-transport deconvolution in PEM, AEM, and solid-oxide systems |
+| **Supercapacitors** | Double-layer behaviour · faradaic contributions · porous electrode transmission-line analysis |
+| **Bioelectrochemistry** | Redox probe kinetics · biosensor interfacial impedance · biomolecular binding |
+| **Mechanistic Studies** | Multi-state or time-series EIS — the exact scenario ZScope was designed for |
+
+---
+
+## 🆚 Why ZScope?
 
 | Capability | Commercial Tools | Academic Scripts | **ZScope** |
-|---|---|---|---|
-| Real-time visual simulation | Sometimes | Rarely | Instantaneous — the core of the tool |
-| Bayesian uncertainty quantification | Rarely available | Manual effort | Full MCMC posterior + credible intervals |
-| Kramers–Kronig validation | Limited | Manual | Integrated with frequency-resolved residuals |
-| Global optimization | Local solvers only | Variable | DE + LHS + TRF — reliable global search |
-| Algorithmic circuit suggestion | Uncommon | Not available | Physics-driven spectral fingerprinting |
-| Custom impedance elements | Restricted | Script-level | GUI-based designer — no coding required |
-| Sequential / warm-start fitting | Rarely | Manual | Automatic — 60–80% speed gain on series data |
-| Comprehensive fit reporting | Partial | Manual | Full export: txt, csv, json, PDF, HTML |
-| Reproducibility & transparency | Often opaque | High | Complete documentation + open benchmarks |
-| Cost | High annual license | Free | **Completely free** |
+|---|:---:|:---:|:---:|
+| Real-time interactive simulation | Rarely | ✗ | ✅ Instantaneous |
+| Bayesian MCMC posteriors | Rarely | Manual | ✅ Full emcee engine |
+| Kramers–Kronig validation | Limited | Manual | ✅ Integrated + residual maps |
+| Global optimization (DE+LHS) | ✗ local only | Variable | ✅ Three-stage hybrid |
+| Algorithmic circuit suggestion | Uncommon | ✗ | ✅ Spectral fingerprinting |
+| Custom elements (no coding) | Restricted | Script-level | ✅ GUI designer |
+| Sequential warm-start fitting | Rarely | Manual | ✅ Automatic |
+| Structured export (txt/csv/json/PDF) | Partial | Manual | ✅ Full |
+| Cost | 💰 Annual license | Free | ✅ **Free** |
 
 ---
 
-## Installation
+## 💾 Installation
 
-### Windows
+### Windows — Standalone Installer
 
-Download the latest standalone installer from the [Releases page](https://github.com/Tecush/ZScope/releases/latest).
+**[⬇ Download Latest Release](https://github.com/Tecush/ZScope/releases/latest)**
 
-No Python installation, no package manager, no dependencies. Download, install, and open. ZScope is distributed as a fully self-contained application.
+No Python. No package manager. No dependencies. Download, run the installer, open ZScope.
 
-> macOS and Linux support are planned for future releases. If you work on these platforms and would find ZScope useful, please open an issue — demand helps prioritize development.
+> macOS and Linux support are planned. If you work on those platforms, please [open an issue](https://github.com/Tecush/ZScope/issues) — user demand shapes the roadmap.
 
 ---
 
-## Citation
+## 📖 Citation
 
-If ZScope contributes to published research, please cite it so others in the community can find it:
+If ZScope contributes to published research, please cite it so others can find it:
 
 ```bibtex
 @software{zscope2026,
@@ -275,19 +239,24 @@ If ZScope contributes to published research, please cite it so others in the com
 
 ---
 
-## Contact
+## 📬 Contact
 
-| | |
-|---|---|
-| **Developer** | Tecush Mohammadi |
-| **Email** | tecush@gmail.com |
-| **GitHub** | [@Tecush](https://github.com/Tecush) |
-| **Bug reports & feature requests** | [GitHub Issues](https://github.com/Tecush/ZScope/issues) |
+**Developer:** Tecush Mohammadi
+**Email:** tecush@gmail.com
+**GitHub:** [@Tecush](https://github.com/Tecush)
+**Issues & feature requests:** [GitHub Issues](https://github.com/Tecush/ZScope/issues)
 
-Questions about the scientific methods, validation data, or specific use cases are welcome by email.
+Questions about scientific methods, specific use cases, or validation data are welcome by email.
 
 ---
 
 <div align="center">
-  <sub>Built from a real experiment, for real researchers — because good science deserves better tools.</sub>
+
+  *Built from a real experiment, for real researchers.*
+  *Because good science deserves better tools.*
+
+  <br/>
+
+  <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Download%20ZScope&style=for-the-badge&color=1d6fb5" alt="Download"/></a>
+
 </div>
