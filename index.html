@@ -14,24 +14,28 @@
 <style>
 /* ── TOKENS ──────────────────────────────────────────────────────── */
 :root{
-  --bg:#f4f7fb;
-  --surface:#ffffff;
-  --surface2:#eef2f8;
-  --surface3:#e2e9f4;
-  --border:rgba(24,52,110,.09);
-  --border2:rgba(24,52,110,.20);
-  --text:#18253e;
-  --muted:#4d6178;
-  --dim:#8a9eb8;
-  --accent:#1a6db3;
-  --accent2:#0ca5cc;
-  --accentRGB:26,109,179;
-  --gold:#b5750c;
-  --green:#0a8f5f;
-  --red:#b83232;
-  --shadow:0 2px 8px rgba(18,40,100,.07);
-  --shadow2:0 12px 40px rgba(18,40,100,.14);
-  --shadow3:0 32px 80px rgba(18,40,100,.18);
+  --bg:#eaeff7;
+  --surface:#f9fbfe;
+  --surface2:#dfe7f2;
+  --surface3:#ccd8ea;
+  --border:rgba(20,48,110,.10);
+  --border2:rgba(20,48,110,.24);
+  --text:#0f1e35;
+  --muted:#3a5068;
+  --dim:#6a84a0;
+  --accent:#1560a8;
+  --accent2:#0892b8;
+  --accentRGB:21,96,168;
+  --gold:#9e640a;
+  --green:#097a50;
+  --red:#a82828;
+  --teal:#0e8c8c;
+  --violet:#5b3fa8;
+  --amber:#b86010;
+  --rose:#a8285c;
+  --shadow:0 2px 10px rgba(14,36,95,.10);
+  --shadow2:0 14px 44px rgba(14,36,95,.18);
+  --shadow3:0 36px 88px rgba(14,36,95,.24);
   --radius:14px;
   --radius-sm:9px;
   --radius-xl:22px;
@@ -43,15 +47,15 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 a{text-decoration:none;color:inherit;}
 /* ── BG GRID ─────────────────────────────────────────────────────── */
 .bg-grid{position:fixed;inset:0;z-index:-2;
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:32px 32px;}
+  background-image:linear-gradient(rgba(20,48,110,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(20,48,110,.06) 1px,transparent 1px);
+  background-size:36px 36px;}
 /* ── NAV ─────────────────────────────────────────────────────────── */
 nav{position:fixed;top:0;width:100%;z-index:200;
   backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-  background:rgba(244,247,251,.90);border-bottom:1px solid var(--border);}
+  background:rgba(234,239,247,.93);border-bottom:1px solid rgba(20,48,110,.14);}
 .nav-inner{max-width:1340px;margin:auto;padding:0 48px;height:64px;display:flex;justify-content:space-between;align-items:center;}
-.logo{font-family:'DM Serif Display',serif;font-size:1.75rem;color:var(--text);}
-.logo em{font-style:normal;color:var(--accent);}
+.logo{font-family:'DM Serif Display',serif;font-size:1.75rem;color:var(--text);letter-spacing:-.01em;}
+.logo em{font-style:normal;background:linear-gradient(110deg,#1257a0,#0892b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .nav-links{display:flex;gap:30px;align-items:center;}
 .nav-links a{color:var(--muted);font-size:.86rem;font-weight:500;letter-spacing:.01em;transition:color .18s;padding:4px 0;position:relative;}
 .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:var(--accent);transition:width .22s;}
@@ -68,18 +72,21 @@ nav{position:fixed;top:0;width:100%;z-index:200;
 .hero-tag .pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid var(--accent);opacity:.5;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.6);opacity:0;}}
 .hero h1{font-family:'DM Serif Display',serif;font-size:3.85rem;line-height:1.07;font-weight:400;letter-spacing:-.025em;margin-bottom:22px;}
-.hero h1 em{font-style:italic;background:linear-gradient(115deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero h1 em{font-style:italic;background:linear-gradient(115deg,#1257a0,#0892b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero-sub{font-size:1.03rem;color:var(--muted);line-height:1.9;max-width:510px;margin-bottom:36px;}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px;}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:.22s;}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 22px rgba(var(--accentRGB),.3);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(var(--accentRGB),.4);}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 22px rgba(var(--accentRGB),.40);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(var(--accentRGB),.52);}
 .btn-ghost{border:1px solid var(--border2);color:var(--text);background:var(--surface);}
 .btn-ghost:hover{background:var(--surface2);border-color:rgba(var(--accentRGB),.3);}
 /* hero trust stats */
 .hero-stats{display:flex;gap:32px;padding-top:16px;border-top:1px solid var(--border);}
 .hstat{display:flex;flex-direction:column;}
-.hstat-val{font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:700;color:var(--accent);line-height:1;}
+.hstat:nth-child(1) .hstat-val{color:#1560a8;}
+.hstat:nth-child(2) .hstat-val{color:#097a50;}
+.hstat:nth-child(3) .hstat-val{color:#5b3fa8;}
+.hstat-val{font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:700;line-height:1;}
 .hstat-lbl{font-size:.74rem;color:var(--dim);margin-top:4px;letter-spacing:.02em;}
 /* hero app card */
 .app-frame{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow3);}
@@ -117,7 +124,7 @@ svg.plot{width:100%;height:104px;overflow:visible;}
 .section-head h2 em{font-style:italic;color:var(--accent);}
 .section-head p{color:var(--muted);margin-top:12px;line-height:1.88;}
 /* ── STORY ───────────────────────────────────────────────────────── */
-.story-outer{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.story-outer{background:var(--surface);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);}
 .story-inner{max-width:1340px;margin:auto;padding:100px 48px;display:grid;grid-template-columns:340px 1fr;gap:80px;align-items:start;}
 .story-aside{position:sticky;top:88px;}
 .story-aside h2{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1.12;font-weight:400;letter-spacing:-.02em;margin-bottom:20px;}
@@ -131,13 +138,25 @@ svg.plot{width:100%;height:104px;overflow:visible;}
 .story-pull em{color:var(--text);font-style:normal;font-weight:600;}
 /* ── CAPABILITIES ────────────────────────────────────────────────── */
 .cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.cap-cell{background:var(--surface);padding:34px 30px;border-radius:var(--radius);border:1px solid var(--border);transition:all .26s;box-shadow:var(--shadow);position:relative;overflow:hidden;}
-.cap-cell::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:linear-gradient(to bottom,var(--accent),var(--accent2));transition:height .3s ease;border-radius:0 0 3px 0;}
-.cap-cell:hover{transform:translateY(-5px);box-shadow:var(--shadow2);border-color:var(--border2);}
-.cap-cell:hover::before{height:100%;}
+.cap-cell{background:var(--surface);padding:34px 30px;border-radius:var(--radius);border:1px solid var(--border2);transition:all .26s;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.cap-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transition:opacity .3s;}
+.cap-cell:hover{transform:translateY(-5px);box-shadow:var(--shadow2);}
+.cap-cell:hover::before{opacity:1;}
+/* Per-card colour theming */
+.cap-cell:nth-child(1)::before{background:linear-gradient(90deg,#1560a8,#0892b8);opacity:.7;}
+.cap-cell:nth-child(2)::before{background:linear-gradient(90deg,#097a50,#0aaa72);opacity:.7;}
+.cap-cell:nth-child(3)::before{background:linear-gradient(90deg,#5b3fa8,#7c5cc4);opacity:.7;}
+.cap-cell:nth-child(4)::before{background:linear-gradient(90deg,#0e8c8c,#12b8b8);opacity:.7;}
+.cap-cell:nth-child(5)::before{background:linear-gradient(90deg,#b86010,#d4821a);opacity:.7;}
+.cap-cell:nth-child(6)::before{background:linear-gradient(90deg,#a8285c,#cc3370);opacity:.7;}
+.cap-cell:nth-child(1) .cap-icon{background:rgba(21,96,168,.10);color:#1560a8;}
+.cap-cell:nth-child(2) .cap-icon{background:rgba(9,122,80,.10);color:#097a50;}
+.cap-cell:nth-child(3) .cap-icon{background:rgba(91,63,168,.10);color:#5b3fa8;}
+.cap-cell:nth-child(4) .cap-icon{background:rgba(14,140,140,.10);color:#0e8c8c;}
+.cap-cell:nth-child(5) .cap-icon{background:rgba(184,96,16,.10);color:#b86010;}
+.cap-cell:nth-child(6) .cap-icon{background:rgba(168,40,92,.10);color:#a8285c;}
 .cap-num{font-family:'DM Mono',monospace;font-size:.67rem;color:var(--dim);letter-spacing:.12em;margin-bottom:18px;font-weight:600;}
-.cap-icon{width:42px;height:42px;border-radius:10px;background:rgba(var(--accentRGB),.08);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.15rem;margin-bottom:16px;transition:background .26s;}
-.cap-cell:hover .cap-icon{background:rgba(var(--accentRGB),.14);}
+.cap-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;margin-bottom:16px;transition:background .26s;}
 .cap-cell h3{font-size:1rem;font-weight:600;margin-bottom:10px;letter-spacing:-.01em;}
 .cap-cell p{color:var(--muted);font-size:.87rem;line-height:1.76;}
 .tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;}
@@ -151,7 +170,7 @@ svg.plot{width:100%;height:104px;overflow:visible;}
 .bm-unit{font-size:.94rem;font-weight:400;color:var(--muted);margin-left:4px;}
 .bm-desc{font-size:.82rem;color:var(--muted);margin-top:7px;line-height:1.62;}
 .bm-bar{height:4px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:13px;}
-.bm-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1.3s cubic-bezier(.4,0,.2,1);}
+.bm-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#1257a0,#0892b8);transition:width 1.3s cubic-bezier(.4,0,.2,1);}
 .bm-note{font-size:.71rem;color:var(--dim);margin-top:5px;font-family:'DM Mono',monospace;}
 .chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);}
 .chart-wrap h4{font-size:.88rem;font-weight:600;margin-bottom:5px;}
@@ -160,33 +179,42 @@ svg.plot{width:100%;height:104px;overflow:visible;}
 .note-box strong{color:var(--text);}
 /* ── EQUATIONS ───────────────────────────────────────────────────── */
 .eq-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.eq-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);transition:box-shadow .22s,border-color .22s;}
-.eq-card:hover{box-shadow:var(--shadow2);border-color:var(--border2);}
-.eq-accent{display:inline-block;width:32px;height:3px;border-radius:2px;margin-bottom:14px;}
-.eq-accent.blue{background:var(--accent);}
-.eq-accent.teal{background:var(--accent2);}
-.eq-accent.gold{background:var(--gold);}
-.eq-accent.green{background:var(--green);}
+.eq-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);transition:box-shadow .22s,border-color .22s;border-left-width:3px;}
+.eq-card:hover{box-shadow:var(--shadow2);}
+.eq-accent{display:inline-block;width:36px;height:4px;border-radius:2px;margin-bottom:14px;}
+.eq-accent.blue{background:#1560a8;} .eq-card:has(.eq-accent.blue){border-left-color:#1560a8;}
+.eq-accent.teal{background:#0892b8;} .eq-card:has(.eq-accent.teal){border-left-color:#0892b8;}
+.eq-accent.gold{background:#b86010;} .eq-card:has(.eq-accent.gold){border-left-color:#b86010;}
+.eq-accent.green{background:#097a50;} .eq-card:has(.eq-accent.green){border-left-color:#097a50;}
+.eq-accent.violet{background:#5b3fa8;} .eq-card:has(.eq-accent.violet){border-left-color:#5b3fa8;}
+.eq-accent.rose{background:#a8285c;} .eq-card:has(.eq-accent.rose){border-left-color:#a8285c;}
 .eq-card h4{font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px;font-family:'DM Mono',monospace;}
 .eq-display{padding:16px 20px;background:var(--surface2);border-radius:var(--radius-sm);margin-bottom:14px;overflow-x:auto;border:1px solid var(--border);text-align:center;}
 .eq-desc{color:var(--muted);font-size:.86rem;line-height:1.78;}
-/* ── WORKFLOW ────────────────────────────────────────────────────── */
 .wf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-.wf-grid::after{content:'';position:absolute;top:34px;left:calc(12.5%);right:calc(12.5%);height:1px;background:linear-gradient(90deg,transparent,var(--accent2) 15%,var(--accent2) 85%,transparent);z-index:0;opacity:.3;}
+.wf-grid::after{content:'';position:absolute;top:34px;left:calc(12.5%);right:calc(12.5%);height:1px;background:linear-gradient(90deg,transparent,var(--accent2) 15%,var(--accent2) 85%,transparent);z-index:0;opacity:.25;}
 .wf-step{text-align:center;padding:0 16px;position:relative;z-index:1;}
-.wf-icon-wrap{width:68px;height:68px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:var(--shadow);transition:all .26s;position:relative;}
-.wf-icon-wrap::before{content:attr(data-n);position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;}
-.wf-step:hover .wf-icon-wrap{background:rgba(var(--accentRGB),.06);border-color:rgba(var(--accentRGB),.35);box-shadow:0 4px 16px rgba(var(--accentRGB),.18);}
-.wf-icon{font-size:1.3rem;color:var(--accent);}
+.wf-icon-wrap{width:68px;height:68px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:var(--shadow);transition:all .26s;position:relative;}
+.wf-icon-wrap::before{content:attr(data-n);position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;color:#fff;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;}
+.wf-step:nth-child(1) .wf-icon-wrap::before{background:#1560a8;}
+.wf-step:nth-child(2) .wf-icon-wrap::before{background:#0e8c8c;}
+.wf-step:nth-child(3) .wf-icon-wrap::before{background:#5b3fa8;}
+.wf-step:nth-child(4) .wf-icon-wrap::before{background:#097a50;}
+.wf-step:nth-child(1) .wf-icon{color:#1560a8;}
+.wf-step:nth-child(2) .wf-icon{color:#0e8c8c;}
+.wf-step:nth-child(3) .wf-icon{color:#5b3fa8;}
+.wf-step:nth-child(4) .wf-icon{color:#097a50;}
+.wf-step:hover .wf-icon-wrap{background:var(--surface2);box-shadow:var(--shadow2);}
+.wf-icon{font-size:1.3rem;}
 .wf-step h4{font-size:.95rem;font-weight:600;margin-bottom:8px;color:var(--text);}
 .wf-step p{font-size:.83rem;color:var(--muted);line-height:1.72;}
 .wf-step .wf-kbd{margin-top:10px;display:inline-block;font-family:'DM Mono',monospace;font-size:.67rem;padding:2px 8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border2);color:var(--dim);}
 /* ── COMPARISON ──────────────────────────────────────────────────── */
 .compare-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
 table.compare{width:100%;border-collapse:collapse;font-size:.87rem;}
-table.compare thead tr{background:var(--surface2);border-bottom:2px solid var(--border2);}
+table.compare thead tr{background:var(--surface3);border-bottom:2px solid var(--border2);}
 table.compare th{padding:15px 20px;text-align:left;font-weight:600;font-size:.79rem;letter-spacing:.04em;color:var(--muted);}
-table.compare th.zscope-col{color:var(--accent);background:rgba(var(--accentRGB),.06);}
+table.compare th.zscope-col{color:var(--accent);background:rgba(var(--accentRGB),.10);}
 table.compare td{padding:14px 20px;color:var(--muted);border-bottom:1px solid var(--border);vertical-align:middle;}
 table.compare td:first-child{color:var(--text);font-weight:500;}
 table.compare td.zscope-col{color:var(--text);font-weight:500;background:rgba(var(--accentRGB),.025);}
@@ -197,38 +225,73 @@ table.compare tr:last-child td{border-bottom:none;}
 .cross{color:var(--red);}
 .partial{color:var(--gold);}
 .compare-note{font-size:.81rem;color:var(--dim);margin-top:14px;font-style:italic;padding:0 2px;line-height:1.65;}
-/* ── APPLICATIONS ────────────────────────────────────────────────── */
 .app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 .app-card{border:1px solid var(--border);border-radius:var(--radius);padding:28px;background:var(--surface);box-shadow:var(--shadow);transition:all .26s;position:relative;overflow:hidden;}
-.app-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .3s ease;}
+.app-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s ease;}
 .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow2);border-color:var(--border2);}
 .app-card:hover::after{transform:scaleX(1);}
-.app-icon-wrap{width:46px;height:46px;border-radius:12px;background:rgba(var(--accentRGB),.08);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;color:var(--accent);}
+.app-card:nth-child(1) .app-icon-wrap{background:rgba(9,122,80,.10);color:#097a50;}
+.app-card:nth-child(1)::after{background:linear-gradient(90deg,#097a50,#0aaa72);}
+.app-card:nth-child(2) .app-icon-wrap{background:rgba(184,96,16,.10);color:#b86010;}
+.app-card:nth-child(2)::after{background:linear-gradient(90deg,#b86010,#d4821a);}
+.app-card:nth-child(3) .app-icon-wrap{background:rgba(21,96,168,.10);color:#1560a8;}
+.app-card:nth-child(3)::after{background:linear-gradient(90deg,#1560a8,#0892b8);}
+.app-card:nth-child(4) .app-icon-wrap{background:rgba(14,140,140,.10);color:#0e8c8c;}
+.app-card:nth-child(4)::after{background:linear-gradient(90deg,#0e8c8c,#12b8b8);}
+.app-card:nth-child(5) .app-icon-wrap{background:rgba(91,63,168,.10);color:#5b3fa8;}
+.app-card:nth-child(5)::after{background:linear-gradient(90deg,#5b3fa8,#7c5cc4);}
+.app-card:nth-child(6) .app-icon-wrap{background:rgba(168,40,92,.10);color:#a8285c;}
+.app-card:nth-child(6)::after{background:linear-gradient(90deg,#a8285c,#cc3370);}
+.app-icon-wrap{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;}
 .app-card h3{font-size:.98rem;font-weight:600;margin-bottom:8px;}
 .app-card p{font-size:.86rem;color:var(--muted);line-height:1.76;}
 .circuit-tag{margin-top:14px;font-family:'DM Mono',monospace;font-size:.67rem;color:var(--dim);padding:4px 10px;background:var(--surface2);border-radius:5px;display:inline-block;border:1px solid var(--border);}
-/* ── MEDIA GALLERY ───────────────────────────────────────────────── */
-.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.media-item{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface);transition:all .26s;position:relative;}
-.media-item:hover{transform:translateY(-4px);box-shadow:var(--shadow2);border-color:var(--border2);}
-.media-item img,.media-item video{width:100%;display:block;object-fit:cover;}
-.media-placeholder{aspect-ratio:16/10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:.83rem;font-weight:500;color:var(--dim);position:relative;overflow:hidden;}
-.media-placeholder::before{content:'';position:absolute;inset:0;opacity:.55;}
-.mp-circuit::before{background:linear-gradient(135deg,#dbeafe 0%,#eff6ff 100%);}
-.mp-fit::before{background:linear-gradient(135deg,#fef3c7 0%,#fffbeb 100%);}
-.mp-mcmc::before{background:linear-gradient(135deg,#d1fae5 0%,#ecfdf5 100%);}
-.mp-kk::before{background:linear-gradient(135deg,#ede9fe 0%,#f5f3ff 100%);}
-.mp-sim::before{background:linear-gradient(135deg,#fce7f3 0%,#fdf2f8 100%);}
-.mp-report::before{background:linear-gradient(135deg,#fee2e2 0%,#fff5f5 100%);}
-.media-placeholder i{font-size:2rem;position:relative;z-index:1;}
-.media-placeholder span{position:relative;z-index:1;font-size:.79rem;}
-.media-badge{position:absolute;top:10px;right:10px;background:var(--accent);color:white;padding:3px 10px;border-radius:5px;font-size:.66rem;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:.04em;}
-.media-caption{padding:15px 18px;border-top:1px solid var(--border);}
-.media-caption h4{font-size:.91rem;font-weight:600;margin-bottom:5px;}
-.media-caption p{font-size:.8rem;color:var(--muted);line-height:1.62;}
-/* ── DOWNLOAD CTA ────────────────────────────────────────────────── */
+/* ── SEE IT IN ACTION ─────────────────────────────────────────────── */
+.sia-featured{display:grid;grid-template-columns:1.15fr 0.85fr;gap:0;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow2);margin-bottom:20px;}
+.sia-featured-media{position:relative;min-height:320px;}
+.sia-featured-media img,.sia-featured-media video{width:100%;height:100%;object-fit:cover;display:block;}
+.sia-featured-text{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;}
+.sia-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.sia-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .25s;}
+.sia-card:hover{transform:translateY(-4px);box-shadow:var(--shadow2);border-color:var(--border2);}
+.sia-card-media{position:relative;}
+.sia-card-media img,.sia-card-media video{width:100%;display:block;object-fit:cover;}
+.sia-card-text{padding:26px 28px;}
+.sia-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px;}
+.sia-mini{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .25s;}
+.sia-mini:hover{transform:translateY(-3px);box-shadow:var(--shadow2);border-color:var(--border2);}
+.sia-mini-media{position:relative;}
+.sia-mini-media img,.sia-mini-media video{width:100%;display:block;object-fit:cover;}
+.sia-mini h4{font-size:.95rem;font-weight:600;padding:18px 18px 6px;margin:0;}
+.sia-mini p{font-size:.83rem;color:var(--muted);line-height:1.7;padding:0 18px 10px;}
+.sia-mini-hint{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--dim);padding:8px 18px 16px;border-top:1px solid var(--border);margin-top:4px;line-height:1.6;}
+.sia-placeholder{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.sia-placeholder-inner{position:relative;z-index:1;text-align:center;padding:20px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.sia-placeholder-icon{font-size:2.4rem;opacity:.7;margin-bottom:4px;}
+.sia-placeholder-label{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.sia-placeholder-hint{font-size:.75rem;color:var(--dim);line-height:1.62;max-width:320px;}
+.sia-type-badge{position:absolute;top:12px;right:12px;background:var(--accent);color:white;padding:4px 11px;border-radius:6px;font-size:.68rem;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sia-moment-tag{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.sia-moment-quote{font-family:'DM Serif Display',serif;font-size:1.35rem;font-style:italic;color:var(--accent);line-height:1.3;margin-bottom:14px;}
+.sia-featured-text h3,.sia-card-text h3{font-size:1.05rem;font-weight:600;margin-bottom:10px;letter-spacing:-.01em;}
+.sia-featured-text p,.sia-card-text p{font-size:.88rem;color:var(--muted);line-height:1.78;margin-bottom:16px;}
+.sia-what-to-show{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.sia-step{display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:var(--muted);line-height:1.55;}
+.sia-step span{width:20px;height:20px;border-radius:50%;background:rgba(29,111,181,.1);color:var(--accent);font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-family:'DM Mono',monospace;}
+.sia-tool-row{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--dim);display:flex;align-items:center;gap:7px;padding-top:12px;border-top:1px solid var(--border);}
+.sia-note{background:rgba(196,127,26,.06);border:1px solid rgba(196,127,26,.2);border-radius:var(--radius-sm);padding:16px 22px;font-size:.85rem;color:var(--muted);line-height:1.75;display:flex;align-items:flex-start;gap:4px;}
+.sia-note strong{color:var(--text);}
+.sia-note code{font-family:'DM Mono',monospace;font-size:.8rem;background:rgba(0,0,0,.05);padding:1px 5px;border-radius:4px;}
+/* ── DOI / CITATION BLOCK ────────────────────────────────────────── */
+.dl-cite{margin-top:32px;background:rgba(255,255,255,.6);border:1px solid rgba(26,109,179,.2);border-radius:12px;padding:22px 26px;text-align:left;max-width:600px;margin-left:auto;margin-right:auto;}
+.dl-cite-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+.dl-cite-label{font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-family:'DM Mono',monospace;}
+.dl-cite-block{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:14px 18px;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);line-height:1.9;overflow-x:auto;margin-bottom:12px;}
+.dl-cite-copy{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:7px;background:transparent;border:1px solid var(--border2);color:var(--muted);font-size:.8rem;font-family:'Instrument Sans',sans-serif;cursor:pointer;transition:.2s;font-weight:500;}
+.dl-cite-copy:hover{background:var(--surface2);color:var(--accent);border-color:rgba(26,109,179,.35);}
+.dl-cite-copy.copied{color:var(--green);border-color:rgba(10,143,95,.35);}
 .dl-section{padding:96px 48px;}
-.dl-box{max-width:840px;margin:auto;text-align:center;padding:68px 60px;border-radius:var(--radius-xl);background:linear-gradient(155deg,rgba(var(--accentRGB),.08),rgba(14,165,204,.05));border:1px solid rgba(var(--accentRGB),.2);box-shadow:0 8px 36px rgba(var(--accentRGB),.1);}
+.dl-box{max-width:840px;margin:auto;text-align:center;padding:68px 60px;border-radius:var(--radius-xl);background:linear-gradient(155deg,rgba(var(--accentRGB),.12),rgba(8,146,184,.08));border:1px solid rgba(var(--accentRGB),.35);box-shadow:0 8px 36px rgba(var(--accentRGB),.18);}
 .dl-box h2{font-family:'DM Serif Display',serif;font-size:2.8rem;font-weight:400;margin-bottom:14px;letter-spacing:-.022em;}
 .dl-box p{color:var(--muted);line-height:1.85;max-width:580px;margin:0 auto 36px;}
 .dl-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
@@ -260,7 +323,9 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 .fade-in-delay-3{transition-delay:.3s;}
 /* ── RESPONSIVE ──────────────────────────────────────────────────── */
 @media(max-width:1100px){
-  .cap-grid,.app-grid,.media-grid{grid-template-columns:repeat(2,1fr);}
+  .cap-grid,.app-grid{grid-template-columns:repeat(2,1fr);}
+  .sia-featured{grid-template-columns:1fr;}
+  .sia-three-col{grid-template-columns:repeat(2,1fr);}
   .bm-layout,.story-inner{grid-template-columns:1fr;}
   .story-aside{position:static;}
   .wf-grid{grid-template-columns:repeat(2,1fr);gap:24px;}
@@ -271,7 +336,9 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 @media(max-width:860px){
   .hero-inner{grid-template-columns:1fr;}
   .hero h1{font-size:3rem;}
-  .cap-grid,.app-grid,.media-grid{grid-template-columns:1fr;}
+  .cap-grid,.app-grid{grid-template-columns:1fr;}
+  .sia-two-col,.sia-three-col{grid-template-columns:1fr;}
+  .sia-featured{grid-template-columns:1fr;}
   .wf-grid{grid-template-columns:1fr;}
   .nav-links{display:none;}
   .section,.story-inner,.dl-section{padding:64px 22px;}
@@ -296,7 +363,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
       <a href="#science">Methodology</a>
       <a href="#applications">Applications</a>
       <a href="#comparison">Compare</a>
-      <a href="#media">Gallery</a>
+      <a href="#media">In Action</a>
       <a href="#download" class="nav-dl"><i class="fa-solid fa-download" style="font-size:.78rem"></i> Download</a>
     </div>
   </div>
@@ -322,7 +389,12 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
         <div class="hstat"><span class="hstat-val">&lt;10⁻¹²</span><span class="hstat-lbl">% error · clean data</span></div>
         <div class="hstat"><span class="hstat-val">12/12</span><span class="hstat-lbl">benchmark tests passed</span></div>
         <div class="hstat"><span class="hstat-val">Free</span><span class="hstat-lbl">for all researchers</span></div>
-        <div class="hstat"><span class="hstat-val">0</span><span class="hstat-lbl">dependencies to install</span></div>
+        <div class="hstat">
+          <a href="https://doi.org/10.5281/zenodo.20357548" target="_blank" style="display:block;margin-bottom:4px;">
+            <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg" alt="DOI" style="height:20px;border-radius:3px;display:block;">
+          </a>
+          <span class="hstat-lbl">citable · zenodo record</span>
+        </div>
       </div>
     </div>
     <div class="app-frame fade-in">
@@ -572,13 +644,13 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
       <p class="eq-desc">Semi-infinite Warburg produces the characteristic 45° tail. ZScope also implements FLW (finite, permeable boundary) and FSW (finite, blocking boundary) for bounded diffusion in batteries and fuel cells.</p>
     </div>
     <div class="eq-card">
-      <span class="eq-accent green"></span>
+      <span class="eq-accent violet"></span>
       <h4>Bayesian Posterior</h4>
       <div class="eq-display">$$p(\boldsymbol{\theta}\mid\mathbf{Z}) \propto p(\mathbf{Z}\mid\boldsymbol{\theta})\,p(\boldsymbol{\theta})$$</div>
       <p class="eq-desc">The <code>emcee</code> ensemble sampler draws from the full posterior of circuit parameters $\boldsymbol{\theta}$ given measured spectra $\mathbf{Z}$. This reveals parameter correlations and non-identifiability that point estimates cannot show.</p>
     </div>
     <div class="eq-card">
-      <span class="eq-accent teal"></span>
+      <span class="eq-accent rose"></span>
       <h4>Kramers–Kronig Test</h4>
       <div class="eq-display">$$Z'(\omega) = R_\infty + \frac{2}{\pi}\int_0^\infty \frac{\xi\,Z''(\xi)}{\xi^2 - \omega^2}\,d\xi$$</div>
       <p class="eq-desc">The lin-KK method fits a superposition of RC elements to verify causality and linearity without assuming a circuit model. Frequency-resolved residuals pinpoint non-compliant spectral regions before any fitting begins.</p>
@@ -587,7 +659,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 </section>
 
 <!-- WORKFLOW -->
-<section style="background:var(--surface2);padding:100px 0;" id="workflow">
+<section style="background:linear-gradient(160deg,#e4edf8 0%,#e8f0e8 100%);padding:100px 0;" id="workflow">
   <div class="section" style="padding-top:0;padding-bottom:0;">
     <div class="section-head center fade-in">
       <div class="eyebrow">Recommended Workflow</div>
@@ -702,7 +774,7 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 </section>
 
 <!-- APPLICATIONS -->
-<section style="background:var(--surface2);padding:100px 0;" id="applications">
+<section style="background:linear-gradient(160deg,#e8edf5 0%,#f0ebe0 100%);padding:100px 0;" id="applications">
   <div class="section" style="padding-top:0;padding-bottom:0;">
     <div class="section-head center fade-in">
       <div class="eyebrow">Research Applications</div>
@@ -750,81 +822,154 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
   </div>
 </section>
 
-<!-- GALLERY -->
-<section class="section" id="media">
+<!-- SEE IT IN ACTION -->
+<section id="media" style="background:linear-gradient(160deg,#e8edf5 0%,#ece8f5 100%);padding:100px 0;">
+<div class="section" style="padding-top:0;padding-bottom:0;">
+
   <div class="section-head center fade-in">
-    <div class="eyebrow">Interface Gallery</div>
-    <h2>ZScope in Action</h2>
-    <p>Replace the placeholders below with screenshots, GIFs, or short videos of ZScope. Each tile shows a distinct feature of the interface.</p>
+    <div class="eyebrow">See It in Action</div>
+    <h2>Five Moments That<br><em>Tell the Whole Story</em></h2>
+    <p>Each piece of media below captures one specific capability that no other free EIS tool can demonstrate. Replace each placeholder with your recording when ready — the layout and captions are already designed around what you'll capture.</p>
   </div>
-  <div class="media-grid fade-in">
-    <div class="media-item">
-      <div class="media-placeholder mp-circuit">
-        <i class="fa-solid fa-diagram-project" style="color:#1a6db3;"></i>
-        <span>Circuit Editor Screenshot</span>
+
+  <!-- FEATURED — Full width: Circuit Proposer -->
+  <div class="sia-featured fade-in">
+    <div class="sia-featured-media">
+      <div class="sia-placeholder" style="background:linear-gradient(135deg,#e8f1fb 0%,#dbeeff 100%);aspect-ratio:16/7;">
+        <div class="sia-placeholder-inner">
+          <div class="sia-placeholder-icon" style="color:#1a6db3;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <div class="sia-placeholder-label">GIF — ~15 seconds</div>
+          <div class="sia-placeholder-hint">Record: load a dataset → click "Suggest Circuit" → watch scored topology candidates appear → click the top proposal → circuit builds on canvas automatically</div>
+        </div>
       </div>
-      <span class="media-badge">Screenshot</span>
-      <div class="media-caption">
-        <h4>Visual Circuit Editor</h4>
-        <p>Drag-and-drop topology construction with real-time Nyquist and Bode simulation and experimental data overlay.</p>
-      </div>
+      <span class="sia-type-badge" style="background:#1a6db3;">GIF · Highest impact</span>
     </div>
-    <div class="media-item">
-      <div class="media-placeholder mp-fit">
-        <i class="fa-solid fa-film" style="color:#b5750c;"></i>
-        <span>Fitting Workflow Video</span>
+    <div class="sia-featured-text">
+      <div class="sia-moment-tag"><i class="fa-solid fa-quote-left"></i> The moment it creates</div>
+      <p class="sia-moment-quote">"It figured out my circuit from the spectrum alone."</p>
+      <h3>Algorithmic circuit proposal</h3>
+      <p>ZScope analyses the raw Z(ω) fingerprint — arc count, depression angles, low-frequency slope, inductive loops — and proposes ranked circuit topologies with physically motivated initial parameters. No other free EIS tool does this. When a researcher sees it work on their data, the reaction is immediate.</p>
+      <div class="sia-what-to-show">
+        <div class="sia-step"><span>1</span> Load a real dataset with a clear CPE arc and Warburg tail</div>
+        <div class="sia-step"><span>2</span> Click "Suggest Circuit" — show the scored candidates list on screen for 2–3 s</div>
+        <div class="sia-step"><span>3</span> Click the top result — the circuit assembles itself on the canvas</div>
+        <div class="sia-step"><span>4</span> The simulation immediately overlays the experimental data</div>
       </div>
-      <span class="media-badge" style="background:#b5750c;">Video</span>
-      <div class="media-caption">
-        <h4>Complete Fitting Workflow</h4>
-        <p>Import → KK validate → Build circuit → Run DE+TRF → MCMC — start to finish.</p>
-      </div>
-    </div>
-    <div class="media-item">
-      <div class="media-placeholder mp-mcmc">
-        <i class="fa-solid fa-chart-scatter" style="color:#0a8f5f;"></i>
-        <span>MCMC Posterior Screenshot</span>
-      </div>
-      <span class="media-badge" style="background:#0a8f5f;">Screenshot</span>
-      <div class="media-caption">
-        <h4>Bayesian Posterior Distributions</h4>
-        <p>Corner plots, walker traces, credible intervals, and convergence diagnostics.</p>
-      </div>
-    </div>
-    <div class="media-item">
-      <div class="media-placeholder mp-kk">
-        <i class="fa-solid fa-wave-square" style="color:#7c3aed;"></i>
-        <span>KK Validation Panel</span>
-      </div>
-      <span class="media-badge" style="background:#7c3aed;">Screenshot</span>
-      <div class="media-caption">
-        <h4>Kramers–Kronig Validation</h4>
-        <p>Frequency-resolved residual map and compliance verdict before fitting begins.</p>
-      </div>
-    </div>
-    <div class="media-item">
-      <div class="media-placeholder mp-sim">
-        <i class="fa-solid fa-sliders" style="color:#db2777;"></i>
-        <span>Real-Time Simulation GIF</span>
-      </div>
-      <span class="media-badge" style="background:#db2777;">GIF</span>
-      <div class="media-caption">
-        <h4>Live Parameter Adjustment</h4>
-        <p>Nyquist and Bode plots update instantaneously as circuit parameters are changed.</p>
-      </div>
-    </div>
-    <div class="media-item">
-      <div class="media-placeholder mp-report">
-        <i class="fa-solid fa-file-pdf" style="color:#b83232;"></i>
-        <span>Fit Report Export</span>
-      </div>
-      <span class="media-badge" style="background:#b83232;">Report</span>
-      <div class="media-caption">
-        <h4>Publication-Ready Fit Report</h4>
-        <p>Parameter tables, uncertainty intervals, residual diagnostics, and AIC/BIC.</p>
-      </div>
+      <div class="sia-tool-row"><i class="fa-solid fa-circle-dot" style="color:var(--accent);font-size:.7rem;"></i> ScreenToGif · 15fps · 1280×800</div>
     </div>
   </div>
+
+  <!-- TWO-COLUMN row -->
+  <div class="sia-two-col fade-in">
+
+    <!-- Left: Live slider GIF -->
+    <div class="sia-card">
+      <img src="https://raw.githubusercontent.com/Tecush/ZScope/main/images/Live_Circuit_Simulation.gif" 
+     alt="Live circuit simulation: adjusting Rct and CPE parameters with real-time Nyquist plot update" 
+     style="width:100%;display:block;object-fit:cover;" 
+     loading="lazy">
+      <div class="sia-card-text">
+        <div class="sia-moment-tag"><i class="fa-solid fa-quote-left"></i> The moment it creates</div>
+        <p class="sia-moment-quote">"I've never seen an EIS tool do this in real time."</p>
+        <h3>Live circuit simulation</h3>
+        <p>This is the feature ZScope was born from. Move a slider — the Nyquist arc responds instantly, chasing the experimental data. The depression angle changes as CPE α moves. The arc grows as R<sub>ct</sub> increases. Watching this for 10 seconds builds more intuition than any textbook page.</p>
+        <div class="sia-what-to-show">
+          <div class="sia-step"><span>1</span> Load data, build CPE-Randles, zoom to Nyquist + canvas only</div>
+          <div class="sia-step"><span>2</span> Slowly drag R<sub>ct</sub> too small → too large → perfect</div>
+          <div class="sia-step"><span>3</span> Then drag CPE α from 1.0 → 0.7 — show the arc flatten</div>
+        </div>
+        <div class="sia-tool-row"><i class="fa-solid fa-circle-dot" style="color:var(--accent);font-size:.7rem;"></i> ScreenToGif · 15fps</div>
+      </div>
+    </div>
+
+    <!-- Right: 90s workflow video -->
+    <div class="sia-card">
+      <div class="sia-card-media">
+        <div class="sia-placeholder" style="background:linear-gradient(135deg,#e6f4ee 0%,#d4eddf 100%);aspect-ratio:16/9;">
+          <div class="sia-placeholder-inner">
+            <div class="sia-placeholder-icon" style="color:#0a8f5f;"><i class="fa-solid fa-film"></i></div>
+            <div class="sia-placeholder-label">Video — 90 seconds</div>
+            <div class="sia-placeholder-hint">Record: Import → KK (show green residuals) → Build circuit → Fit → MCMC → Export report — full pipeline, no voiceover</div>
+          </div>
+        </div>
+        <span class="sia-type-badge" style="background:#0a8f5f;">Video · 90 s</span>
+      </div>
+      <div class="sia-card-text">
+        <div class="sia-moment-tag"><i class="fa-solid fa-quote-left"></i> The moment it creates</div>
+        <p class="sia-moment-quote">"I could run my own data through this tomorrow."</p>
+        <h3>Complete workflow — start to publish</h3>
+        <p>One unnarrated screen recording, 90 seconds, complete pipeline. Add chapter title overlays ("1 — Import", "2 — KK", etc.) using free Windows Clipchamp. Linger 2 s on the green KK residual map — that single moment signals more scientific rigour than any text description can.</p>
+        <div class="sia-what-to-show">
+          <div class="sia-step"><span>1</span> Rehearse twice. Use a dataset you know fits cleanly</div>
+          <div class="sia-step"><span>2</span> Pause 1.5 s on every result before moving on</div>
+          <div class="sia-step"><span>3</span> Add chapter text with Clipchamp (free, Windows 11)</div>
+        </div>
+        <div class="sia-tool-row"><i class="fa-solid fa-circle-dot" style="color:var(--accent);font-size:.7rem;"></i> OBS Studio · 1920×1080 · 30fps</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- THREE-COLUMN row: MCMC + Custom Element + Theme comparison -->
+  <div class="sia-three-col fade-in">
+
+    <div class="sia-mini">
+      <div class="sia-mini-media">
+        <div class="sia-placeholder" style="background:linear-gradient(135deg,#ede9fe 0%,#e0d9fc 100%);aspect-ratio:4/3;">
+          <div class="sia-placeholder-inner">
+            <div class="sia-placeholder-icon" style="color:#534ab7;"><i class="fa-solid fa-chart-scatter"></i></div>
+            <div class="sia-placeholder-label">Screenshot</div>
+            <div class="sia-placeholder-hint">MCMC corner plot — CPE-Randles, show Q–α correlation</div>
+          </div>
+        </div>
+        <span class="sia-type-badge" style="background:#534ab7;font-size:.6rem;">Screenshot</span>
+      </div>
+      <h4>Bayesian posteriors</h4>
+      <p>Full corner plot from a CPE-Randles fit. The off-diagonal Q–α correlation is the best image to use — it shows honest parameter identifiability, not a hidden problem.</p>
+      <div class="sia-mini-hint">Run MCMC on CPE-Randles · Wait for R̂ &lt; 1.1 · Screenshot the full corner plot panel</div>
+    </div>
+
+    <div class="sia-mini">
+      <div class="sia-mini-media">
+        <div class="sia-placeholder" style="background:linear-gradient(135deg,#fef3c7 0%,#fde9a2 100%);aspect-ratio:4/3;">
+          <div class="sia-placeholder-inner">
+            <div class="sia-placeholder-icon" style="color:#854f0b;"><i class="fa-solid fa-pen-ruler"></i></div>
+            <div class="sia-placeholder-label">GIF — ~20 seconds</div>
+            <div class="sia-placeholder-hint">Custom element designer: write formula → draw symbol → save → element appears in toolbar</div>
+          </div>
+        </div>
+        <span class="sia-type-badge" style="background:#854f0b;font-size:.6rem;">GIF</span>
+      </div>
+      <h4>Custom element designer</h4>
+      <p>Define a new Z(ω) expression, draw its canvas symbol with the vector editor, save — and watch it appear live in the toolbar. No coding. No other free EIS tool offers this.</p>
+      <div class="sia-mini-hint">Open Custom Component dialog · Write a simple formula · Draw a symbol · Click Save &amp; Register · Show it in the toolbar</div>
+    </div>
+
+    <div class="sia-mini">
+      <div class="sia-mini-media">
+        <div class="sia-placeholder" style="background:linear-gradient(135deg,#e8f1fb 0%,#f5f8fd 100%);aspect-ratio:4/3;">
+          <div class="sia-placeholder-inner">
+            <div class="sia-placeholder-icon" style="color:#1a6db3;"><i class="fa-solid fa-circle-half-stroke"></i></div>
+            <div class="sia-placeholder-label">Screenshot · Side by side</div>
+            <div class="sia-placeholder-hint">Dark theme left · Light theme right — same circuit, same data, both themes</div>
+          </div>
+        </div>
+        <span class="sia-type-badge" style="background:#1a6db3;font-size:.6rem;">Screenshot</span>
+      </div>
+      <h4>Dark &amp; light themes</h4>
+      <p>A simple side-by-side of both themes answers the first question every new user has before downloading. 5 minutes to make — toggle in Settings, screenshot each.</p>
+      <div class="sia-mini-hint">Settings → Theme toggle · Screenshot dark · Screenshot light · Combine side-by-side in any image editor</div>
+    </div>
+
+  </div>
+
+  <!-- Production note -->
+  <div class="sia-note fade-in">
+    <i class="fa-solid fa-lightbulb" style="color:var(--gold);margin-right:8px;"></i>
+    <span><strong>Production tip:</strong> All five recordings can be made in under 3 hours using one real dataset from your original experiment. Use <a href="https://www.screentogif.com" target="_blank" style="color:var(--accent);">ScreenToGif</a> (free) for GIFs, <a href="https://obsproject.com" target="_blank" style="color:var(--accent);">OBS Studio</a> (free) for the video, and Windows Snipping Tool for screenshots. Replace each placeholder by swapping the <code>&lt;div class="sia-placeholder"&gt;</code> with an <code>&lt;img src="..."&gt;</code> or <code>&lt;video autoplay muted loop&gt;</code> tag.</span>
+  </div>
+
+</div>
 </section>
 
 <!-- DOWNLOAD -->
@@ -848,6 +993,20 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
       <div class="trust-item"><i class="fa-solid fa-check"></i> Full help manual included</div>
       <div class="trust-item"><i class="fa-solid fa-check"></i> Validation benchmarks public</div>
     </div>
+
+    <!-- DOI + Citation -->
+    <div class="dl-cite">
+      <div class="dl-cite-top">
+        <span class="dl-cite-label">Cite ZScope in your research</span>
+        <a href="https://doi.org/10.5281/zenodo.20357548" target="_blank">
+          <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg" alt="DOI: 10.5281/zenodo.20357548" style="height:22px;border-radius:4px;vertical-align:middle;">
+        </a>
+      </div>
+      <div class="dl-cite-block">
+        <code>@software{zscope2026,<br>&nbsp;&nbsp;author&nbsp; = {Mohammadi, Tecush},<br>&nbsp;&nbsp;title&nbsp;&nbsp; = {ZScope: Publication-Grade EIS Analysis Platform},<br>&nbsp;&nbsp;year&nbsp;&nbsp;&nbsp; = {2026},<br>&nbsp;&nbsp;doi&nbsp;&nbsp;&nbsp;&nbsp; = {10.5281/zenodo.20357548},<br>&nbsp;&nbsp;url&nbsp;&nbsp;&nbsp;&nbsp; = {https://github.com/Tecush/ZScope}<br>}</code>
+      </div>
+      <button class="dl-cite-copy" onclick="copyBibtex(this)"><i class="fa-regular fa-copy"></i> Copy BibTeX</button>
+    </div>
   </div>
 </section>
 
@@ -855,10 +1014,15 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="logo">Z<em>Scope</em></div>
+      <div class="logo" style="font-size:1.6rem;display:inline-block;margin-bottom:12px;">Z<em>Scope</em></div>
       <p>A free, publication-grade platform for electrochemical impedance spectroscopy analysis. Built by a researcher, for researchers.</p>
-      <p style="margin-top:12px;font-size:.8rem;color:var(--dim);">If ZScope contributes to published research, please cite it in your methods section.</p>
-      <a href="https://doi.org/10.5281/zenodo.20357548"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg" alt="DOI"></a>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a href="https://doi.org/10.5281/zenodo.20357548" target="_blank">
+          <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg" alt="DOI" style="height:20px;border-radius:3px;display:block;">
+        </a>
+        <span style="font-size:.78rem;color:var(--dim);">Citable via Zenodo</span>
+      </div>
+      <p style="margin-top:10px;font-size:.8rem;color:var(--dim);">If ZScope contributes to published research, please cite the DOI above in your methods section.</p>
     </div>
     <div class="footer-col">
       <h5>Navigate</h5>
@@ -867,12 +1031,13 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
       <a href="#science">Methodology</a>
       <a href="#applications">Applications</a>
       <a href="#comparison">Comparison</a>
-      <a href="#media">Gallery</a>
+      <a href="#media">See It in Action</a>
     </div>
     <div class="footer-col">
       <h5>Resources</h5>
       <a href="https://github.com/Tecush/ZScope/releases/latest" target="_blank">Download</a>
       <a href="https://github.com/Tecush/ZScope/tree/main/benchmarks" target="_blank">Benchmarks</a>
+      <a href="https://doi.org/10.5281/zenodo.20357548" target="_blank">Zenodo · DOI Record</a>
       <a href="https://github.com/Tecush/ZScope/issues" target="_blank">Report an Issue</a>
       <a href="mailto:tecush@gmail.com">Contact Author</a>
     </div>
@@ -892,6 +1057,19 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 </button>
 
 <script>
+/* ── Copy BibTeX ── */
+function copyBibtex(btn) {
+  const bibtex = `@software{zscope2026,\n  author  = {Mohammadi, Tecush},\n  title   = {ZScope: Publication-Grade EIS Analysis Platform},\n  year    = {2026},\n  doi     = {10.5281/zenodo.20357548},\n  url     = {https://github.com/Tecush/ZScope}\n}`;
+  navigator.clipboard.writeText(bibtex).then(() => {
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy BibTeX';
+      btn.classList.remove('copied');
+    }, 2200);
+  });
+}
+
 /* ── Scroll fade-in ── */
 const obs = new IntersectionObserver(e => e.forEach(x => {
   if(x.isIntersecting){ x.target.classList.add('visible'); obs.unobserve(x.target); }
