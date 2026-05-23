@@ -30,7 +30,7 @@
 
 ## 🔬 The Story Behind ZScope
 
-ZScope was not designed in the abstract. It was born from a real experimental problem.
+ZScope was not designed in the abstract. The idea for ZScope was born in the laboratory during my own experimental work.
 
 During an electrochemical study, I needed to capture a baseline EIS spectrum at the start of a reaction — then measure six more spectra at different oxidation states as the reaction progressed. Each spectrum represented a distinct state of the system, and together they told the story of a mechanism evolving in time.
 
