@@ -234,6 +234,7 @@ If ZScope contributes to published research, please cite it so others can find i
   title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Analysis Platform},
   year    = {2026},
   url     = {https://github.com/Tecush/ZScope}
+  DOI     = {10.5281/zenodo.20357548}
 }
 ```
 
