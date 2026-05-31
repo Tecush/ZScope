@@ -359,11 +359,11 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
     <div class="logo">Z<em>Scope</em></div>
     <div class="nav-links">
       <a href="#capabilities">Capabilities</a>
+      <a href="#media">In Action</a>
       <a href="#benchmarks">Benchmarks</a>
       <a href="#science">Methodology</a>
-      <a href="#applications">Applications</a>
       <a href="#comparison">Compare</a>
-      <a href="#media">In Action</a>
+      <a href="#applications">Applications</a>
       <a href="#download" class="nav-dl"><i class="fa-solid fa-download" style="font-size:.78rem"></i> Download</a>
     </div>
   </div>
@@ -549,279 +549,6 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
   </div>
 </section>
 
-<!-- BENCHMARKS -->
-<section style="background:var(--surface2);padding:100px 0;" id="benchmarks">
-  <div class="section" style="padding-top:0;padding-bottom:0;">
-    <div class="section-head fade-in">
-      <div class="eyebrow">Validation &amp; Benchmarks</div>
-      <h2>Tested Against<br><em>Known Ground Truth</em></h2>
-      <p>All benchmark results derive from synthetic data with known parameters. Four circuits × three noise levels = 12 test cases. All 12 converged. Results are reproduced in full in the <a href="https://github.com/Tecush/ZScope/tree/main/benchmarks" target="_blank" style="color:var(--accent)">benchmarks/</a> directory.</p>
-    </div>
-    <div class="bm-layout fade-in">
-      <div class="bm-stats">
-        <div class="bm-card">
-          <h4>Clean Data — Parameter Error</h4>
-          <div class="bm-value">&lt;10⁻¹²<span class="bm-unit">%</span></div>
-          <div class="bm-bar"><div class="bm-fill" style="width:100%"></div></div>
-          <div class="bm-desc">Machine-precision recovery for all 4 circuits on noiseless data. χ²_red ≈ 0 in all cases. Confirms the solver and optimizer are mathematically exact.</div>
-          <div class="bm-note">12/12 parameters · Algorithm: DE+TRF</div>
-        </div>
-        <div class="bm-card">
-          <h4>2% Gaussian Noise — RMSE</h4>
-          <div class="bm-value">1.68–1.74<span class="bm-unit">%</span></div>
-          <div class="bm-bar"><div class="bm-fill" style="width:93%"></div></div>
-          <div class="bm-desc">All parameters across all 4 circuits recovered within 1.22% of ground truth. Soft-L1 robust loss keeps RMSE well inside the noise level. No systematic bias observed.</div>
-          <div class="bm-note">Max individual error: 1.22% (R1 in Two-TC)</div>
-        </div>
-        <div class="bm-card">
-          <h4>5% Gaussian Noise — Robustness</h4>
-          <div class="bm-value">3.71–3.95<span class="bm-unit">% RMSE</span></div>
-          <div class="bm-bar"><div class="bm-fill" style="width:82%"></div></div>
-          <div class="bm-desc">Single-arc circuits recover all parameters within 1.75%. CPE.Q reaches 6.72% — expected and correctly flagged as an intrinsic Q–α correlation, not an optimizer failure.</div>
-          <div class="bm-note">CPE.Q: 6.72% (⚠ correlated — see note)</div>
-        </div>
-        <div class="bm-card">
-          <h4>Computation Time</h4>
-          <div class="bm-value">0.53–5.53<span class="bm-unit">s avg</span></div>
-          <div class="bm-bar"><div class="bm-fill" style="width:88%"></div></div>
-          <div class="bm-desc">80 frequency points. Randles: 0.53 s. CPE-Randles: 1.12 s. Two-TC: 2.68 s. All runs use DE+TRF global search — not the faster LHS-only mode.</div>
-          <div class="bm-note">All cases: full DE+TRF · 80 pts · Windows 11</div>
-        </div>
-      </div>
-      <div>
-        <div class="chart-wrap">
-          <h4>RMSE by Circuit &amp; Noise Level</h4>
-          <p>Data from <code>zscope_benchmark_results.json</code>. Each group = one test circuit. All values are well below their respective noise floors.</p>
-          <canvas id="bmChart" height="340"></canvas>
-        </div>
-        <div class="note-box">
-          <strong>Note on Two-TimeConstants at 5% noise:</strong>
-          The Two-TC circuit (Rs–[R1/C1]–[R2/C2]) shows large individual parameter errors at 5% noise. However, the <em>time constants</em> τ₁ = R1·C1 and τ₂ = R2·C2 are recovered within ~4% — inside the noise level. The elevated errors arise from a parameter-swap degeneracy where R1/R2 exchange roles, producing an identical spectrum. ZScope v1.1 adds post-fit ordering to resolve this. At 2% noise, Two-TC already recovers correctly: R1 error 1.22%, R2 error 0.19%.
-        </div>
-        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="https://github.com/Tecush/ZScope/blob/main/benchmarks/reports/comparison_table.csv" download class="btn btn-ghost" style="font-size:.82rem;padding:9px 16px;">
-            <i class="fa-solid fa-download"></i> CSV Results
-          </a>
-          <a href="https://github.com/Tecush/ZScope/blob/main/benchmarks/reports/README.md" target="_blank" class="btn btn-ghost" style="font-size:.82rem;padding:9px 16px;">
-            <i class="fa-solid fa-file-lines"></i> Full Report
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SCIENCE / EQUATIONS -->
-<section class="section" id="science">
-  <div class="section-head fade-in">
-    <div class="eyebrow">Scientific Methodology</div>
-    <h2>The Mathematics<br><em>Inside ZScope</em></h2>
-    <p>ZScope implements well-established electrochemical impedance theory. Every equation shown here is directly implemented in the solver and fitting engine.</p>
-  </div>
-  <div class="eq-grid fade-in">
-    <div class="eq-card">
-      <span class="eq-accent blue"></span>
-      <h4>Complex Impedance</h4>
-      <div class="eq-display">$$Z(\omega) = Z'(\omega) - j\,Z''(\omega)$$</div>
-      <p class="eq-desc">The complex impedance decomposes into real (resistive) and imaginary (reactive) parts. Plotted as $-Z''$ vs $Z'$, this gives the Nyquist representation. ZScope simulates this at every frequency point in real time.</p>
-    </div>
-    <div class="eq-card">
-      <span class="eq-accent teal"></span>
-      <h4>Constant Phase Element</h4>
-      <div class="eq-display">$$Z_\text{CPE}(\omega) = \frac{1}{Q\,(j\omega)^n}$$</div>
-      <p class="eq-desc">The CPE generalizes ideal capacitors ($n=1$) for rough or heterogeneous surfaces. $\alpha = 0.5$ gives Warburg-like diffusion. ZScope fits both $Q$ and $n$ with physical bounds $0 &lt; n \leq 1$.</p>
-    </div>
-    <div class="eq-card">
-      <span class="eq-accent gold"></span>
-      <h4>Modulus-Weighted Objective</h4>
-      <div class="eq-display">$$\chi^2 = \sum_{k=1}^{N} \frac{(Z'_k - \hat{Z}'_k)^2 + (Z''_k - \hat{Z}''_k)^2}{|Z_k|^2}$$</div>
-      <p class="eq-desc">Modulus weighting normalizes each frequency's contribution across the full impedance range — the standard recommended by Boukamp (1986) for unbiased parameter extraction. Default in ZScope.</p>
-    </div>
-    <div class="eq-card">
-      <span class="eq-accent blue"></span>
-      <h4>Warburg Diffusion</h4>
-      <div class="eq-display">$$Z_W(\omega) = \frac{\sigma}{\sqrt{\omega}}\,(1 - j)$$</div>
-      <p class="eq-desc">Semi-infinite Warburg produces the characteristic 45° tail. ZScope also implements FLW (finite, permeable boundary) and FSW (finite, blocking boundary) for bounded diffusion in batteries and fuel cells.</p>
-    </div>
-    <div class="eq-card">
-      <span class="eq-accent violet"></span>
-      <h4>Bayesian Posterior</h4>
-      <div class="eq-display">$$p(\boldsymbol{\theta}\mid\mathbf{Z}) \propto p(\mathbf{Z}\mid\boldsymbol{\theta})\,p(\boldsymbol{\theta})$$</div>
-      <p class="eq-desc">The <code>emcee</code> ensemble sampler draws from the full posterior of circuit parameters $\boldsymbol{\theta}$ given measured spectra $\mathbf{Z}$. This reveals parameter correlations and non-identifiability that point estimates cannot show.</p>
-    </div>
-    <div class="eq-card">
-      <span class="eq-accent rose"></span>
-      <h4>Kramers–Kronig Test</h4>
-      <div class="eq-display">$$Z'(\omega) = R_\infty + \frac{2}{\pi}\int_0^\infty \frac{\xi\,Z''(\xi)}{\xi^2 - \omega^2}\,d\xi$$</div>
-      <p class="eq-desc">The lin-KK method fits a superposition of RC elements to verify causality and linearity without assuming a circuit model. Frequency-resolved residuals pinpoint non-compliant spectral regions before any fitting begins.</p>
-    </div>
-  </div>
-</section>
-
-<!-- WORKFLOW -->
-<section style="background:linear-gradient(160deg,#e4edf8 0%,#e8f0e8 100%);padding:100px 0;" id="workflow">
-  <div class="section" style="padding-top:0;padding-bottom:0;">
-    <div class="section-head center fade-in">
-      <div class="eyebrow">Recommended Workflow</div>
-      <h2>From Raw Data to<br><em>Published Results</em></h2>
-      <p>ZScope covers the complete EIS analysis chain in one application — no switching between tools at any step.</p>
-    </div>
-    <div class="wf-grid fade-in">
-      <div class="wf-step">
-        <div class="wf-icon-wrap" data-n="1"><i class="fa-solid fa-upload wf-icon"></i></div>
-        <h4>Import &amp; Prepare</h4>
-        <p>Auto-detect column format, cross-validate Re/Im vs Mag/Phase, filter rows, set frequency sub-bands, correct sign conventions.</p>
-        <span class="wf-kbd">Ctrl+O</span>
-      </div>
-      <div class="wf-step">
-        <div class="wf-icon-wrap" data-n="2"><i class="fa-solid fa-circle-check wf-icon"></i></div>
-        <h4>Validate with KK</h4>
-        <p>Confirm linearity, causality, and stationarity. Inspect the frequency-resolved residual map and identify any problematic spectral regions.</p>
-        <span class="wf-kbd">Ctrl+K</span>
-      </div>
-      <div class="wf-step">
-        <div class="wf-icon-wrap" data-n="3"><i class="fa-solid fa-diagram-project wf-icon"></i></div>
-        <h4>Build &amp; Fit</h4>
-        <p>Draw a circuit, pick a preset, or use algorithmic suggestion. Visually match simulation to data, then run DE+LHS+TRF fitting.</p>
-        <span class="wf-kbd">F5</span>
-      </div>
-      <div class="wf-step">
-        <div class="wf-icon-wrap" data-n="4"><i class="fa-solid fa-chart-scatter wf-icon"></i></div>
-        <h4>Quantify Uncertainty</h4>
-        <p>Run Bayesian MCMC for full posteriors, credible intervals, parameter correlations, and convergence verification.</p>
-        <span class="wf-kbd">Ctrl+M</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARISON -->
-<section class="section" id="comparison">
-  <div class="section-head fade-in">
-    <div class="eyebrow">Honest Comparison</div>
-    <h2>Where ZScope Excels —<br><em>and Where It Doesn't</em></h2>
-    <p>ZScope is a research-stage tool. We believe in transparency: here is an honest account of where it leads and where established tools have genuine advantages.</p>
-  </div>
-  <div class="compare-wrap fade-in">
-    <table class="compare">
-      <thead>
-        <tr>
-          <th>Feature</th>
-          <th>ZView / EC-Lab</th>
-          <th>Zfit (MATLAB)</th>
-          <th class="zscope-col">ZScope</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Bayesian MCMC uncertainty</td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not available</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> partial</span></td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Full emcee posterior</td>
-        </tr>
-        <tr>
-          <td>Kramers–Kronig validation</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not built-in</td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> lin-KK + residual map</td>
-        </tr>
-        <tr>
-          <td>Real-time interactive simulation</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not available</td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Instantaneous</td>
-        </tr>
-        <tr>
-          <td>Multi-start global optimization</td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Local only</td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Local only</td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> DE + LHS + TRF</td>
-        </tr>
-        <tr>
-          <td>Custom elements (no coding)</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
-          <td><span class="check"><i class="fa-solid fa-check"></i></span> Script-level</td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> GUI formula editor</td>
-        </tr>
-        <tr>
-          <td>Industry track record</td>
-          <td><span class="check"><i class="fa-solid fa-check"></i></span> Decades, widely cited</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> academic</span></td>
-          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> early-stage</span></td>
-        </tr>
-        <tr>
-          <td>Commercial support</td>
-          <td><span class="check"><i class="fa-solid fa-check"></i></span> Dedicated team</td>
-          <td><span class="partial"><i class="fa-solid fa-minus"></i> community</span></td>
-          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> direct author contact</span></td>
-        </tr>
-        <tr>
-          <td>Platform availability</td>
-          <td><span class="check"><i class="fa-solid fa-check"></i></span> Windows / macOS</td>
-          <td><span class="check"><i class="fa-solid fa-check"></i></span> Cross-platform</td>
-          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> Windows (macOS/Linux planned)</span></td>
-        </tr>
-        <tr>
-          <td>Free for researchers</td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Commercial license</td>
-          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Requires MATLAB</td>
-          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Completely free</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="compare-note">ZView and EC-Lab are mature, industry-standard tools with extensive validation histories and dedicated support teams. ZScope is a research-stage application offering modern Bayesian methods and is free for academic use. For critical regulatory analyses, we recommend cross-validating ZScope results against established software.</p>
-  </div>
-</section>
-
-<!-- APPLICATIONS -->
-<section style="background:linear-gradient(160deg,#e8edf5 0%,#f0ebe0 100%);padding:100px 0;" id="applications">
-  <div class="section" style="padding-top:0;padding-bottom:0;">
-    <div class="section-head center fade-in">
-      <div class="eyebrow">Research Applications</div>
-      <h2>Built for Real<br><em>Electrochemistry</em></h2>
-      <p>Designed around the circuit topologies and data characteristics encountered across electrochemical disciplines.</p>
-    </div>
-    <div class="app-grid fade-in">
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-battery-three-quarters"></i></div>
-        <h3>Battery Science</h3>
-        <p>SEI/CEI characterization, charge-transfer kinetics, Li-ion and Na-ion diffusion, degradation analysis, and state-of-health monitoring in Li-ion, Na-ion, and all-solid-state systems.</p>
-        <div class="circuit-tag">Rs-[Rct/CPE]-FLW</div>
-      </div>
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-solar-panel"></i></div>
-        <h3>Photovoltaics</h3>
-        <p>Recombination dynamics, ion migration, hysteresis characterization, capacitance spectroscopy, and interfacial charge accumulation in perovskite and conventional solar cells.</p>
-        <div class="circuit-tag">Rs-[R1/C1]-[R2/C2]</div>
-      </div>
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
-        <h3>Corrosion Science</h3>
-        <p>Polarization resistance, coating delamination, pore resistance, and diffusion-controlled corrosion for inhibitor screening and lifetime prediction.</p>
-        <div class="circuit-tag">Rs-[Rp/CPE]-W</div>
-      </div>
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-atom"></i></div>
-        <h3>Fuel Cells &amp; Electrolyzers</h3>
-        <p>Deconvolution of ohmic, kinetic, and mass-transport contributions in PEM, AEM, and solid-oxide systems. Resolving anode and cathode impedance separately.</p>
-        <div class="circuit-tag">Rs-[Rct/CPE]-G</div>
-      </div>
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
-        <h3>Supercapacitors</h3>
-        <p>Double-layer behavior, faradaic pseudocapacitance, and porous electrode transmission-line analysis in EDLC and hybrid materials.</p>
-        <div class="circuit-tag">Rs-TLine-[R/C]</div>
-      </div>
-      <div class="app-card">
-        <div class="app-icon-wrap"><i class="fa-solid fa-microscope"></i></div>
-        <h3>Mechanistic Studies</h3>
-        <p>Multi-state or time-series EIS — characterizing a system at successive oxidation states or time points. The exact scenario that motivated ZScope, with warm-start support for fast series fitting.</p>
-        <div class="circuit-tag">Series EIS · Warm-Start</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- SEE IT IN ACTION -->
 <section id="media" style="background:linear-gradient(160deg,#e8edf5 0%,#ece8f5 100%);padding:100px 0;">
 <div class="section" style="padding-top:0;padding-bottom:0;">
@@ -971,6 +698,281 @@ footer{border-top:1px solid var(--border);background:var(--surface);}
 
 </div>
 </section>
+
+<!-- WORKFLOW -->
+<section style="background:linear-gradient(160deg,#e4edf8 0%,#e8f0e8 100%);padding:100px 0;" id="workflow">
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <div class="section-head center fade-in">
+      <div class="eyebrow">Recommended Workflow</div>
+      <h2>From Raw Data to<br><em>Published Results</em></h2>
+      <p>ZScope covers the complete EIS analysis chain in one application — no switching between tools at any step.</p>
+    </div>
+    <div class="wf-grid fade-in">
+      <div class="wf-step">
+        <div class="wf-icon-wrap" data-n="1"><i class="fa-solid fa-upload wf-icon"></i></div>
+        <h4>Import &amp; Prepare</h4>
+        <p>Auto-detect column format, cross-validate Re/Im vs Mag/Phase, filter rows, set frequency sub-bands, correct sign conventions.</p>
+        <span class="wf-kbd">Ctrl+O</span>
+      </div>
+      <div class="wf-step">
+        <div class="wf-icon-wrap" data-n="2"><i class="fa-solid fa-circle-check wf-icon"></i></div>
+        <h4>Validate with KK</h4>
+        <p>Confirm linearity, causality, and stationarity. Inspect the frequency-resolved residual map and identify any problematic spectral regions.</p>
+        <span class="wf-kbd">Ctrl+K</span>
+      </div>
+      <div class="wf-step">
+        <div class="wf-icon-wrap" data-n="3"><i class="fa-solid fa-diagram-project wf-icon"></i></div>
+        <h4>Build &amp; Fit</h4>
+        <p>Draw a circuit, pick a preset, or use algorithmic suggestion. Visually match simulation to data, then run DE+LHS+TRF fitting.</p>
+        <span class="wf-kbd">F5</span>
+      </div>
+      <div class="wf-step">
+        <div class="wf-icon-wrap" data-n="4"><i class="fa-solid fa-chart-scatter wf-icon"></i></div>
+        <h4>Quantify Uncertainty</h4>
+        <p>Run Bayesian MCMC for full posteriors, credible intervals, parameter correlations, and convergence verification.</p>
+        <span class="wf-kbd">Ctrl+M</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENCHMARKS -->
+<section style="background:var(--surface2);padding:100px 0;" id="benchmarks">
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <div class="section-head fade-in">
+      <div class="eyebrow">Validation &amp; Benchmarks</div>
+      <h2>Tested Against<br><em>Known Ground Truth</em></h2>
+      <p>All benchmark results derive from synthetic data with known parameters. Four circuits × three noise levels = 12 test cases. All 12 converged. Results are reproduced in full in the <a href="https://github.com/Tecush/ZScope/tree/main/benchmarks" target="_blank" style="color:var(--accent)">benchmarks/</a> directory.</p>
+    </div>
+    <div class="bm-layout fade-in">
+      <div class="bm-stats">
+        <div class="bm-card">
+          <h4>Clean Data — Parameter Error</h4>
+          <div class="bm-value">&lt;10⁻¹²<span class="bm-unit">%</span></div>
+          <div class="bm-bar"><div class="bm-fill" style="width:100%"></div></div>
+          <div class="bm-desc">Machine-precision recovery for all 4 circuits on noiseless data. χ²_red ≈ 0 in all cases. Confirms the solver and optimizer are mathematically exact.</div>
+          <div class="bm-note">12/12 parameters · Algorithm: DE+TRF</div>
+        </div>
+        <div class="bm-card">
+          <h4>2% Gaussian Noise — RMSE</h4>
+          <div class="bm-value">1.68–1.74<span class="bm-unit">%</span></div>
+          <div class="bm-bar"><div class="bm-fill" style="width:93%"></div></div>
+          <div class="bm-desc">All parameters across all 4 circuits recovered within 1.22% of ground truth. Soft-L1 robust loss keeps RMSE well inside the noise level. No systematic bias observed.</div>
+          <div class="bm-note">Max individual error: 1.22% (R1 in Two-TC)</div>
+        </div>
+        <div class="bm-card">
+          <h4>5% Gaussian Noise — Robustness</h4>
+          <div class="bm-value">3.71–3.95<span class="bm-unit">% RMSE</span></div>
+          <div class="bm-bar"><div class="bm-fill" style="width:82%"></div></div>
+          <div class="bm-desc">Single-arc circuits recover all parameters within 1.75%. CPE.Q reaches 6.72% — expected and correctly flagged as an intrinsic Q–α correlation, not an optimizer failure.</div>
+          <div class="bm-note">CPE.Q: 6.72% (⚠ correlated — see note)</div>
+        </div>
+        <div class="bm-card">
+          <h4>Computation Time</h4>
+          <div class="bm-value">0.53–5.53<span class="bm-unit">s avg</span></div>
+          <div class="bm-bar"><div class="bm-fill" style="width:88%"></div></div>
+          <div class="bm-desc">80 frequency points. Randles: 0.53 s. CPE-Randles: 1.12 s. Two-TC: 2.68 s. All runs use DE+TRF global search — not the faster LHS-only mode.</div>
+          <div class="bm-note">All cases: full DE+TRF · 80 pts · Windows 11</div>
+        </div>
+      </div>
+      <div>
+        <div class="chart-wrap">
+          <h4>RMSE by Circuit &amp; Noise Level</h4>
+          <p>Data from <code>zscope_benchmark_results.json</code>. Each group = one test circuit. All values are well below their respective noise floors.</p>
+          <canvas id="bmChart" height="340"></canvas>
+        </div>
+        <div class="note-box">
+          <strong>Note on Two-TimeConstants at 5% noise:</strong>
+          The Two-TC circuit (Rs–[R1/C1]–[R2/C2]) shows large individual parameter errors at 5% noise. However, the <em>time constants</em> τ₁ = R1·C1 and τ₂ = R2·C2 are recovered within ~4% — inside the noise level. The elevated errors arise from a parameter-swap degeneracy where R1/R2 exchange roles, producing an identical spectrum. ZScope v1.1 adds post-fit ordering to resolve this. At 2% noise, Two-TC already recovers correctly: R1 error 1.22%, R2 error 0.19%.
+        </div>
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="https://github.com/Tecush/ZScope/blob/main/benchmarks/reports/comparison_table.csv" download class="btn btn-ghost" style="font-size:.82rem;padding:9px 16px;">
+            <i class="fa-solid fa-download"></i> CSV Results
+          </a>
+          <a href="https://github.com/Tecush/ZScope/blob/main/benchmarks/reports/README.md" target="_blank" class="btn btn-ghost" style="font-size:.82rem;padding:9px 16px;">
+            <i class="fa-solid fa-file-lines"></i> Full Report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENCE / EQUATIONS -->
+<section class="section" id="science">
+  <div class="section-head fade-in">
+    <div class="eyebrow">Scientific Methodology</div>
+    <h2>The Mathematics<br><em>Inside ZScope</em></h2>
+    <p>ZScope implements well-established electrochemical impedance theory. Every equation shown here is directly implemented in the solver and fitting engine.</p>
+  </div>
+  <div class="eq-grid fade-in">
+    <div class="eq-card">
+      <span class="eq-accent blue"></span>
+      <h4>Complex Impedance</h4>
+      <div class="eq-display">$$Z(\omega) = Z'(\omega) - j\,Z''(\omega)$$</div>
+      <p class="eq-desc">The complex impedance decomposes into real (resistive) and imaginary (reactive) parts. Plotted as $-Z''$ vs $Z'$, this gives the Nyquist representation. ZScope simulates this at every frequency point in real time.</p>
+    </div>
+    <div class="eq-card">
+      <span class="eq-accent teal"></span>
+      <h4>Constant Phase Element</h4>
+      <div class="eq-display">$$Z_\text{CPE}(\omega) = \frac{1}{Q\,(j\omega)^n}$$</div>
+      <p class="eq-desc">The CPE generalizes ideal capacitors ($n=1$) for rough or heterogeneous surfaces. $\alpha = 0.5$ gives Warburg-like diffusion. ZScope fits both $Q$ and $n$ with physical bounds $0 &lt; n \leq 1$.</p>
+    </div>
+    <div class="eq-card">
+      <span class="eq-accent gold"></span>
+      <h4>Modulus-Weighted Objective</h4>
+      <div class="eq-display">$$\chi^2 = \sum_{k=1}^{N} \frac{(Z'_k - \hat{Z}'_k)^2 + (Z''_k - \hat{Z}''_k)^2}{|Z_k|^2}$$</div>
+      <p class="eq-desc">Modulus weighting normalizes each frequency's contribution across the full impedance range — the standard recommended by Boukamp (1986) for unbiased parameter extraction. Default in ZScope.</p>
+    </div>
+    <div class="eq-card">
+      <span class="eq-accent blue"></span>
+      <h4>Warburg Diffusion</h4>
+      <div class="eq-display">$$Z_W(\omega) = \frac{\sigma}{\sqrt{\omega}}\,(1 - j)$$</div>
+      <p class="eq-desc">Semi-infinite Warburg produces the characteristic 45° tail. ZScope also implements FLW (finite, permeable boundary) and FSW (finite, blocking boundary) for bounded diffusion in batteries and fuel cells.</p>
+    </div>
+    <div class="eq-card">
+      <span class="eq-accent violet"></span>
+      <h4>Bayesian Posterior</h4>
+      <div class="eq-display">$$p(\boldsymbol{\theta}\mid\mathbf{Z}) \propto p(\mathbf{Z}\mid\boldsymbol{\theta})\,p(\boldsymbol{\theta})$$</div>
+      <p class="eq-desc">The <code>emcee</code> ensemble sampler draws from the full posterior of circuit parameters $\boldsymbol{\theta}$ given measured spectra $\mathbf{Z}$. This reveals parameter correlations and non-identifiability that point estimates cannot show.</p>
+    </div>
+    <div class="eq-card">
+      <span class="eq-accent rose"></span>
+      <h4>Kramers–Kronig Test</h4>
+      <div class="eq-display">$$Z'(\omega) = R_\infty + \frac{2}{\pi}\int_0^\infty \frac{\xi\,Z''(\xi)}{\xi^2 - \omega^2}\,d\xi$$</div>
+      <p class="eq-desc">The lin-KK method fits a superposition of RC elements to verify causality and linearity without assuming a circuit model. Frequency-resolved residuals pinpoint non-compliant spectral regions before any fitting begins.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section" id="comparison">
+  <div class="section-head fade-in">
+    <div class="eyebrow">Honest Comparison</div>
+    <h2>Where ZScope Excels —<br><em>and Where It Doesn't</em></h2>
+    <p>ZScope is a research-stage tool. We believe in transparency: here is an honest account of where it leads and where established tools have genuine advantages.</p>
+  </div>
+  <div class="compare-wrap fade-in">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>ZView / EC-Lab</th>
+          <th>Zfit (MATLAB)</th>
+          <th class="zscope-col">ZScope</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bayesian MCMC uncertainty</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not available</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> partial</span></td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Full emcee posterior</td>
+        </tr>
+        <tr>
+          <td>Kramers–Kronig validation</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not built-in</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> lin-KK + residual map</td>
+        </tr>
+        <tr>
+          <td>Real-time interactive simulation</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Not available</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Instantaneous</td>
+        </tr>
+        <tr>
+          <td>Multi-start global optimization</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Local only</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Local only</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> DE + LHS + TRF</td>
+        </tr>
+        <tr>
+          <td>Custom elements (no coding)</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> limited</span></td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span> Script-level</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> GUI formula editor</td>
+        </tr>
+        <tr>
+          <td>Industry track record</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span> Decades, widely cited</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> academic</span></td>
+          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> early-stage</span></td>
+        </tr>
+        <tr>
+          <td>Commercial support</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span> Dedicated team</td>
+          <td><span class="partial"><i class="fa-solid fa-minus"></i> community</span></td>
+          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> direct author contact</span></td>
+        </tr>
+        <tr>
+          <td>Platform availability</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span> Windows / macOS</td>
+          <td><span class="check"><i class="fa-solid fa-check"></i></span> Cross-platform</td>
+          <td class="zscope-col"><span class="partial"><i class="fa-solid fa-minus"></i> Windows (macOS/Linux planned)</span></td>
+        </tr>
+        <tr>
+          <td>Free for researchers</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Commercial license</td>
+          <td><span class="cross"><i class="fa-solid fa-xmark"></i></span> Requires MATLAB</td>
+          <td class="zscope-col"><span class="check"><i class="fa-solid fa-check"></i></span> Completely free</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="compare-note">ZView and EC-Lab are mature, industry-standard tools with extensive validation histories and dedicated support teams. ZScope is a research-stage application offering modern Bayesian methods and is free for academic use. For critical regulatory analyses, we recommend cross-validating ZScope results against established software.</p>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section style="background:linear-gradient(160deg,#e8edf5 0%,#f0ebe0 100%);padding:100px 0;" id="applications">
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <div class="section-head center fade-in">
+      <div class="eyebrow">Research Applications</div>
+      <h2>Built for Real<br><em>Electrochemistry</em></h2>
+      <p>Designed around the circuit topologies and data characteristics encountered across electrochemical disciplines.</p>
+    </div>
+    <div class="app-grid fade-in">
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-battery-three-quarters"></i></div>
+        <h3>Battery Science</h3>
+        <p>SEI/CEI characterization, charge-transfer kinetics, Li-ion and Na-ion diffusion, degradation analysis, and state-of-health monitoring in Li-ion, Na-ion, and all-solid-state systems.</p>
+        <div class="circuit-tag">Rs-[Rct/CPE]-FLW</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-solar-panel"></i></div>
+        <h3>Photovoltaics</h3>
+        <p>Recombination dynamics, ion migration, hysteresis characterization, capacitance spectroscopy, and interfacial charge accumulation in perovskite and conventional solar cells.</p>
+        <div class="circuit-tag">Rs-[R1/C1]-[R2/C2]</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Corrosion Science</h3>
+        <p>Polarization resistance, coating delamination, pore resistance, and diffusion-controlled corrosion for inhibitor screening and lifetime prediction.</p>
+        <div class="circuit-tag">Rs-[Rp/CPE]-W</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-atom"></i></div>
+        <h3>Fuel Cells &amp; Electrolyzers</h3>
+        <p>Deconvolution of ohmic, kinetic, and mass-transport contributions in PEM, AEM, and solid-oxide systems. Resolving anode and cathode impedance separately.</p>
+        <div class="circuit-tag">Rs-[Rct/CPE]-G</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-bolt"></i></div>
+        <h3>Supercapacitors</h3>
+        <p>Double-layer behavior, faradaic pseudocapacitance, and porous electrode transmission-line analysis in EDLC and hybrid materials.</p>
+        <div class="circuit-tag">Rs-TLine-[R/C]</div>
+      </div>
+      <div class="app-card">
+        <div class="app-icon-wrap"><i class="fa-solid fa-microscope"></i></div>
+        <h3>Mechanistic Studies</h3>
+        <p>Multi-state or time-series EIS — characterizing a system at successive oxidation states or time points. The exact scenario that motivated ZScope, with warm-start support for fast series fitting.</p>
+        <div class="circuit-tag">Series EIS · Warm-Start</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
 <!-- DOWNLOAD -->
 <section class="dl-section" id="download">
