@@ -236,7 +236,7 @@ If ZScope contributes to published research, please cite it so others can find i
   url     = {https://github.com/Tecush/ZScope}
 }
 ```
-**DOI:**  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg)](https://doi.org/10.5281/zenodo.20357548)
+**DOI:**  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg)](https://doi.org/10.5281/zenodo.20357547)
 ---
 
 ## 📬 Contact
