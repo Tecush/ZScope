@@ -21,6 +21,7 @@
     <a href="#-recommended-workflow">Workflow</a> ·
     <a href="#-validation--benchmarks">Benchmarks</a> ·
     <a href="#-scientific-applications">Applications</a> ·
+    <a href="#-why-zscope">Comparison</a> ·
     <a href="#-installation">Installation</a> ·
     <a href="#-citation">Citation</a>
   </p>
@@ -30,7 +31,7 @@
 
 ## 🔬 The Story Behind ZScope
 
-ZScope was not designed in the abstract. The idea for ZScope was born in the laboratory during my own experimental work.
+ZScope was not designed in the abstract. It was born from a real experimental problem.
 
 During an electrochemical study, I needed to capture a baseline EIS spectrum at the start of a reaction — then measure six more spectra at different oxidation states as the reaction progressed. Each spectrum represented a distinct state of the system, and together they told the story of a mechanism evolving in time.
 
@@ -58,7 +59,7 @@ ZScope is the tool I needed during that experiment. It is free, and I hope it gi
 
 The feature that started it all. Draw an equivalent circuit on the visual canvas, set your parameters, and the **Nyquist, Bode, and Phase plots update instantly** — with your experimental data overlaid.
 
-Adjusting R_ct, CPE exponent, or Warburg coefficient by hand and watching the spectrum respond builds the kind of physical intuition no black-box fitter can provide.
+Adjusting R<sub>ct</sub>, CPE exponent, or Warburg coefficient by hand and watching the spectrum respond builds the kind of physical intuition no black-box fitter can provide.
 
 - Drag-and-drop canvas with grid snapping
 - Presets: Randles, Randles+Warburg, CPE variants, inductive loops, battery (FLW), Gerischer
@@ -70,7 +71,7 @@ Adjusting R_ct, CPE exponent, or Warburg coefficient by hand and watching the sp
 
 ### 📥 Flexible Data Import
 
-Import EIS data without fighting file formats. ZScope auto-detects column assignments, cross-validates Re/Im vs Mag/Phase representations, and handles sign convention differences between instruments.
+Import EIS data without fighting file formats. ZScope recognizes the native export formats of most common potentiostats — Gamry, BioLogic, Autolab, Zahner, Ivium, CHI, PalmSens, PAR, and more — and falls back to a smart generic parser for anything else.
 
 - Auto-detection and consistency cross-check of column pairs
 - Sign convention toggle for different potentiostats
@@ -84,7 +85,7 @@ Import EIS data without fighting file formats. ZScope auto-detects column assign
 
 ### ✅ Kramers–Kronig Validation
 
-Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test with quantitative residual mapping.
+Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test (Boukamp's lin-KK method) with quantitative, modulus-weighted residual mapping.
 
 | Residual | Status | Action |
 |---|---|---|
@@ -92,7 +93,7 @@ Before fitting any parameters, confirm your data is worth fitting. ZScope implem
 | 0.5–2% | ⚠️ Minor drift | Narrow frequency range |
 | > 2% | ❌ Violation | Repeat measurement |
 
-One keystroke (Ctrl+K), < 2 second result.
+One keystroke (Ctrl+K), under 2 seconds.
 
 </td>
 <td width="50%" valign="top">
@@ -116,7 +117,7 @@ Modulus weighting · Soft-L1 robust loss · AIC/BIC model selection · Warm-star
 
 ### 📊 Bayesian MCMC Uncertainty
 
-A single point estimate is not enough. ZScope uses the `emcee` affine-invariant ensemble sampler to map the full posterior distribution P(θ | Z_exp):
+A single point estimate is not enough. ZScope uses the `emcee` affine-invariant ensemble sampler to map the full posterior distribution P(θ | Z<sub>exp</sub>):
 
 - **95% credible intervals** — probability-direct, not frequentist approximations
 - Marginal and joint posterior distributions
@@ -167,7 +168,7 @@ Custom elements are defined through a GUI designer, exported as `.json`, and beh
 
 ## 📈 Validation & Benchmarks
 
-Validated on synthetic data with known ground-truth parameters. Four circuits × three noise levels = 12 test cases. All 12 converged successfully.
+Validated on synthetic data with known ground-truth parameters: four circuits × three noise levels, twelve test cases, all converging successfully.
 
 | Circuit | Noise | Accuracy |
 |---|:---:|---|
@@ -178,7 +179,7 @@ Validated on synthetic data with known ground-truth parameters. Four circuits ×
 
 > The Q–α correlation in the CPE case is not a software deficiency — it reflects a genuine physical interdependence in CPE parameterization. ZScope correctly detects and reports it.
 
-All benchmark data, comparison tables, and analysis scripts are in [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) for independent verification.
+All benchmark data, comparison tables, and analysis scripts are available in [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) for independent verification.
 
 ---
 
@@ -201,9 +202,9 @@ All benchmark data, comparison tables, and analysis scripts are in [`benchmarks/
 | Capability | Commercial Tools | Academic Scripts | **ZScope** |
 |---|:---:|:---:|:---:|
 | Real-time interactive simulation | Rarely | ✗ | ✅ Instantaneous |
-| Bayesian MCMC posteriors | Rarely | Manual | ✅ Full emcee engine |
+| Bayesian MCMC posteriors | Rarely | Manual | ✅ Full `emcee` engine |
 | Kramers–Kronig validation | Limited | Manual | ✅ Integrated + residual maps |
-| Global optimization (DE+LHS) | ✗ local only | Variable | ✅ Three-stage hybrid |
+| Global optimization (DE+LHS) | ✗ Local only | Variable | ✅ Three-stage hybrid |
 | Algorithmic circuit suggestion | Uncommon | ✗ | ✅ Spectral fingerprinting |
 | Custom elements (no coding) | Restricted | Script-level | ✅ GUI designer |
 | Sequential warm-start fitting | Rarely | Manual | ✅ Automatic |
@@ -236,13 +237,13 @@ If ZScope contributes to published research, please cite it so others can find i
   url     = {https://github.com/Tecush/ZScope}
 }
 ```
-**DOI:**  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20357548.svg)](https://doi.org/10.5281/zenodo.20357547)
+
 ---
 
 ## 📬 Contact
 
 **Developer:** Tecush Mohammadi
-**Email:** tecush@gmail.com
+**Email:** [tecush@gmail.com](mailto:tecush@gmail.com)
 **GitHub:** [@Tecush](https://github.com/Tecush)
 **Issues & feature requests:** [GitHub Issues](https://github.com/Tecush/ZScope/issues)
 
