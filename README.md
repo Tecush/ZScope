@@ -9,7 +9,7 @@
 
   <p>
     <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Latest%20Release&style=flat-square&color=1d6fb5" alt="Latest Release"/></a>&nbsp;
-    <a href="https://doi.org/10.5281/zenodo.21827740"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.21827740.svg" alt="DOI"/></a>&nbsp;
+    <a href="https://doi.org/10.5281/zenodo.21828068"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.21828068.svg" alt="DOI"/></a>&nbsp;
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" alt="MIT License"/></a>&nbsp;
     <a href="https://github.com/Tecush/ZScope/issues"><img src="https://img.shields.io/github/issues/Tecush/ZScope?style=flat-square&color=f59e0b" alt="Open Issues"/></a>&nbsp;
     <img src="https://img.shields.io/badge/Platform-Windows-0ea5e9?style=flat-square" alt="Windows"/>&nbsp;
@@ -18,6 +18,7 @@
 
   <p>
     <a href="#-the-story-behind-zscope">Story</a> ·
+    <a href="#-whats-new-in-210">What's New</a> ·
     <a href="#-key-capabilities">Capabilities</a> ·
     <a href="#-recommended-workflow">Workflow</a> ·
     <a href="#-validation--benchmarks">Benchmarks</a> ·
@@ -47,6 +48,41 @@ As the tool took shape, it grew. The fitting engine followed — built with the 
 ZScope is the tool I needed during that experiment. It is free, and I hope it gives other researchers something better than what was available to me.
 
 > **Distribution:** ZScope is released as a ready-to-install application for Windows. Source code is not publicly distributed. Full scientific documentation, validation benchmarks, and an in-app help manual are provided so you can trust what happens inside.
+
+---
+
+## 🚀 What's New in 2.1.0
+
+### Fitting engine rebuilt around an exact analytic Jacobian
+
+Earlier versions approximated the fit's Jacobian by finite differences, which cost one extra full circuit simulation *per free parameter* on every optimizer iteration. On a twenty-parameter circuit that approximation accounted for roughly 95% of all computation.
+
+The modified-nodal-analysis system now supplies its own derivative in closed form. Because the admittance matrix is symmetric, the adjoint vector is identical to the solution vector, so the complete Jacobian costs **one linear solve instead of one per parameter**.
+
+| Free parameters | Typical speed-up |
+|:---:|:---:|
+| 4 – 7 | 9 – 12× |
+| 10 – 13 | 20 – 26× |
+| 19 – 25 | ~36× |
+
+The derivative is exact, not approximate: verified against central differences to ~10⁻⁹ relative error on every element type in the library. Across the benchmark suite the final fit quality is **equal or better** than 2.0.0 in every case — never worse.
+
+### Accuracy corrections
+
+Two defects affecting **reported uncertainties** (not fitted values) were found and fixed:
+
+- **Uncertainties could be attached to the wrong parameter on multi-arc circuits.** The RC/RQ frequency sort redistributes parameter values between components after fitting so that arcs are labelled high→low characteristic frequency — but the uncertainty table, correlation matrix, and identifiability flags did not follow that redistribution. On a three-arc test circuit, 4 of 7 reported uncertainties described a value that was no longer on that component. Parameter identity now follows the sort throughout.
+
+- **Finite-difference error propagated into the confidence intervals.** Comparison against central differences showed the previous two-point Jacobian was ~11% wrong in the series-inductance column on stiff circuits, and that same Jacobian feeds the sandwich covariance estimator. The analytic Jacobian eliminates this source of error entirely.
+
+> **If you have drafted or published ± uncertainties** from a circuit with two or more arcs, or one containing an inductance, please re-run those fits. Fitted parameter values are unaffected; the intervals may change.
+
+### Performance and behaviour
+
+- **Global search no longer runs on every fit.** Differential Evolution is now an escalation step reserved for fits that fail quality acceptance. In ten controlled trials it never improved on the multi-start result while costing 4–8× the runtime.
+- **Multi-start screening.** All starting points are ranked with a short exploratory run before the most promising are fully refined. Median effect on final fit quality: 0.000%. An exhaustive mode remains available for benchmark and publication runs.
+- **Frozen parameters are cached.** Components with no fitted parameter are evaluated once per fit instead of on every iteration.
+- **Faster circuit evaluation** throughout — simulation, DRT, and plotting all benefit, not only fitting.
 
 ---
 
@@ -101,11 +137,12 @@ One keystroke (Ctrl+K), under 2 seconds.
 
 ### 🎯 Advanced Fitting Engine
 
-A three-stage hybrid optimizer designed to find the true global minimum, not just the nearest local one:
+An **escalating** optimizer: exact, inexpensive methods first — global search engaged only when a fit fails quality acceptance, never as a routine tax on every run.
 
-1. **LHS** — Latin Hypercube Sampling for space-filling parameter coverage
-2. **DE** — Differential Evolution for multimodal landscapes
-3. **TRF** — Trust-Region Reflective for gradient-precise local refinement
+1. **Analytic Jacobian** — the circuit's derivative in closed form via adjoint sensitivity, not finite differences
+2. **LHS multi-start** — Latin Hypercube Sampling, candidates screened before full refinement
+3. **TRF** — Trust-Region Reflective for gradient-precise local convergence
+4. **DE escalation** — Differential Evolution plus global restarts, triggered only on a rejected fit
 
 $$\chi^2 = \sum_{k} \frac{(Z'_k - \hat{Z}'_k)^2 + (Z''_k - \hat{Z}''_k)^2}{|Z_k|^2}$$
 
@@ -154,7 +191,7 @@ Custom elements are defined through a GUI designer, exported as `.json`, and beh
 ```
   Load Data  ──▶  KK Validate  ──▶  Build Circuit  ──▶  Fit  ──▶  MCMC  ──▶  Export
       │                │                  │               │          │           │
-  auto-detect      < 2 seconds       real-time sim    DE+LHS+TRF  posterior  txt/csv/
+  auto-detect      < 2 seconds       real-time sim    LHS+TRF+DE  posterior  txt/csv/
   column format    residual map      overlay data     warm-start   credible   json/PDF
 ```
 
@@ -205,7 +242,7 @@ All benchmark data, comparison tables, and analysis scripts are available in [`b
 | Real-time interactive simulation | Rarely | ✗ | ✅ Instantaneous |
 | Bayesian MCMC posteriors | Rarely | Manual | ✅ Full `emcee` engine |
 | Kramers–Kronig validation | Limited | Manual | ✅ Integrated + residual maps |
-| Global optimization (DE+LHS) | ✗ Local only | Variable | ✅ Three-stage hybrid |
+| Global optimization (LHS+TRF+DE) | ✗ Local only | Variable | ✅ Escalating hybrid |
 | Algorithmic circuit suggestion | Uncommon | ✗ | ✅ Spectral fingerprinting |
 | Custom elements (no coding) | Restricted | Script-level | ✅ GUI designer |
 | Sequential warm-start fitting | Rarely | Manual | ✅ Automatic |
@@ -235,13 +272,13 @@ If ZScope contributes to published research, please cite it so others can find i
   author  = {Mohammadi, Tecush},
   title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Analysis Platform},
   year    = {2026},
-  version = {2.0.0},
+  version = {2.1.0},
   url     = {https://github.com/Tecush/ZScope},
-  doi     = {10.5281/zenodo.21827740}
+  doi     = {10.5281/zenodo.21828068}
 }
 ```
 
-DOI: [10.5281/zenodo.21827740](https://doi.org/10.5281/zenodo.21827740)
+DOI: [10.5281/zenodo.21828068](https://doi.org/10.5281/zenodo.21828068)
 
 ---
 
