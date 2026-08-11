@@ -53,36 +53,17 @@ ZScope is the tool I needed during that experiment. It is free, and I hope it gi
 
 ## 🚀 What's New in 2.1.0
 
-### Fitting engine rebuilt around an exact analytic Jacobian
+**AI-enhanced circuit proposer** — local and online AI now assist the proposer in analysing your spectrum and suggesting equivalent circuit models. The underlying proposer architecture was also reworked for better baseline accuracy independently of AI.
 
-Earlier versions approximated the fit's Jacobian by finite differences, which cost one extra full circuit simulation *per free parameter* on every optimizer iteration. On a twenty-parameter circuit that approximation accounted for roughly 95% of all computation.
+**Bring your own AI account** — import and connect a personal or enterprise AI account to power the proposer.
 
-The modified-nodal-analysis system now supplies its own derivative in closed form. Because the admittance matrix is symmetric, the adjoint vector is identical to the solution vector, so the complete Jacobian costs **one linear solve instead of one per parameter**.
+**New benchmark suite** — integrated benchmarks for rigorously evaluating, comparing, and validating circuit model performance.
 
-| Free parameters | Typical speed-up |
-|:---:|:---:|
-| 4 – 7 | 9 – 12× |
-| 10 – 13 | 20 – 26× |
-| 19 – 25 | ~36× |
+**Upgraded Fitting, DRT and Kramers–Kronig evaluation** — improved accuracy, better edge-case handling, and more robust metrics across all three.
 
-The derivative is exact, not approximate: verified against central differences to ~10⁻⁹ relative error on every element type in the library. Across the benchmark suite the final fit quality is **equal or better** than 2.0.0 in every case — never worse.
+**Major fitting speed-up for large circuits** — the Trust-Region Reflective bottleneck is resolved. The Jacobian is now derived analytically from the circuit rather than approximated by finite differences, costing one linear solve instead of one per parameter. Circuits with 10+ free parameters fit roughly 20–35× faster, with equal or better final fit quality.
 
-### Accuracy corrections
-
-Two defects affecting **reported uncertainties** (not fitted values) were found and fixed:
-
-- **Uncertainties could be attached to the wrong parameter on multi-arc circuits.** The RC/RQ frequency sort redistributes parameter values between components after fitting so that arcs are labelled high→low characteristic frequency — but the uncertainty table, correlation matrix, and identifiability flags did not follow that redistribution. On a three-arc test circuit, 4 of 7 reported uncertainties described a value that was no longer on that component. Parameter identity now follows the sort throughout.
-
-- **Finite-difference error propagated into the confidence intervals.** Comparison against central differences showed the previous two-point Jacobian was ~11% wrong in the series-inductance column on stiff circuits, and that same Jacobian feeds the sandwich covariance estimator. The analytic Jacobian eliminates this source of error entirely.
-
-> **If you have drafted or published ± uncertainties** from a circuit with two or more arcs, or one containing an inductance, please re-run those fits. Fitted parameter values are unaffected; the intervals may change.
-
-### Performance and behaviour
-
-- **Global search no longer runs on every fit.** Differential Evolution is now an escalation step reserved for fits that fail quality acceptance. In ten controlled trials it never improved on the multi-start result while costing 4–8× the runtime.
-- **Multi-start screening.** All starting points are ranked with a short exploratory run before the most promising are fully refined. Median effect on final fit quality: 0.000%. An exhaustive mode remains available for benchmark and publication runs.
-- **Frozen parameters are cached.** Components with no fitted parameter are evaluated once per fit instead of on every iteration.
-- **Faster circuit evaluation** throughout — simulation, DRT, and plotting all benefit, not only fitting.
+> **Note on uncertainties:** two corrected defects affected reported ± intervals on multi-arc circuits and on circuits containing an inductance. Fitted parameter values are unchanged. If you have drafted uncertainties from such fits, please re-run them.
 
 ---
 
