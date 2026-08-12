@@ -255,7 +255,7 @@ If ZScope contributes to published research, please cite it so others can find i
   year    = {2026},
   version = {2.1.0},
   url     = {https://github.com/Tecush/ZScope},
-  doi     = {10.5281/zenodo.21828068}
+  doi     = {10.5281/zenodo.20357547}
 }
 ```
 
