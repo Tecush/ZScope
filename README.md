@@ -9,7 +9,7 @@
 
   <p>
     <a href="https://github.com/Tecush/ZScope/releases/latest"><img src="https://img.shields.io/github/v/release/Tecush/ZScope?label=Latest%20Release&style=flat-square&color=1d6fb5" alt="Latest Release"/></a>&nbsp;
-    <a href="https://doi.org/10.5281/zenodo.21828068"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.21828068.svg" alt="DOI"/></a>&nbsp;
+    <a href="https://doi.org/10.5281/zenodo.20357547"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.20357547.svg" alt="DOI"/></a>&nbsp;
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" alt="MIT License"/></a>&nbsp;
     <a href="https://github.com/Tecush/ZScope/issues"><img src="https://img.shields.io/github/issues/Tecush/ZScope?style=flat-square&color=f59e0b" alt="Open Issues"/></a>&nbsp;
     <img src="https://img.shields.io/badge/Platform-Windows-0ea5e9?style=flat-square" alt="Windows"/>&nbsp;
@@ -259,7 +259,7 @@ If ZScope contributes to published research, please cite it so others can find i
 }
 ```
 
-DOI: [10.5281/zenodo.21828068](https://doi.org/10.5281/zenodo.21828068)
+DOI: [10.5281/zenodo.20357547](https://doi.org/10.5281/zenodo.20357547)
 
 ---
 
