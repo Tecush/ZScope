@@ -18,7 +18,7 @@
 
   <p>
     <a href="#-the-story-behind-zscope">Story</a> ·
-    <a href="#-whats-new-in-210">What's New</a> ·
+    <a href="#-whats-new-in-220">What's New</a> ·
     <a href="#-key-capabilities">Capabilities</a> ·
     <a href="#-recommended-workflow">Workflow</a> ·
     <a href="#-validation--benchmarks">Benchmarks</a> ·
@@ -51,7 +51,24 @@ ZScope is the tool I needed during that experiment. It is free, and I hope it gi
 
 ---
 
-## 🚀 What's New in 2.1.0
+## 🚀 What's New in 2.2.0
+
+**Save & Open Project** — an entire session now lives in one `.zscope` file: every loaded dataset with its circuit, its fit and Bayesian results, its DRT analysis, and its import column mapping. Reopen it and everything is where you left it. The file is an ordinary ZIP archive with a readable JSON manifest inside, so it can be inspected without ZScope, and numerical arrays are stored exactly — a reloaded project is bit-for-bit identical to the one you saved.
+
+**Export datasets as separate project files** — split a batch into one independently-reopenable project per dataset. Unlike CSV export, each file keeps that dataset's circuit, fit and DRT results with it.
+
+**Import many files at once** — select or drag in a whole folder of spectra. ZScope reads each one, detects its columns, and shows a review list with point counts and frequency ranges before anything loads. Files from the same instrument share a layout, so a typical batch needs one click; anything that needs attention opens the full import editor on its own, and one file's mapping can be applied across the whole batch.
+
+**Import source tracking** — every spectrum records how it was obtained: columns detected automatically, columns chosen by you, or data values edited by hand. It is shown during import, written to the log, and saved into the project file — so months later it is still answerable which curves are the file as measured, and which carry a human decision.
+
+**Drag and drop now asks** — dropping files offers *Add* (keep what is loaded and compare) or *Replace* (start over). Closing the application offers to save unsaved work first, and the window title marks a session that has any.
+
+> **Note:** DRT results were previously held only for the active dataset and were silently discarded when you switched datasets. They now belong to their dataset, follow it, and save with the project.
+
+<details>
+<summary><strong>Previously — What's New in 2.1.0</strong></summary>
+
+<br/>
 
 **AI-enhanced circuit proposer** — local and online AI now assist the proposer in analysing your spectrum and suggesting equivalent circuit models. The underlying proposer architecture was also reworked for better baseline accuracy independently of AI.
 
@@ -64,6 +81,8 @@ ZScope is the tool I needed during that experiment. It is free, and I hope it gi
 **Major fitting speed-up for large circuits** — the Trust-Region Reflective bottleneck is resolved. The Jacobian is now derived analytically from the circuit rather than approximated by finite differences, costing one linear solve instead of one per parameter. Circuits with 10+ free parameters fit roughly 20–35× faster, with equal or better final fit quality.
 
 > **Note on uncertainties:** two corrected defects affected reported ± intervals on multi-arc circuits and on circuits containing an inductance. Fitted parameter values are unchanged. If you have drafted uncertainties from such fits, please re-run them.
+
+</details>
 
 ---
 
@@ -91,6 +110,7 @@ Adjusting R<sub>ct</sub>, CPE exponent, or Warburg coefficient by hand and watch
 
 Import EIS data without fighting file formats. ZScope recognizes the native export formats of most common potentiostats — Gamry, BioLogic, Autolab, Zahner, Ivium, CHI, PalmSens, PAR, and more — and falls back to a smart generic parser for anything else.
 
+- Batch import: many files at once, columns auto-detected per file
 - Auto-detection and consistency cross-check of column pairs
 - Sign convention toggle for different potentiostats
 - Row-level filtering: exclude drift, artefacts, or outliers while keeping them visible
@@ -103,13 +123,11 @@ Import EIS data without fighting file formats. ZScope recognizes the native expo
 
 ### ✅ Kramers–Kronig Validation
 
-Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test (Boukamp's lin-KK method) with quantitative, modulus-weighted residual mapping.
+Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test (Schönleber's μ-criterion lin-KK method) with modulus-weighted residual mapping.
 
-| Residual | Status | Action |
-|---|---|---|
-| < 0.5% | ✅ Valid | Proceed |
-| 0.5–2% | ⚠️ Minor drift | Narrow frequency range |
-| > 2% | ❌ Violation | Repeat measurement |
+The verdict is based on residual **structure**, not on a fixed percentage threshold: KK-compliant data leaves randomly-scattered residuals, while drift and non-stationarity leave systematic, smoothly-varying ones. A magnitude threshold alone cannot separate "noisy" from "invalid" — on a 160-point sweep at 1% noise the largest residual is ~3% by chance.
+
+Measured false-positive rate on KK-compliant synthetic data: **0.0%** across noise levels from 0.5% to 5%.
 
 One keystroke (Ctrl+K), under 2 seconds.
 
@@ -139,6 +157,8 @@ Modulus weighting · Soft-L1 robust loss · AIC/BIC model selection · Warm-star
 A single point estimate is not enough. ZScope uses the `emcee` affine-invariant ensemble sampler to map the full posterior distribution P(θ | Z<sub>exp</sub>):
 
 - **95% credible intervals** — probability-direct, not frequentist approximations
+- Measurement noise scale is **marginalised analytically** rather than plugged in as a point estimate, so intervals account for uncertainty in the noise level itself
+- The model's own posterior estimate of the noise level is reported — an independent check on calibration
 - Marginal and joint posterior distributions
 - Parameter correlation and covariance analysis
 - Convergence diagnostics: R̂ (Gelman–Rubin) + autocorrelation time
@@ -163,6 +183,30 @@ Custom elements are defined through a GUI designer, exported as `.json`, and beh
 
 </td>
 </tr>
+<tr>
+<td width="50%" valign="top">
+
+### 💾 Projects & Session Persistence
+
+An analysis session is rarely finished in one sitting. **Save Project** writes everything — datasets, circuits, fits, posteriors, DRT results, import settings — into a single `.zscope` file that reopens exactly as you left it.
+
+- One file per session, or one file per dataset
+- Open ZIP container with a readable JSON manifest
+- Arrays stored exactly: reload is bit-for-bit identical
+- No pickled objects — a project file cannot execute code
+- Versioned schema: projects stay readable as ZScope evolves
+
+</td>
+<td width="50%" valign="top">
+
+### 🔎 Data Traceability
+
+Every spectrum carries a record of how it entered the analysis — auto-detected columns, a mapping you chose, or values you edited by hand — visible during import, written to the log, and preserved inside the project file.
+
+Combined with embedded copies of the original source files, a `.zscope` project is a self-contained record of an analysis: the raw data, what was done to it, and the result.
+
+</td>
+</tr>
 </table>
 
 ---
@@ -176,27 +220,68 @@ Custom elements are defined through a GUI designer, exported as `.json`, and beh
   column format    residual map      overlay data     warm-start   credible   json/PDF
 ```
 
-1. **Import** — ZScope detects column format, cross-validates consistency, and lets you filter rows before any calculation
+1. **Import** — ZScope detects column format, cross-validates consistency, and lets you filter rows before any calculation. Import one file or a whole batch.
 2. **Validate** (Ctrl+K) — Confirm linearity and stationarity; investigate flagged frequency regions
 3. **Build your circuit** — Draw on canvas, choose a preset, or request an algorithmic suggestion based on spectral fingerprinting
 4. **Fit** — Configure weighting, loss function, restarts, and frequency band; run the optimizer
 5. **Quantify uncertainty** — Run Bayesian MCMC for full posteriors, credible intervals, and convergence diagnostics
-6. **Export** — Publication-ready figures (PNG/SVG/PDF), parameter tables, and structured reports
+6. **Export** — Publication-ready figures (PNG/SVG/PDF), parameter tables, structured reports — and a `.zscope` project preserving the whole session
 
 ---
 
 ## 📈 Validation & Benchmarks
 
-Validated on synthetic data with known ground-truth parameters: four circuits × three noise levels, twelve test cases, all converging successfully.
+ZScope is validated against synthetic data with known ground-truth parameters, across five reference circuits, three noise models, and multiple noise levels — over 19,000 independent fits per full benchmark run. Every figure below is a repeated-trial result with an interval, not a single-seed example.
 
-| Circuit | Noise | Accuracy |
-|---|:---:|---|
-| Randles | 0% | Relative error **< 10⁻¹² %** — machine precision |
-| Randles + Warburg | 2% | RMSE 1.68–1.74% · max individual error **1.22%** |
-| CPE Randles | 5% | Recovery within noise level · Q–α correlation correctly identified |
-| Two-Time-Constants | 5% | Recovery within noise level |
+### Goodness of fit
 
-> The Q–α correlation in the CPE case is not a software deficiency — it reflects a genuine physical interdependence in CPE parameterization. ZScope correctly detects and reports it.
+χ² computed against the **true** per-point noise σ used to generate the data. A correctly-specified model fitted to the noise floor gives 1.0.
+
+| Noise level | χ²<sub>calibrated</sub> |
+|---|:---:|
+| 2% | **0.992** |
+| 5% | **1.006** |
+
+### Parameter recovery — blind start, 2% noise
+
+Optimizer started from an uninformed guess (0.2×–5× per parameter), not from the true values.
+
+| Circuit | Worst parameter | Mean error |
+|---|---|:---:|
+| Randles | C<sub>dl</sub> | 0.36% |
+| Randles + Warburg | σ<sub>W</sub> | 0.54% |
+| CPE Randles | Q | 1.79% |
+| Two-Time-Constants | C₂ | 3.98% |
+
+All other parameters recover below 1%. The CPE exponent α recovers to 0.25%.
+
+### Confidence-interval coverage
+
+Whether the reported ± actually contains the true value at its nominal rate — measured, not assumed.
+
+| Condition | Covariance estimator | Coverage (nominal 95%) |
+|---|---|:---:|
+| Well-behaved noise | Jacobian | 94.4% |
+| Well-behaved noise | Robust sandwich | 93.1% |
+| 5% contaminated points | Jacobian | 89.0% |
+| 5% contaminated points | **Robust sandwich** | **94.2%** |
+
+The robust loss is the shipped default: it costs about a point of efficiency on clean data and recovers calibration entirely when data contains outliers.
+
+### DRT resolution limit
+
+How far apart two relaxation processes must be before the DRT resolves them as two peaks rather than one — the Rayleigh criterion analogue for impedance.
+
+| Noise | Required τ₂/τ₁ |
+|---|:---:|
+| 0% | ≈ 10 |
+| 1% | ≈ 16 |
+| 2% | ≈ 27 |
+| 5% | ≈ 75 |
+
+Approximately **τ₂/τ₁ ≈ 15 × (noise level in %)**. Below the limit the method fails conservatively — returning a single peak at the geometric mean with the combined resistance, rather than inventing structure.
+
+> Where ZScope's methods have limits, the benchmarks report them. The lin-KK test reliably detects drift only once the distortion is large relative to measurement noise; the Q–α correlation in CPE fitting reflects a genuine physical interdependence, not a software deficiency, and is detected and reported rather than hidden.
 
 All benchmark data, comparison tables, and analysis scripts are available in [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) for independent verification.
 
@@ -227,6 +312,9 @@ All benchmark data, comparison tables, and analysis scripts are available in [`b
 | Algorithmic circuit suggestion | Uncommon | ✗ | ✅ Spectral fingerprinting |
 | Custom elements (no coding) | Restricted | Script-level | ✅ GUI designer |
 | Sequential warm-start fitting | Rarely | Manual | ✅ Automatic |
+| Batch import of many spectra | Partial | Manual | ✅ Auto-detected per file |
+| Single-file session projects | Rarely | ✗ | ✅ Open, inspectable format |
+| Published coverage & resolution limits | ✗ | ✗ | ✅ Measured and documented |
 | Structured export (txt/csv/json/PDF) | Partial | Manual | ✅ Full |
 | Cost | 💰 Annual license | Free | ✅ **Free** |
 
@@ -253,7 +341,7 @@ If ZScope contributes to published research, please cite it so others can find i
   author  = {Mohammadi, Tecush},
   title   = {ZScope: Publication-Grade Electrochemical Impedance Spectroscopy Analysis Platform},
   year    = {2026},
-  version = {2.1.0},
+  version = {2.2.0},
   url     = {https://github.com/Tecush/ZScope},
   doi     = {10.5281/zenodo.20357547}
 }
