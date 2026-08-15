@@ -57,6 +57,8 @@ ZScope is the tool I needed during that experiment. It is free, and I hope it gi
 
 **Export datasets as separate project files** — split a batch into one independently-reopenable project per dataset. Unlike CSV export, each file keeps that dataset's circuit, fit and DRT results with it.
 
+**Paste data from the clipboard** — copy a block of cells in Excel, LibreOffice, Origin or a text editor and press `Ctrl+V`; the import dialog opens on the pasted table. Separator and decimal convention are detected automatically, including semicolon-separated European exports with decimal commas (`1,0E+05;10,5`), which a naive parser reads off by a factor of ten. Pasted data is written to a timestamped file so it can be re-examined and embedded in a project, rather than living only in a clipboard buffer.
+
 **Import many files at once** — select or drag in a whole folder of spectra. ZScope reads each one, detects its columns, and shows a review list with point counts and frequency ranges before anything loads. Files from the same instrument share a layout, so a typical batch needs one click; anything that needs attention opens the full import editor on its own, and one file's mapping can be applied across the whole batch.
 
 **Import source tracking** — every spectrum records how it was obtained: columns detected automatically, columns chosen by you, or data values edited by hand. It is shown during import, written to the log, and saved into the project file — so months later it is still answerable which curves are the file as measured, and which carry a human decision.
@@ -111,6 +113,7 @@ Adjusting R<sub>ct</sub>, CPE exponent, or Warburg coefficient by hand and watch
 Import EIS data without fighting file formats. ZScope recognizes the native export formats of most common potentiostats — Gamry, BioLogic, Autolab, Zahner, Ivium, CHI, PalmSens, PAR, and more — and falls back to a smart generic parser for anything else.
 
 - Batch import: many files at once, columns auto-detected per file
+- Paste tabular data straight from a spreadsheet (`Ctrl+V`), locale-aware
 - Auto-detection and consistency cross-check of column pairs
 - Sign convention toggle for different potentiostats
 - Row-level filtering: exclude drift, artefacts, or outliers while keeping them visible
@@ -123,11 +126,15 @@ Import EIS data without fighting file formats. ZScope recognizes the native expo
 
 ### ✅ Kramers–Kronig Validation
 
-Before fitting any parameters, confirm your data is worth fitting. ZScope implements the linear KK test (Schönleber's μ-criterion lin-KK method) with modulus-weighted residual mapping.
+Before fitting any parameters, confirm your data is worth fitting. ZScope reconstructs Z(ω) from a Voigt (RC-ladder) basis that is KK-consistent by construction, with modulus weighting, a padded time-constant grid, and a series-inductance term to absorb ordinary cable inductance.
 
-The verdict is based on residual **structure**, not on a fixed percentage threshold: KK-compliant data leaves randomly-scattered residuals, while drift and non-stationarity leave systematic, smoothly-varying ones. A magnitude threshold alone cannot separate "noisy" from "invalid" — on a 160-point sweep at 1% noise the largest residual is ~3% by chance.
+You get a banded verdict from the median relative residual, plus a residual-vs-frequency diagnostic plot — a *systematic* trend in the residuals points to drift or non-stationarity, while random scatter is just noise.
 
-Measured false-positive rate on KK-compliant synthetic data: **0.0%** across noise levels from 0.5% to 5%.
+| Residual | Status | Action |
+|---|---|---|
+| < 0.5% | ✅ Valid | Proceed |
+| 0.5–2% | ⚠️ Minor drift | Narrow frequency range |
+| > 2% | ❌ Violation | Repeat measurement |
 
 One keystroke (Ctrl+K), under 2 seconds.
 
@@ -281,7 +288,7 @@ How far apart two relaxation processes must be before the DRT resolves them as t
 
 Approximately **τ₂/τ₁ ≈ 15 × (noise level in %)**. Below the limit the method fails conservatively — returning a single peak at the geometric mean with the combined resistance, rather than inventing structure.
 
-> Where ZScope's methods have limits, the benchmarks report them. The lin-KK test reliably detects drift only once the distortion is large relative to measurement noise; the Q–α correlation in CPE fitting reflects a genuine physical interdependence, not a software deficiency, and is detected and reported rather than hidden.
+> Where ZScope's methods have limits, the benchmarks report them. Kramers–Kronig testing reliably detects drift only once the distortion is large relative to measurement noise — a small drift is genuinely indistinguishable from noise, in any implementation. The Q–α correlation in CPE fitting reflects a real physical interdependence, not a software deficiency, and is detected and reported rather than hidden.
 
 All benchmark data, comparison tables, and analysis scripts are available in [`benchmarks/`](https://github.com/Tecush/ZScope/tree/main/benchmarks) for independent verification.
 
@@ -313,6 +320,7 @@ All benchmark data, comparison tables, and analysis scripts are available in [`b
 | Custom elements (no coding) | Restricted | Script-level | ✅ GUI designer |
 | Sequential warm-start fitting | Rarely | Manual | ✅ Automatic |
 | Batch import of many spectra | Partial | Manual | ✅ Auto-detected per file |
+| Paste data from clipboard | ✗ | ✗ | ✅ Locale-aware |
 | Single-file session projects | Rarely | ✗ | ✅ Open, inspectable format |
 | Published coverage & resolution limits | ✗ | ✗ | ✅ Measured and documented |
 | Structured export (txt/csv/json/PDF) | Partial | Manual | ✅ Full |
