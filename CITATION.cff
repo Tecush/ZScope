@@ -1,9 +1,13 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+cff-version: 3.0.2
+message: "If you use this software, please cite it as below.
+Mohammadi, T.& Sharifi, T. (2026). ZScope [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20357547"
 authors:
 - family-names: Mohammadi
   given-names: Tecush
 orcid: https://orcid.org/0000-0002-2291-9400
-title: ZScope
-version: v1.2.0
-date-released: 2026-06-02
+- family-names: Sharifi
+  given-names: Tayebeh
+orcid: https://orcid.org/0000-0002-4694-5814
+title:ZScope
+version: v3.0.2
+date-released: 2026-09-09
