@@ -4,8 +4,8 @@ import Reveal from "./Reveal";
 
 // ---- EDIT THESE THREE VALUES -------------------------------------------
 // E-mail address, split so it is not sitting in the page source as plain text.
-const EMAIL_USER = "your.name"; // the part before the @
-const EMAIL_DOMAIN = "example.com"; // the part after the @
+const EMAIL_USER = "tecush"; // the part before the @
+const EMAIL_DOMAIN = "google.com"; // the part after the @
 // Optional contact form (Formspree). Example: "https://formspree.io/f/abcdwxyz"
 // Leave as "" to hide the form and show only the e-mail and GitHub cards.
 const FORM_ENDPOINT = "";
