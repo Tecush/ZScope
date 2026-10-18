@@ -1,1 +1,118 @@
-import { NavLink } from "react-router-dom";import { Github, Download, Menu, X } from "lucide-react";import { useEffect, useState } from "react";import { track } from "@/lib/track";import Logo from "./Logo";const LINKS = [  { label: "Overview", to: "/" },  { label: "Features", to: "/features" },  { label: "Verification", to: "/verification" },  { label: "Download", to: "/download" },  { label: "Citation", to: "/citation" },];export default function Navbar() {  const [scrolled, setScrolled] = useState(false);  const [open, setOpen] = useState(false);  useEffect(() => {    const onScroll = () => setScrolled(window.scrollY > 8);    onScroll();    window.addEventListener("scroll", onScroll, { passive: true });    return () => window.removeEventListener("scroll", onScroll);  }, []);  return (    <header      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${        scrolled          ? "border-b border-slate-200/80 bg-white/80 backdrop-blur-xl"          : "border-b border-transparent bg-transparent"      }`}    >      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">        <Logo />        <div className="hidden items-center gap-8 md:flex">          {LINKS.map((l) => (            <NavLink              key={l.to}              to={l.to}              end={l.to === "/"}              className={({ isActive }) =>                `font-mono text-[13px] transition-colors ${                  isActive ? "text-slate-900" : "text-slate-500 hover:text-slate-900"                }`              }            >              {l.label}            </NavLink>          ))}        </div>        <div className="hidden items-center gap-3 md:flex">          <a            href="https://github.com/Tecush/ZScope"            target="_blank"            rel="noreferrer"            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-900"          >            <Github className="h-4 w-4" />            GitHub          </a>          <a            href="https://github.com/Tecush/ZScope/releases/latest"            target="_blank"            rel="noreferrer"            onClick={() => track("download_click", { location: "navbar" })}            className="inline-flex items-center gap-2 rounded-lg bg-[#0052FF] px-3.5 py-2 text-[13px] font-medium text-white shadow-sm transition-all hover:bg-[#0040CC] hover:shadow-md"          >            <Download className="h-4 w-4" />            Download          </a>        </div>        <button          onClick={() => setOpen((v) => !v)}          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 md:hidden"          aria-label="Toggle menu"        >          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}        </button>      </nav>      {open && (        <div className="border-t border-slate-200 bg-white px-6 py-4 md:hidden">          <div className="flex flex-col gap-1">            {LINKS.map((l) => (              <NavLink                key={l.to}                to={l.to}                end={l.to === "/"}                onClick={() => setOpen(false)}                className={({ isActive }) =>                  `rounded-lg px-3 py-2.5 font-mono text-sm ${                    isActive ? "bg-slate-50 text-slate-900" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"                  }`                }              >                {l.label}              </NavLink>            ))}            <a              href="https://github.com/Tecush/ZScope/releases/latest"              target="_blank"              rel="noreferrer"              onClick={() => track("download_click", { location: "navbar_mobile" })}              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[#0052FF] px-4 py-2.5 text-sm font-medium text-white"            >              <Download className="h-4 w-4" /> Download for Windows            </a>          </div>        </div>      )}    </header>  );}
+import { NavLink } from "react-router-dom";
+import { Github, Download, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { track } from "@/lib/track";
+import Logo from "./Logo";
+
+const LINKS = [
+  { label: "Overview", to: "/" },
+  { label: "Features", to: "/features" },
+  { label: "Verification", to: "/verification" },
+  { label: "Download", to: "/download" },
+  { label: "Citation", to: "/citation" },
+  { label: "Contact", to: "/contact" },
+];
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-slate-200/80 bg-white/80 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
+      }`}
+    >
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <Logo />
+
+        <div className="hidden items-center gap-8 md:flex">
+          {LINKS.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === "/"}
+              className={({ isActive }) =>
+                `font-mono text-[13px] transition-colors ${
+                  isActive ? "text-slate-900" : "text-slate-500 hover:text-slate-900"
+                }`
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <a
+            href="https://github.com/Tecush/ZScope"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-[13px] font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-900"
+          >
+            <Github className="h-4 w-4" />
+            GitHub
+          </a>
+          <a
+            href="https://github.com/Tecush/ZScope/releases/latest"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => track("download_click", { location: "navbar" })}
+            className="inline-flex items-center gap-2 rounded-lg bg-[#0052FF] px-3.5 py-2 text-[13px] font-medium text-white shadow-sm transition-all hover:bg-[#0040CC] hover:shadow-md"
+          >
+            <Download className="h-4 w-4" />
+            Download
+          </a>
+        </div>
+
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 md:hidden"
+          aria-label="Toggle menu"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </nav>
+
+      {open && (
+        <div className="border-t border-slate-200 bg-white px-6 py-4 md:hidden">
+          <div className="flex flex-col gap-1">
+            {LINKS.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.to === "/"}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `rounded-lg px-3 py-2.5 font-mono text-sm ${
+                    isActive ? "bg-slate-50 text-slate-900" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`
+                }
+              >
+                {l.label}
+              </NavLink>
+            ))}
+            <a
+              href="https://github.com/Tecush/ZScope/releases/latest"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track("download_click", { location: "navbar_mobile" })}
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-[#0052FF] px-4 py-2.5 text-sm font-medium text-white"
+            >
+              <Download className="h-4 w-4" /> Download for Windows
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
