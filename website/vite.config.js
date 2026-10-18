@@ -14,8 +14,8 @@ const ROUTES = {
   features: "Features — ZScope",
   verification: "Verification — ZScope",
   download: "Download — ZScope",
-  contact: "Contact — ZScope",
   citation: "Citation — ZScope",
+  contact: "Contact — ZScope",
 };
 
 function staticRoutes() {
