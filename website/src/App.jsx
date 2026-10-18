@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Features from "@/pages/Features";
 import VerificationPage from "@/pages/VerificationPage";
 import DownloadPage from "@/pages/DownloadPage";
+import ContactPage from "@/pages/ContactPage";
 import CitationPage from "@/pages/CitationPage";
 
 const TITLES = {
@@ -14,6 +15,7 @@ const TITLES = {
   "/features": "Features — ZScope",
   "/verification": "Verification — ZScope",
   "/download": "Download — ZScope",
+  "/contact": "Contact — ZScope",
   "/citation": "Citation — ZScope",
 };
 
@@ -38,6 +40,7 @@ export default function App() {
           <Route path="/features" element={<Features />} />
           <Route path="/verification" element={<VerificationPage />} />
           <Route path="/download" element={<DownloadPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/citation" element={<CitationPage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
