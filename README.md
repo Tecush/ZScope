@@ -136,7 +136,7 @@ If ZScope is useful in your research, please cite the software and its accompany
   author  = {Mohammadi, Tecush and Sharifi, Tayebeh},
   title   = {ZScope},
   year    = {2026},
-  version = {3.1.0},
+  version = {3.2.0},
   doi     = {10.5281/zenodo.20357547},
   url     = {https://github.com/Tecush/ZScope}
 }
